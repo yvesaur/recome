@@ -1,0 +1,42 @@
+#header {
+  display: flex;
+  background-color: #2a3451;
+  justify-content: space-between;
+  align-items: center;
+  color: #fefffe;
+  padding: 1rem;
+
+  font-family: "Montserrat", sans-serif;
+  font-weight: bold;
+}
+
+img {
+  height: 5rem;
+  width: auto;
+}
+
+.register-guest {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.register-guest > button {
+  border-radius: 10px;
+  padding: 4px 1rem;
+  border: none;
+  background-color: #efe50a;
+  font-weight: bold;
+}
+
+.register-guest p {
+  text-align: center;
+  margin: auto;
+}
+
+.search-news {
+  border-radius: 10px;
+  padding: 0.3rem 1.2rem 0.3rem 0.8rem;
+  border: none;
+}
