@@ -1,0 +1,21 @@
+#select-category {
+  padding: 3rem 2rem 0 2rem;
+  border-bottom: 1px solid var(--outline_clr1);
+  font-size: 1.1rem;
+}
+
+#select-category ul {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  list-style-type: none;
+  border-bottom: 1px solid var(--outline_clr1);
+}
+
+.active {
+  border-bottom: 3px solid var(--outline_clr);
+  border-radius: 0;
+  color: var(--font_clr);
+  font-weight: bold;
+  padding-bottom: 0.2rem;
+}

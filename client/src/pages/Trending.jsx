@@ -1,12 +1,12 @@
 import React from 'react'
 
+import SelectCategory from '../components/SelectCategory'
 import Footer from '../components/layout/Footer'
 import Header from '../components/layout/Header'
-import SelectCategory from '../components/SelectCategory'
 
-const Home = () => {
+const Trending = () => {
     return (
-        <div id='home-page'>
+        <div id='trending-page'>
             <Header />
             <SelectCategory />
             <Footer />
@@ -14,4 +14,4 @@ const Home = () => {
     )
 }
 
-export default Home
+export default Trending

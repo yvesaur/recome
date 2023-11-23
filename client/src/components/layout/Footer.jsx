@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../assets/css/footer.css';
+import '../../assets/css/layout/footer.css';
 
 const Footer = () => {
     let navigate = useNavigate();
