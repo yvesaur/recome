@@ -2,6 +2,7 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
+const newsRoutes = require("./routes/newsRoutes");
 
 const app = express();
 const port = process.env.PORT || 5001;
@@ -12,7 +13,7 @@ app.use(express.json());
 /* ========== */
 
 /* ROUTES */
-
+app.use("/", newsRoutes);
 /* ====== */
 
 /* SERVER */
