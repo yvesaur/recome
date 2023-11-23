@@ -1,13 +1,13 @@
 import React from 'react'
 
-import Banner from '../components/layout/Banner'
+import Footer from '../components/layout/Footer'
 import Header from '../components/layout/Header'
 
 const Home = () => {
     return (
         <div id='homepage'>
             <Header />
-            <Banner />
+            <Footer />
         </div>
     )
 }

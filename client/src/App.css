@@ -1,3 +1,22 @@
+:root {
+  --bg_clr: #f6f4f0;
+  --modalbg_clr: #7f7f7f;
+
+  --header_clr: #2a3451;
+  --footer_clr: #f7b068;
+  --btn_clr: #efe50a;
+  --outline_clr: #030303;
+  --outline_clr1: #d0c7b9;
+
+  --font-clr: #fefffe;
+  --font-clr1: #030303;
+  --font-clr2: #c81010;
+
+  --font_fallback: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
 body {
   background-color: #f6f4f0;
+  font-family: "Montserrat", var(--font_fallback);
 }
