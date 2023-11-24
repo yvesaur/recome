@@ -14,13 +14,13 @@ const Footer = () => {
             <img src={require("../../assets/img/recome-black.png")} alt="" />
             <div className="social-link">
                 <a href="https://www.google.com/">
-                    <i class="fa-brands fa-x-twitter" style={iconColor}></i>
+                    <i className="fa-brands fa-x-twitter" style={iconColor}></i>
                 </a>
                 <a href="https://www.google.com/">
-                    <i class="fa-brands fa-facebook-f" style={iconColor}></i>
+                    <i className="fa-brands fa-facebook-f" style={iconColor}></i>
                 </a>
                 <a href="https://www.google.com/">
-                    <i class="fa-brands fa-instagram" style={iconColor}></i>
+                    <i className="fa-brands fa-instagram" style={iconColor}></i>
                 </a>
             </div>
             <div className="info-page">

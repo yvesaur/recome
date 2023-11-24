@@ -8,16 +8,16 @@ const SelectCategory = () => {
         <nav id='select-category'>
             <ul>
                 <li>
-                    <NavLink axact activeClassName="active" to="/">Home</NavLink>
+                    <NavLink activeClassName="active" to="/">Home</NavLink>
                 </li>
                 <li>
-                    <NavLink exact activeClassName="active" to="/latest">Latest</NavLink>
+                    <NavLink activeClassName="active" to="/latest">Latest</NavLink>
                 </li>
                 <li>
-                    <NavLink exact activeClassName="active" to="/recommended">Recommended</NavLink>
+                    <NavLink activeClassName="active" to="/recommended">Recommended</NavLink>
                 </li>
                 <li>
-                    <NavLink exact activeClassName="active" to="/trending">Trending</NavLink>
+                    <NavLink activeClassName="active" to="/trending">Trending</NavLink>
                 </li>
             </ul>
 

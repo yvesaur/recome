@@ -7,8 +7,8 @@ const Header = () => {
             <input className='search-news' type="search" name="searchNews" id="searchNews" placeholder='search' />
             <img src={require("../../assets/img/recome-light.png")} alt="Recome Logo Icon" />
             <div className='register-guest'>
-                <p>Sign In</p>
-                <button>Register</button>
+                <p>Log In</p>
+                <button>Sign Up</button>
             </div>
         </div>
     )

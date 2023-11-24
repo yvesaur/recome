@@ -5,16 +5,14 @@ const axios = require("axios");
 
 router.get("/api/v1/news", async (req, res) => {
   try {
-    const response = await axios.get(
-      "http://localhost:8000/api/v1/getNewsData"
-    );
-
-    // console.log(response.data[0]);
+    const response = await db.query("SELECT * FROM news LIMIT 5");
 
     res.status(200).json({
       status: "success",
       results: 1,
-      data: response.data,
+      data: {
+        news: response.rows,
+      },
       message: "News data fetched successfuly.",
     });
   } catch (error) {
