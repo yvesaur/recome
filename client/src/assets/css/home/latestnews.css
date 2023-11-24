@@ -9,6 +9,11 @@
   width: fit-content;
 }
 
+#latest-news h2 {
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
 #latest-news > p:hover {
   text-decoration: underline;
   cursor: pointer;
@@ -16,6 +21,11 @@
 
 .latest-news-container {
   display: grid;
-  grid-template: repeat(2, minmax(400px, 1fr)) / repeat(3, 1fr);
+  grid-template: repeat(2, minmax(350px, 1fr)) / repeat(3, 1fr);
   justify-content: center;
+}
+
+.latest-news {
+  height: fit-content;
+  padding: 1rem;
 }

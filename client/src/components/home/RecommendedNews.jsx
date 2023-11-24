@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import Fetch from '../api/Fetch'
-import "../assets/css/home/latestnews.css"
+import { React, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Fetch from '../../api/Fetch';
+import "../../assets/css/home/recommendednews.css";
 
-const LatestNews = () => {
+const RecommendedNews = () => {
     const navigate = useNavigate();
     const [latestNews, setLatestNews] = useState([])
 
@@ -19,14 +19,16 @@ const LatestNews = () => {
         fetchData();
     }, [])
 
-    console.log(latestNews)
-
     return (
-        <div id='latest-news'>
-            <div className='latest-news-container'>
-                {latestNews && latestNews.map((news) => {
+        <div id='recommended-news'>
+            <div className='recommended-news-header'>
+                <h2>For You</h2>
+                <p onClick={() => navigate('/recommended')}>See All</p>
+            </div>
+            <div className='recommended-news-container'>
+                {latestNews && latestNews.slice(0, 3).map((news) => {
                     return (
-                        <div className='latest-news' key={news.id}>
+                        <div className='recommended-news' key={news.id}>
                             <img src="" alt="NEWS THUMBNAIL" />
                             <p>{news.category}: {news.subcategory}</p>
                             <p>{news.title}</p>
@@ -36,9 +38,8 @@ const LatestNews = () => {
                     )
                 })}
             </div>
-            <p onClick={() => navigate('/latest')}>See All</p>
         </div>
     )
 }
 
-export default LatestNews
+export default RecommendedNews

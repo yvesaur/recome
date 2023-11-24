@@ -1,7 +1,9 @@
 import React from 'react'
 
-import LatestNews from '../components/LatestNews'
 import SelectCategory from '../components/SelectCategory'
+import LatestNews from '../components/home/LatestNews'
+import RecommendedNews from '../components/home/RecommendedNews'
+import TrendingNews from '../components/home/TrendingNews'
 import Footer from '../components/layout/Footer'
 import Header from '../components/layout/Header'
 
@@ -10,7 +12,9 @@ const Home = () => {
         <div id='home-page'>
             <Header />
             <SelectCategory />
-            <LatestNews></LatestNews>
+            <LatestNews />
+            <TrendingNews />
+            <RecommendedNews />
             <Footer />
         </div>
     )

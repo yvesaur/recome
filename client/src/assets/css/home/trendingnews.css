@@ -1,0 +1,36 @@
+#trending-news {
+  margin: 3rem 2rem 0 2rem;
+  padding: 0 0 3rem 0;
+  border-bottom: 4px solid var(--outline_clr);
+}
+
+#trending-news h2 {
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.trending-news-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.trending-news-header p {
+  padding-right: 1rem;
+}
+
+.trending-news-header p:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.trending-news-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 1rem;
+}
+
+.trending-news {
+  padding: 1rem;
+  height: fit-content;
+}

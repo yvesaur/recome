@@ -1,0 +1,35 @@
+#recommended-news {
+  margin: 3rem 2rem 0 2rem;
+  padding: 0 0 3rem 0;
+}
+
+#recommended-news h2 {
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.recommended-news-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.recommended-news-header p {
+  padding-right: 1rem;
+}
+
+.recommended-news-header p:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.recommended-news-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+  gap: 1rem;
+}
+
+.recommended-news {
+  padding: 1rem;
+  height: fit-content;
+}
