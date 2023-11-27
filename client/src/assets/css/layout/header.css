@@ -34,8 +34,27 @@ img {
   margin: auto;
 }
 
+.register-guest p:hover {
+  cursor: pointer;
+}
+
 .search-news {
   border-radius: 10px;
   padding: 0.3rem 1.2rem 0.3rem 0.8rem;
   border: none;
+}
+
+.logged-user {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.logged-user i {
+  font-size: 1.5rem;
+}
+
+.logged-user i:hover {
+  cursor: pointer;
 }

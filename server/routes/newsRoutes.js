@@ -28,7 +28,7 @@ router.get("/api/v1/news", async (req, res) => {
 router.get("/api/v1/behaviours", async (req, res) => {
   try {
     const response = await axios.get(
-      "http://localhost:8000/api/v1/getBehavioursData"
+      "http://localhost:8000/api/v1/getNewsData"
     );
 
     // console.log(response.data[0]);
@@ -36,13 +36,7 @@ router.get("/api/v1/behaviours", async (req, res) => {
     res.status(200).json({
       status: "success",
       results: 1,
-      data: {
-        id: response.data[0][0],
-        userid: response.data[0][1],
-        timestamp: response.data[0][2],
-        click_history: response.data[0][3],
-        impressions: response.data[0][4],
-      },
+      data: response.data,
       message: "Behaviours data fetched successfuly.",
     });
   } catch (error) {

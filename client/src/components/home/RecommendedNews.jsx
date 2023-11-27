@@ -33,7 +33,7 @@ const RecommendedNews = () => {
                             <p>{news.category}: {news.subcategory}</p>
                             <p>{news.title}</p>
                             <p>{news.abstract}</p>
-                            <p>November Me, Kapag nagiisa</p>
+                            <p>November 28, 2023</p>
                         </div>
                     )
                 })}

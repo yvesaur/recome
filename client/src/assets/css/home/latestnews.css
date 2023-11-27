@@ -21,11 +21,13 @@
 
 .latest-news-container {
   display: grid;
+  gap: 1rem;
   grid-template: repeat(2, minmax(350px, 1fr)) / repeat(3, 1fr);
   justify-content: center;
 }
 
 .latest-news {
-  height: fit-content;
   padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid black;
 }

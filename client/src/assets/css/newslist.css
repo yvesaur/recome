@@ -1,0 +1,33 @@
+#news-list {
+  margin: 0.5rem 2rem 2rem 2rem;
+}
+
+.news-list-header {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  margin: 3rem 0;
+}
+
+.news-list-header h1 {
+  font-weight: bold;
+  padding-bottom: 1.5rem;
+  font-size: 3rem;
+}
+
+.news-list-header p {
+  font-size: 1.3rem;
+  text-align: justify;
+  text-justify: auto;
+}
+
+.news-list-container {
+  padding: 0 2rem;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+}
+
+.news-list-container p {
+  border: 1px solid black;
+  height: 400px;
+}
