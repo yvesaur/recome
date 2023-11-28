@@ -32,5 +32,5 @@
 .recommended-news {
   padding: 1rem;
   border-radius: 12px;
-  border: 1px solid black;
+  border: 1px solid var(--outline_clr1);
 }

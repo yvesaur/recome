@@ -28,12 +28,14 @@ const RecommendedNews = () => {
             <div className='recommended-news-container'>
                 {latestNews && latestNews.slice(0, 3).map((news) => {
                     return (
-                        <div className='recommended-news' key={news.id}>
-                            <img src="" alt="NEWS THUMBNAIL" />
-                            <p>{news.category}: {news.subcategory}</p>
-                            <p>{news.title}</p>
-                            <p>{news.abstract}</p>
-                            <p>November 28, 2023</p>
+                        <div className='news-card recommended-news' key={news.id}>
+                            <img src={require("../../assets/img/test_picture.png")} alt="NEWS THUMBNAIL" />
+                            <p className='news-category'>{news.category}: {news.subcategory}</p>
+                            <p className='news-title'>{news.title}</p>
+                            <div>
+                                <p className='news-author'>Jessica Soho</p>
+                                <p className='news-date'>November 28, 2023</p>
+                            </div>
                         </div>
                     )
                 })}

@@ -6,19 +6,27 @@ import "../../assets/css/home/trendingnews.css";
 
 const TrendingNews = () => {
     const navigate = useNavigate();
-    const [latestNews, setLatestNews] = useState([])
+    const [trendingNews, setTrendingNews] = useState([])
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await Fetch.get("/news")
-                setLatestNews(response.data.data.news)
+                const response = await Fetch.get("/getTrendingNews")
+                setTrendingNews(response.data.data.news)
             } catch (error) {
                 console.error(error.message)
             }
         }
         fetchData();
     }, [])
+
+    const handleNewsSelect = (id) => {
+        try {
+            navigate(`/news/${id}`)
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
         <div id='trending-news'>
@@ -27,14 +35,18 @@ const TrendingNews = () => {
                 <p onClick={() => navigate('/trending')}>See All</p>
             </div>
             <div className='trending-news-container'>
-                {latestNews && latestNews.slice(0, 4).map((news) => {
+                {trendingNews && trendingNews.slice(0, 4).map((news) => {
                     return (
-                        <div className='trending-news' key={news.id}>
-                            <img src="" alt="NEWS THUMBNAIL" />
-                            <p>{news.category}: {news.subcategory}</p>
-                            <p>{news.title}</p>
-                            <p>{news.abstract}</p>
-                            <p>November 28, 2023</p>
+                        <div className='news-card trending-news' key={news.id} onClick={() => {
+                            handleNewsSelect(news.id);
+                        }}>
+                            <img src={require("../../assets/img/test_picture.png")} alt="NEWS THUMBNAIL" />
+                            <p className='news-category'>{news.category}: {news.subcategory}</p>
+                            <p className='news-title'>{news.title}</p>
+                            <div>
+                                <p className='news-author'>Jessica Soho</p>
+                                <p className='news-date'>November 27, 2023</p>
+                            </div>
                         </div>
                     )
                 })}

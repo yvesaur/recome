@@ -1,3 +1,5 @@
+import requests
+import psycopg2
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
@@ -10,8 +12,9 @@ from torch.utils.data import Dataset, DataLoader
 import torch
 from collections import Counter
 import csv
+import os
+os.environ['CRYPTOGRAPHY_OPENSSL_NO_LEGACY'] = '1'
 
-import psycopg2
 
 # Constants for database connection
 DB_NAME = "recome"
@@ -230,7 +233,7 @@ news = news.sort_values("ind").reset_index(drop=True)
 # Number of clicks in training data per article, investigate the cold start issue
 news["n_click_training"] = news["ind"].map(dict(Counter(train.click)))
 # 5 most clicked articles
-news.sort_values("n_click_training", ascending=False).head()
+# news.sort_values("n_click_training", ascending=False).head()
 
 # store the learned item embedding into a seperate tensor
 itememb = mf_model.itememb.weight.detach()
@@ -270,9 +273,9 @@ def fetch_rows_from_table(file_name, table_name, limit=3):
 
 
 @api_view(['GET'])
-def getNewsData(request):
+def getRecommendedNews(request, id):
     # news = fetch_rows_from_table("./api/news.tsv", "news", limit=3)\
-    ind = item2ind.get("N55689")
+    ind = item2ind.get(id)
     # This calculates the cosine similarity and outputs the 10 most similar articles w.r.t to ind in descending order
     similarity = torch.nn.functional.cosine_similarity(
         itememb[ind], itememb, dim=0)
@@ -280,21 +283,14 @@ def getNewsData(request):
         similarity.argsort(descending=True).numpy()-1)]
     most_sim.head()
 
-    return Response(most_sim['itemId'].head(2))
+    return Response(most_sim['itemId'].head(8))
 
 
 @api_view(['GET'])
-def getBehavioursData(request):
+def getTrendingNews(request):
     # behaviours = fetch_rows_from_table(
     #    "./api/behaviours.tsv", "behaviours", limit=3)
 
     # news = fetch_rows_from_table("./api/news.tsv", "news", limit=3)\
-    ind = item2ind.get("N55689")
-    # This calculates the cosine similarity and outputs the 10 most similar articles w.r.t to ind in descending order
-    similarity = torch.nn.functional.cosine_similarity(
-        itememb[ind], itememb, dim=0)
-    most_sim = news[~news.ind.isna()].iloc[(
-        similarity.argsort(descending=True).numpy()-1)]
-    most_sim.head()
 
-    return Response(most_sim['itemId'].head(2))
+    return Response(news.sort_values("n_click_training", ascending=False).head(8))

@@ -13,7 +13,7 @@ const Home = ({ isAuthenticated }) => {
 
     useEffect(() => {
         isAuth();
-    }, [isAuthenticated]);
+    }, []);
     console.log("IS AUTHENTICATED HOME", isAuthenticated);
 
     return (

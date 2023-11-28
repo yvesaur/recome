@@ -11,6 +11,7 @@ import CookiePolicy from "./pages/CookiePolicy";
 import Home from "./pages/Home";
 import Latest from "./pages/Latest";
 import Login from "./pages/Login";
+import NewsDetail from "./pages/NewsDetail";
 import Recommended from "./pages/Recommended";
 import Register from "./pages/Register";
 import TermsAndConditions from "./pages/TermsAndConditions";
@@ -42,7 +43,9 @@ function App() {
               path="/cookiepolicy"
               element={<CookiePolicy />}
             ></Route>
+            <Route exact path="/news/:id" element={<NewsDetail />}></Route>
           </Routes>
+
           <ToastContainer
             position="top-right"
             autoClose={2000}
