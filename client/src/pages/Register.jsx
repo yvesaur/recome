@@ -1,9 +1,11 @@
 import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import "../assets/css/pages/register.css";
 import { NewsContext } from '../context/NewsContext';
 
 const Register = () => {
     const { setAuth, notifySuccess, notifyError, isAuthenticated } = useContext(NewsContext);
+    const navigate = useNavigate();
     const [inputs, setInputs] = useState({
         username: "",
         firstName: "",
@@ -48,7 +50,10 @@ const Register = () => {
 
     return (
         <div id='register-page' className=''>
-            <div onSubmit={onSubmitForm} className='container'>
+            <div onSubmit={(e) => {
+                onSubmitForm(e);
+                navigate("/")
+            }} className='container'>
                 <img src={require("../assets/img/recome-light.png")} alt="Recome Logo Icon" />
                 <h1>Register</h1>
                 <form className='register-account-form'>

@@ -22,7 +22,7 @@ router.post("/auth/register", validinfo, async (req, res) => {
     } = req.body;
 
     // 1.1 Set the user ID
-    const userid = "U7";
+    const userid = "U10";
 
     // 2. Check if it exists
     const user = await pool.query("SELECT * FROM users WHERE email = ($1)", [
