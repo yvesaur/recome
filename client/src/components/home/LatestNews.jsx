@@ -32,7 +32,7 @@ const LatestNews = () => {
         <div id='latest-news'>
             <h2>Latest</h2>
             <div className='latest-news-container'>
-                {latestNews && latestNews.map((news, index) => {
+                {latestNews && latestNews.slice(0, 5).map((news, index) => {
                     return (
                         <div className={`news-card latest-news-${index}`} key={news.id} onClick={() => {
                             handleNewsSelect(news.id);

@@ -6,7 +6,7 @@ const { Pool } = require("pg");
 
 router.get("/api/v1/news", async (req, res) => {
   try {
-    const response = await db.query("SELECT * FROM news LIMIT 5");
+    const response = await db.query("SELECT * FROM news LIMIT 20");
 
     res.status(200).json({
       status: "success",
@@ -59,6 +59,7 @@ router.get("/api/v1/news/related/:id", async (req, res) => {
     const relatedNewsID = await axios.get(
       `http://localhost:8000/api/v1/getRecommendedNews/${reqID}`
     );
+    console.log(reqID);
 
     const response = await db.query(
       "SELECT * FROM news WHERE id IN (($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8))",

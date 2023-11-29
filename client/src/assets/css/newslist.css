@@ -25,9 +25,21 @@
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  justify-content: center;
 }
 
-.news-list-container p {
-  border: 1px solid black;
-  height: 400px;
+.news-list-card {
+  width: 400px;
+  height: auto;
+  padding: 1rem;
+  border-radius: 12px;
+  transition: box-shadow 0.3s ease; /* Adding transition to box-shadow */
+}
+
+.news-list-card:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); /* Shadow properties on hover */
+}
+
+.news-list-info {
+  font-size: 1rem;
 }

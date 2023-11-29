@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Fetch from '../api/Fetch'
 import "../assets/css/pages/newsdetail.css"
 import SelectCategory from '../components/SelectCategory'
@@ -10,6 +10,7 @@ const NewsDetail = () => {
     const [selectedNews, setSelectedNews] = useState();
     const [relatedNews, setRelatedNews] = useState();
     const { id } = useParams();
+    const navigate = useNavigate();
     console.log(id)
 
     useEffect(() => {
@@ -17,8 +18,8 @@ const NewsDetail = () => {
             try {
                 const response = await Fetch.get((`/news/${id}`))
                 const response2 = await Fetch.get((`/news/related/${id}`))
-                setSelectedNews(response.data.data.news)
-                setRelatedNews(response2.data.data.news)
+                await setSelectedNews(response.data.data.news)
+                await setRelatedNews(response2.data.data.news)
             } catch (error) {
                 console.error(error)
             }
@@ -26,39 +27,54 @@ const NewsDetail = () => {
         fetchData()
     }, [])
     console.log("Related NEWS", relatedNews)
+    console.log("Selected NEWS", selectedNews)
 
+    const handleNewsSelect = (id) => {
+        try {
+            navigate(`/news/${id}`);
+            window.location.reload();
+        } catch (error) {
+            console.log(error);
+        }
+    }
     return (
         <div id='news-detail-page'>
             <Header />
             <SelectCategory />
-            {selectedNews &&
-                <div className='news-card trending-news' key={selectedNews.id} onClick={() => {
-                }}>
-                    <img src={require("../assets/img/test_picture.png")} alt="NEWS THUMBNAIL" />
-                    <p className='news-category'>{selectedNews.category}: {selectedNews.subcategory}</p>
-                    <p className='news-title'>{selectedNews.title}</p>
-                    <p className='news-abstract'>{selectedNews.abstract}</p>
-                    <div>
-                        <p className='news-author'>Jessica Soho</p>
-                        <p className='news-date'>November 27, 2023</p>
-                    </div>
-                </div>
-
-            }
-            <h1>Related</h1>
-            {relatedNews && relatedNews.map((news, index) => {
-                return (
-                    <div className={`news-card related-news`} key={news.id}>
-                        <img className='news-thumbnail' src={require("../assets/img/test_picture.png")} alt="NEWS THUMBNAIL" />
-                        <p className='news-category'>{news.category}: {news.subcategory}</p>
-                        <p className='news-title'>{news.title}</p>
+            <div className='selected-new-container'>
+                {selectedNews &&
+                    <div className='news-card news-detail-card' key={selectedNews.id} onClick={() => {
+                    }}>
+                        <p className='news-category'>{selectedNews.category}</p>
+                        <p className='news-title'>{selectedNews.title}</p>
+                        <img src={require("../assets/img/test_picture.png")} alt="NEWS THUMBNAIL" />
+                        <p className='news-abstract'>{selectedNews.abstract}</p>
                         <div>
                             <p className='news-author'>Jessica Soho</p>
-                            <p className='news-date'>November 28, 2023</p>
+                            <p className='news-date'>November 27, 2023</p>
                         </div>
                     </div>
-                )
-            })}
+
+                }
+            </div>
+            <h1>Related</h1>
+            <div className='related-news-container'>
+                {relatedNews && relatedNews.slice(0, 4).map((news) => {
+                    return (
+                        <div className={`news-card related-news`} key={news.id} onClick={() => {
+                            handleNewsSelect(news.id);
+                        }}>
+                            <img className='news-thumbnail' src={require("../assets/img/test_picture.png")} alt="NEWS THUMBNAIL" />
+                            <p className='related-category'>{news.category}</p>
+                            <p className='related-title'>{news.title}</p>
+                            <div>
+                                <p className='news-author'>Jessica Soho</p>
+                                <p className='news-date'>November 28, 2023</p>
+                            </div>
+                        </div>
+                    )
+                })}
+            </div>
             <Footer />
         </div>
     )

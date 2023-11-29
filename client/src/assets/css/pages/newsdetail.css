@@ -2,3 +2,37 @@
   width: 8rem;
   height: 5rem;
 }
+
+.selected-new-container {
+  display: flex;
+  justify-content: center;
+}
+
+.news-detail-card {
+  width: 50vw;
+}
+
+.related-news {
+  width: 400px;
+  padding: 0.3rem;
+}
+
+.related-news-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0 1rem;
+}
+
+.related-news-container .related-title {
+  font-family: "Merriweather", var(--font_fallback);
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.related-news-container .related-category {
+  font-size: 0.8rem;
+  font-family: "Merriweather", var(--font_fallback);
+  color: var(--font-clr2);
+  font-weight: bold;
+}

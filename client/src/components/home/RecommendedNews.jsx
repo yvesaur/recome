@@ -19,6 +19,14 @@ const RecommendedNews = () => {
         fetchData();
     }, [])
 
+    const handleNewsSelect = (id) => {
+        try {
+            navigate(`/news/${id}`)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <div id='recommended-news'>
             <div className='recommended-news-header'>
@@ -28,7 +36,9 @@ const RecommendedNews = () => {
             <div className='recommended-news-container'>
                 {latestNews && latestNews.slice(0, 3).map((news) => {
                     return (
-                        <div className='news-card recommended-news' key={news.id}>
+                        <div className='news-card recommended-news' key={news.id} onClick={() => {
+                            handleNewsSelect(news.id);
+                        }}>
                             <img src={require("../../assets/img/test_picture.png")} alt="NEWS THUMBNAIL" />
                             <p className='news-category'>{news.category}: {news.subcategory}</p>
                             <p className='news-title'>{news.title}</p>

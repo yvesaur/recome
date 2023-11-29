@@ -276,14 +276,20 @@ def fetch_rows_from_table(file_name, table_name, limit=3):
 def getRecommendedNews(request, id):
     # news = fetch_rows_from_table("./api/news.tsv", "news", limit=3)\
     ind = item2ind.get(id)
-    # This calculates the cosine similarity and outputs the 10 most similar articles w.r.t to ind in descending order
-    similarity = torch.nn.functional.cosine_similarity(
-        itememb[ind], itememb, dim=0)
-    most_sim = news[~news.ind.isna()].iloc[(
-        similarity.argsort(descending=True).numpy()-1)]
-    most_sim.head()
+    if not ind:
+        recoNews = news.sort_values(
+            "n_click_training", ascending=True).head(20)
+        return Response(recoNews['itemId'])
+    else:
+        # This calculates the cosine similarity and outputs the 10 most similar articles w.r.t to ind in descending order
+        similarity = torch.nn.functional.cosine_similarity(
+            itememb[ind], itememb, dim=0)
+        most_sim = news[~news.ind.isna()].iloc[(
+            similarity.argsort(descending=True).numpy()-1)]
 
-    return Response(most_sim['itemId'].head(8))
+        return Response(most_sim['itemId'].head(20))
+
+    # return Response(most_sim['itemId'].head(8))
 
 
 @api_view(['GET'])
@@ -293,4 +299,4 @@ def getTrendingNews(request):
 
     # news = fetch_rows_from_table("./api/news.tsv", "news", limit=3)\
 
-    return Response(news.sort_values("n_click_training", ascending=False).head(8))
+    return Response(news.sort_values("n_click_training", ascending=False).head(20))
