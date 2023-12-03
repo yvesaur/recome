@@ -85,7 +85,7 @@ export const NewsContextProvider = (props) => {
       let impressions = localStorage.getItem("impressions");
 
       localStorage.setItem("click_history", clickHistory + " " + newClick);
-      localStorage.setItem("impressions", impressions + ` ${newClick}-1`);
+      localStorage.setItem("impressions", impressions + `${newClick}-1 `);
     }
   };
 
@@ -97,7 +97,7 @@ export const NewsContextProvider = (props) => {
           let impressions = localStorage.getItem("impressions");
           localStorage.setItem(
             "impressions",
-            impressions + ` ${newsList[key].id}-0`
+            impressions + `${newsList[key].id}-0 `
           );
         }
       }

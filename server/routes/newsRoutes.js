@@ -9,7 +9,7 @@ const getRandomDate = require("../utils/getDate");
 // DISPLAY NEWS
 router.get("/api/v1/news", async (req, res) => {
   try {
-    const response = await db.query("SELECT * FROM news LIMIT 20");
+    const response = await db.query("SELECT * FROM news1 LIMIT 20");
 
     res.status(200).json({
       status: "success",
@@ -34,7 +34,7 @@ router.get("/api/v1/news/:id", async (req, res) => {
   try {
     const reqID = req.params.id;
     const getSingleNewsData = await db.query(
-      "SELECT * FROM news WHERE id = ($1)",
+      "SELECT * FROM news1 WHERE id = ($1)",
       [reqID]
     );
 
@@ -73,7 +73,7 @@ router.get("/api/v1/news/related/:id", async (req, res) => {
     const parameters = relatedNewsID.data;
 
     const response = await db.query(
-      `SELECT * FROM news WHERE id IN (${placeholders})`,
+      `SELECT * FROM news1 WHERE id IN (${placeholders})`,
       parameters
     );
 
@@ -108,7 +108,7 @@ router.get("/api/v1/getTrendingNews", async (req, res) => {
     const parameters = trendingNewsID.data.id;
 
     const response = await db.query(
-      `SELECT * FROM news WHERE id IN (${placeholders})`,
+      `SELECT * FROM news1 WHERE id IN (${placeholders})`,
       parameters
     );
 

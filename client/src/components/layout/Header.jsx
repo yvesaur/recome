@@ -38,7 +38,7 @@ const Header = () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 click_history: clickHistory,
-                impressions: impressions,
+                impressions: impressions.trim(),
             }),
         });
 

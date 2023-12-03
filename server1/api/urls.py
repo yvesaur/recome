@@ -4,4 +4,5 @@ from . import views
 urlpatterns = [
     path('api/v1/getRecommendedNews/<str:id>', views.getRecommendedNews),
     path('api/v1/getTrendingNews', views.getTrendingNews),
+    # path('api/v1/getRecommendedUserNews/<str:id>', views.getRecommendedUserNews),
 ]

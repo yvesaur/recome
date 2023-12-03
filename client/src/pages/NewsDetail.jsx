@@ -63,8 +63,8 @@ const NewsDetail = () => {
                         <img src={require("../assets/img/test_picture.png")} alt="NEWS THUMBNAIL" />
                         <p className='news-abstract'>{selectedNews.abstract}</p>
                         <div>
-                            <p className='news-author'>Jessica Soho</p>
-                            <p className='news-date'>November 27, 2023</p>
+                            <p className='news-author'>{selectedNews.author}</p>
+                            <p className='news-date'>{selectedNews.date}</p>
                         </div>
                     </div>
 
@@ -83,8 +83,8 @@ const NewsDetail = () => {
                                 <p className='related-category'>{news.category}</p>
                                 <p className='related-title'>{news.title}</p>
                                 <div>
-                                    <p className='news-author'>Jessica Soho</p>
-                                    <p className='news-date'>November 28, 2023</p>
+                                    <p className='news-author'>{news.author}</p>
+                                    <p className='news-date'>{news.date}</p>
                                 </div>
                             </div>
                         )

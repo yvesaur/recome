@@ -37,8 +37,8 @@ const NewsList = ({ title, description, isRecommended, isTrending, isLatest }) =
                                 <p className='news-list-info news-category'>{news.category}</p>
                                 <p className='news-list-info news-title'>{news.title}</p>
                                 <div>
-                                    <p className='news-author'>Jesica</p>
-                                    <p className='news-date'>October 13, 2002</p>
+                                    <p className='news-author'>{news.author}</p>
+                                    <p className='news-date'>{news.date}</p>
                                 </div>
                             </div>
                         )

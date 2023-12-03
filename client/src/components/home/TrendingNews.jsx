@@ -34,8 +34,8 @@ const TrendingNews = () => {
                             <p className='news-category'>{news.category}</p>
                             <p className='news-title'>{news.title}</p>
                             <div>
-                                <p className='news-author'>Jessica Soho</p>
-                                <p className='news-date'>November 27, 2023</p>
+                                <p className='news-author'>{news.author}</p>
+                                <p className='news-date'>{news.date}</p>
                             </div>
                         </div>
                     )
