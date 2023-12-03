@@ -258,9 +258,15 @@ print(itememb.shape)
 # some examples N13259, N16636, N10272
 # Can you find some examples that does not work good? Why?
 
-
+"""
 # USERS RECOMENDATION = USER ENCODER #
-raw_behaviour_users = raw_behaviour
+# Execute a query for behaviours
+cur.execute("SELECT * FROM behaviours")
+# Fetch all the rows for news
+rows = cur.fetchall()
+column_names = [desc[0] for desc in cur.description] # Get the column names 
+raw_behaviour_users = pd.DataFrame(rows, columns=column_names) # Create a DataFrame from the rows, with the column names
+
 
 # Indexize users
 unique_userIds_user = raw_behaviour_users['userid'].unique()
@@ -290,6 +296,7 @@ raw_behaviour_users['click_history_idx'] = raw_behaviour_users.click_history.map
 # collect one click and one no-click from impressions:
 
 
+# collect one click and one no-click from impressions:
 def process_impression_user(s):
     list_of_strings = s.split(" ")
     itemid_rel_tuple = [l.split("-") for l in list_of_strings]
@@ -433,6 +440,7 @@ top_index_user = torch.topk(preditions_user.flatten(), 10).indices
 # Filter for top 10 suggested items
 filters_user = [ind2item[ix.item()] for ix in top_index_user]
 recommendedNews = news[news["id"].isin(filters_user)]
+"""
 
 
 @api_view(['GET'])
