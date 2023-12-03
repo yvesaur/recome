@@ -31,7 +31,9 @@ const Login = () => {
 
             const parseRes = await response.json();
             if (parseRes.data.token) {
-                localStorage.setItem("token", parseRes.data.token)
+                localStorage.setItem("token", parseRes.data.token);
+                localStorage.setItem("click_history", "");
+                localStorage.setItem("impressions", "");
                 setAuth(true);
                 notifySuccess(parseRes.message);
                 navigate("/");

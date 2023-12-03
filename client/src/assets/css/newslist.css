@@ -43,3 +43,7 @@
 .news-list-info {
   font-size: 1rem;
 }
+
+.news-clicks {
+  text-align: end;
+}

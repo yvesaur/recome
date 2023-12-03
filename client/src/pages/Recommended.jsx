@@ -13,7 +13,7 @@ const Recommended = () => {
         <div id='recommended-page'>
             <Header />
             <SelectCategory />
-            <NewsList title="Recommended" description={description} />
+            <NewsList title="Recommended" description={description} isRecommended={true} />
             <Footer />
         </div>
     )

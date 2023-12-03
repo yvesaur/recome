@@ -15,7 +15,7 @@ const Trending = () => {
         <div id='trending-page'>
             <Header />
             <SelectCategory />
-            <NewsList title="Trending" description={description} />
+            <NewsList title="Trending" description={description} isTrending={true} />
             <Footer />
         </div>
     )

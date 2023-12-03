@@ -31,17 +31,30 @@ conn = psycopg2.connect(
     host=HOST,
     port=PORT
 )
+# Create a cursor object
+cur = conn.cursor()
 
-raw_behaviour = pd.read_csv("./api/behaviours.tsv", sep="\t", names=[
-    "impressionId", "userId", "timestamp", "click_history", "impressions"])
+# Execute a query for behaviours
+cur.execute("SELECT * FROM behaviours")
+# Fetch all the rows for news
+rows = cur.fetchall()
+column_names = [desc[0] for desc in cur.description]  # Get the column names
+# Create a DataFrame from the rows, with the column names
+raw_behaviour = pd.DataFrame(rows, columns=column_names)
+
 print(
     f"The dataset originally consists of {len(raw_behaviour)} number of interactions.")
-# raw_behaviour.head(1)
+# raw_behaviour.head()
 
-news = pd.read_csv("./api/news.tsv", sep="\t", names=[
-                   "itemId", "category", "subcategory", "title", "abstract", "url", "title_entities", "abstract_entities"])
+# Execute a query for news
+cur.execute("SELECT * FROM news")
+# Fetch all the rows for news
+rows = cur.fetchall()
+column_names = [desc[0] for desc in cur.description]  # Get the column names
+# Create a DataFrame from the rows, with the column names
+news = pd.DataFrame(rows, columns=column_names)
 print(f"The news data consist in total of {len(news)} number of news.")
-# news.head(1)
+news.head()
 
 # Function to split the impressions and clicks into two seperate lists
 
@@ -69,7 +82,7 @@ raw_behaviour = raw_behaviour.explode("click").reset_index(drop=True)
 
 # Extract the clicks from the previous clicks
 click_history = raw_behaviour[[
-    "userId", "click_history"]].drop_duplicates().dropna()
+    "userid", "click_history"]].drop_duplicates().dropna()
 click_history["click_history"] = click_history.click_history.map(
     lambda x: x.split())
 click_history = click_history.explode("click_history").rename(
@@ -91,7 +104,7 @@ print(f'Number of items that have less than {min_click_cutoff} clicks make up', 
     raw_behaviour.groupby("click").size() < min_click_cutoff)*100, 3), '% of the total, and these will be removed.')
 
 # remove items with less clicks than min_click_cutoff
-raw_behaviour = raw_behaviour[raw_behaviour.groupby("click")["userId"].transform(
+raw_behaviour = raw_behaviour[raw_behaviour.groupby("click")["userid"].transform(
     'size') >= min_click_cutoff].reset_index(drop=True)
 # Get a set with all the unique items
 click_set = set(raw_behaviour['click'].unique())
@@ -101,10 +114,10 @@ raw_behaviour['noclicks'] = raw_behaviour['noclicks'].apply(lambda impressions: 
                                                             impression for impression in impressions if impression in click_set])
 
 # Select the columns that we now want to use for further analysis
-behaviour = raw_behaviour[['epochhrs', 'userId', 'click', 'noclicks']].copy()
+behaviour = raw_behaviour[['epochhrs', 'userid', 'click', 'noclicks']].copy()
 
 print('Number of interactions in the behaviour dataset:', behaviour.shape[0])
-print('Number of users in the behaviour dataset:', behaviour.userId.nunique())
+print('Number of users in the behaviour dataset:', behaviour.userid.nunique())
 print('Number of articles in the behaviour dataset:', behaviour.click.nunique())
 
 # behaviour.head()
@@ -125,18 +138,18 @@ train['click'] = train['click'].map(lambda item: item2ind.get(item, 0))
 # Indexize users
 # Allocate a unique index for each user, but let the zeroth index be a UNK index:
 ind2user = {idx + 1: userid for idx,
-            userid in enumerate(train['userId'].unique())}
+            userid in enumerate(train['userid'].unique())}
 user2ind = {userid: idx for idx, userid in ind2user.items()}
 
 # Create a new column with userIdx:
-train['userIdx'] = train['userId'].map(lambda x: user2ind.get(x, 0))
+train['userIdx'] = train['userid'].map(lambda x: user2ind.get(x, 0))
 
 # Repeat for validation
 valid = behaviour[behaviour['epochhrs'] >= test_time_th].copy()
 valid["click"] = valid["click"].map(lambda item: item2ind.get(item, 0))
 valid["noclicks"] = valid["noclicks"].map(
     lambda list_of_items: [item2ind.get(l, 0) for l in list_of_items])
-valid["userIdx"] = valid["userId"].map(lambda x: user2ind.get(x, 0))
+valid["userIdx"] = valid["userid"].map(lambda x: user2ind.get(x, 0))
 # valid
 
 
@@ -228,12 +241,12 @@ mf_model = NewsMF.load_from_checkpoint(
 
 # Add more information to the article data
 # The item index
-news["ind"] = news["itemId"].map(item2ind)
+news["ind"] = news["id"].map(item2ind)
 news = news.sort_values("ind").reset_index(drop=True)
 # Number of clicks in training data per article, investigate the cold start issue
 news["n_click_training"] = news["ind"].map(dict(Counter(train.click)))
 # 5 most clicked articles
-# news.sort_values("n_click_training", ascending=False).head()
+# news.sort_values("n_click_training",ascending=False).head()
 
 # store the learned item embedding into a seperate tensor
 itememb = mf_model.itememb.weight.detach()
@@ -274,29 +287,32 @@ def fetch_rows_from_table(file_name, table_name, limit=3):
 
 @api_view(['GET'])
 def getRecommendedNews(request, id):
-    # news = fetch_rows_from_table("./api/news.tsv", "news", limit=3)\
     ind = item2ind.get(id)
     if not ind:
         recoNews = news.sort_values(
             "n_click_training", ascending=True).head(20)
-        return Response(recoNews['itemId'])
+        return Response(recoNews['id'])
     else:
         # This calculates the cosine similarity and outputs the 10 most similar articles w.r.t to ind in descending order
+        SelectedNews = news[news['id'] == id].category.values[0]
+        print(SelectedNews)
         similarity = torch.nn.functional.cosine_similarity(
             itememb[ind], itememb, dim=0)
+        # y_true = similarity.argsort(descending=False)-1
+        # rint(similarity)
+        # print(y_true)
         most_sim = news[~news.ind.isna()].iloc[(
             similarity.argsort(descending=True).numpy()-1)]
 
-        return Response(most_sim['itemId'].head(20))
+        most_sim = most_sim[most_sim['category'] == SelectedNews]
+
+        return Response(most_sim['id'].head(20))
 
     # return Response(most_sim['itemId'].head(8))
 
 
 @api_view(['GET'])
 def getTrendingNews(request):
-    # behaviours = fetch_rows_from_table(
-    #    "./api/behaviours.tsv", "behaviours", limit=3)
+    trendingNews = news.sort_values("n_click_training", ascending=False)
 
-    # news = fetch_rows_from_table("./api/news.tsv", "news", limit=3)\
-
-    return Response(news.sort_values("n_click_training", ascending=False).head(20))
+    return Response(trendingNews.head(100))

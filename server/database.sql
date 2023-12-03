@@ -7,7 +7,9 @@ CREATE TABLE
         abstract TEXT,
         url TEXT,
         title_entities TEXT,
-        abstract_entities TEXT
+        abstract_entities TEXT,
+        author VARCHAR(255)
+        date VARCHAR(50)
     );
 
 CREATE TABLE
@@ -37,3 +39,6 @@ CREATE TABLE
     );
 
 select * from behaviours where userid = 'U7'; 
+
+ALTER TABLE news1
+ADD COLUMN date VARCHAR(50);

@@ -7,6 +7,7 @@ const Header = () => {
     const { isAuthenticated, setAuth, notifySuccess } = useContext(NewsContext);
     const navigate = useNavigate();
     const [name, setName] = useState("");
+    const [currentUserID, setCurrentUserID] = useState(null)
 
     async function getName() {
         try {
@@ -18,6 +19,7 @@ const Header = () => {
             const parseRes = await response.json()
             console.log(parseRes)
             setName(parseRes.data.username)
+            setCurrentUserID(parseRes.data.userid)
 
         } catch (error) {
             console.error(error.message)
@@ -27,6 +29,8 @@ const Header = () => {
     const logout = async (e) => {
         e.preventDefault()
         localStorage.removeItem("token")
+        localStorage.removeItem("click_history")
+        localStorage.removeItem("impressions")
         setAuth(false)
         notifySuccess("Logged Out Successfully.")
         // window.location.reload(false);
@@ -36,18 +40,19 @@ const Header = () => {
         getName();
     }, [])
 
-    console.log("HEADER isAuthenticated: ", isAuthenticated)
+    // console.log("HEADER isAuthenticated: ", isAuthenticated)
 
     return (
         <div id='header'>
             <input className='search-news' type="search" name="searchNews" id="searchNews" placeholder='search' />
-            <img src={require("../../assets/img/recome-light.png")} alt="Recome Logo Icon" />
+            <img onClick={() => navigate("/")} src={require("../../assets/img/recome-light.png")} alt="Recome Logo Icon" />
             {isAuthenticated ? (
                 <div className='logged-user'>
                     {/* Your logged user content */}
 
                     <i className="fa-solid fa-user" style={{ color: "#fefffe" }}></i>
                     <h4>Hi, {name}</h4>
+                    <i class="fa-solid fa-gear" onClick={() => navigate(`/user/${currentUserID}/dashboard`)} style={{ color: "#fefffe" }}></i>
                     <i onClick={(e) => logout(e)} class="fa-solid fa-arrow-right-from-bracket" style={{ color: "#fefffe" }}></i>
                 </div>
             ) : (

@@ -1,25 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Fetch from '../api/Fetch';
 import "../assets/css/newslist.css";
+import { NewsContext } from '../context/NewsContext';
 
-const NewsList = ({ title, description }) => {
+const NewsList = ({ title, description, isRecommended, isTrending, isLatest }) => {
     const navigate = useNavigate();
-    const [latestNews, setLatestNews] = useState([])
+    const { latestNews, trendingNews, getUserClick, trendingNewsClicks } = useContext(NewsContext);
+    // console.log(trendingNews)
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await Fetch.get("/news")
-                setLatestNews(response.data.data.news)
-            } catch (error) {
-                console.error(error.message)
-            }
-        }
-        fetchData();
-    }, [])
-
-    console.log(latestNews)
     const handleNewsSelect = (id) => {
         try {
             navigate(`/news/${id}`)
@@ -37,21 +26,43 @@ const NewsList = ({ title, description }) => {
                 </div>
             </div>
             <div className='news-list-container'>
-                {latestNews && latestNews.map((news, index) => {
-                    return (
-                        <div className="news-list-card" key={news.id} onClick={() => {
-                            handleNewsSelect(news.id);
-                        }}>
-                            <img className='' src={require("../assets/img/test_picture.png")} alt="NEWS THUMBNAIL" />
-                            <p className='news-list-info news-category'>{news.category}</p>
-                            <p className='news-list-info news-title'>{news.title}</p>
-                            <div>
-                                <p className='news-author'>Jessica Soho</p>
-                                <p className='news-date'>November 28, 2023</p>
+                {isLatest &&
+                    latestNews && latestNews.map((news, index) => {
+                        return (
+                            <div className="news-list-card" key={news.id} onClick={() => {
+                                getUserClick(news.id);
+                                handleNewsSelect(news.id);
+                            }}>
+                                <img className='' src={require("../assets/img/test_picture.png")} alt="NEWS THUMBNAIL" />
+                                <p className='news-list-info news-category'>{news.category}</p>
+                                <p className='news-list-info news-title'>{news.title}</p>
+                                <div>
+                                    <p className='news-author'>Jesica</p>
+                                    <p className='news-date'>October 13, 2002</p>
+                                </div>
                             </div>
-                        </div>
-                    )
-                })}
+                        )
+                    })
+                }
+                {isTrending &&
+                    trendingNews && trendingNews.map((news, index) => {
+                        return (
+                            <div className="news-list-card" key={news.id} onClick={() => {
+                                getUserClick(news.id);
+                                handleNewsSelect(news.id);
+                            }}>
+                                <img className='' src={require("../assets/img/test_picture.png")} alt="NEWS THUMBNAIL" />
+                                <p className='news-list-info news-category'>{news.category}</p>
+                                <p className='news-list-info news-title'>{news.title}</p>
+                                <div>
+                                    <p className='news-author'>Jessica Soho</p>
+                                    <p className='news-date'>November 28, 2023</p>
+                                </div>
+                                <p className='news-clicks'><b>Clicks:</b> {trendingNewsClicks[index].toLocaleString()}</p>
+                            </div>
+                        )
+                    })
+                }
             </div>
         </div>
     )

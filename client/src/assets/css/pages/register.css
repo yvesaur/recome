@@ -8,17 +8,66 @@
   gap: 1rem;
 }
 
-.container {
+.details-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: max(50vh, 400px);
+  width: max(25vw, 400px);
+  gap: 1rem;
+}
+
+.interest-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: max(45vw, 400px);
+  gap: 1rem;
+}
+
+.wideInterest-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: max(70vw, 400px);
+  gap: 1rem;
+}
+
+.exclusions-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: max(60vw, 400px);
+  gap: 1rem;
+}
+
+.trendingImportant-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: max(55vw, 400px);
+  gap: 1rem;
+}
+
+.submit-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: max(40vw, 400px);
   gap: 1rem;
 }
 
 h3 {
   font-weight: bolder;
+}
+
+h1 {
+  text-align: center;
 }
 
 img {
@@ -38,6 +87,27 @@ img {
   padding: 0.8rem;
   border-radius: 12px;
   border: none;
+  font-weight: bold;
+}
+
+.interest-container .register-account-form input:hover {
+  background-color: var(--font-clr2);
+  color: var(--font-clr);
+}
+
+.wideInterest-container .register-account-form input:hover {
+  background-color: var(--font-clr2);
+  color: var(--font-clr);
+}
+
+.trendingImportant-container .register-account-form input:hover {
+  background-color: var(--font-clr2);
+  color: var(--font-clr);
+}
+
+.interest-container .register-account-form .active {
+  background-color: var(--font-clr2);
+  color: var(--font-clr);
 }
 
 .register-account-form button {
@@ -48,6 +118,55 @@ img {
   font-weight: bold;
   background-color: var(--font-clr2);
   color: var(--font-clr);
+}
+
+.interest-btn {
+  align-self: center;
+  padding: 0.8rem 1.5rem;
+  border-radius: 12px;
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  background-color: var(--font-clr2);
+  color: var(--font-clr);
+}
+
+.interest-container .register-account-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  width: 60%;
+}
+
+.wideInterest-container .register-account-form {
+  display: grid;
+  grid-template-columns: repeat(2, 200px);
+  width: 50%;
+  justify-content: center;
+}
+
+.exclusions-container .register-account-form {
+  width: 50%;
+}
+
+.exclusions-search {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.exclusions-search input {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: auto;
+}
+
+.trendingImportant-container .register-account-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 1fr);
+  width: 30%;
+}
+
+.submit-container .register-account-form {
+  width: 40%;
 }
 
 .container-nav {

@@ -13,7 +13,7 @@ const Latest = () => {
         <div id='latest-page'>
             <Header />
             <SelectCategory />
-            <NewsList title="Latest" description={description} />
+            <NewsList title="Latest" description={description} isLatest={true} />
             <Footer />
         </div>
     )

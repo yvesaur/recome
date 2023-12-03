@@ -14,7 +14,7 @@ const Home = ({ isAuthenticated }) => {
     useEffect(() => {
         isAuth();
     }, []);
-    console.log("IS AUTHENTICATED HOME", isAuthenticated);
+    // console.log("IS AUTHENTICATED HOME", isAuthenticated);
 
     return (
         <div id='home-page'>

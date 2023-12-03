@@ -14,6 +14,10 @@ img {
   width: auto;
 }
 
+img:hover {
+  cursor: pointer;
+}
+
 .register-guest {
   display: flex;
   align-items: center;

@@ -22,7 +22,8 @@ router.post("/auth/register", validinfo, async (req, res) => {
     } = req.body;
 
     // 1.1 Set the user ID
-    const userid = "U10";
+    const userid = await pool.query("SELECT COUNT(userid) from users");
+    const ParUserid = `U${parseInt(userid.rows[0].count) + 1}`;
 
     // 2. Check if it exists
     const user = await pool.query("SELECT * FROM users WHERE email = ($1)", [
@@ -46,7 +47,7 @@ router.post("/auth/register", validinfo, async (req, res) => {
         VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) 
         RETURNING *`,
       [
-        userid,
+        ParUserid,
         username,
         firstName,
         lastName,
@@ -144,7 +145,7 @@ router.get("/api/v1/getuserinfo", authorization, async (req, res) => {
     // res.json(req.user);
 
     const user = await pool.query(
-      "SELECT username,email FROM users WHERE userid = ($1) ",
+      "SELECT userid,username,email FROM users WHERE userid = ($1) ",
       [req.user]
     );
 

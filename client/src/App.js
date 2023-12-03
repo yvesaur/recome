@@ -16,6 +16,7 @@ import Recommended from "./pages/Recommended";
 import Register from "./pages/Register";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import Trending from "./pages/Trending";
+import UserDashboard from "./pages/UserDashboard";
 
 function App() {
   return (
@@ -30,6 +31,11 @@ function App() {
 
             <Route exact path="/register" element={<Register />}></Route>
             <Route exact path="/login" element={<Login />}></Route>
+            <Route
+              exact
+              path="/user/:id/dashboard"
+              element={<UserDashboard />}
+            ></Route>
 
             <Route exact path="/about" element={<About />}></Route>
             <Route exact path="/archive" element={<Archive />}></Route>
@@ -62,6 +68,16 @@ function App() {
       </div>
     </NewsContextProvider>
   );
+
+  /*
+  function LoginRoute() {
+    return !isAuthenticated ? (
+      <Login setAuth={setAuth} />
+    ) : (
+      <Navigate to="/dashboard" />
+    );
+  }
+  */
 }
 
 export default App;
