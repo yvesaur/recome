@@ -257,34 +257,6 @@ print(itememb.shape)
 # Can you find some examples that does not work good? Why?
 
 
-def fetch_rows_from_table(file_name, table_name, limit=3):
-
-    # Create a cursor object using the connection
-    cur = conn.cursor()
-
-    # Define your SQL query with a LIMIT to fetch the specified number of rows
-    query = f"SELECT * FROM {table_name} LIMIT {limit}"
-
-    # Execute the query
-    cur.execute(query)
-
-    # Fetch the results
-    rows = cur.fetchall()
-
-    # Open the file in write mode
-    with open(file_name, 'w', newline='') as f:
-        writer = csv.writer(f, delimiter='\t')
-
-        # Write the rows
-        writer.writerows(rows)
-
-    # Close the cursor and connection
-    cur.close()
-    # conn.close()
-
-    return rows
-
-
 @api_view(['GET'])
 def getRecommendedNews(request, id):
     ind = item2ind.get(id)

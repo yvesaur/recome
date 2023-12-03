@@ -28,6 +28,20 @@ const Header = () => {
 
     const logout = async (e) => {
         e.preventDefault()
+        let clickHistory = localStorage.getItem("click_history");
+        let impressions = localStorage.getItem("impressions");
+        console.log("CLICK HISTORY: ", clickHistory)
+        console.log("IMPRESSIONS: ", impressions)
+
+        const response = await fetch(`http://localhost:5000/api/v1/addBehaviour/${currentUserID}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                click_history: clickHistory,
+                impressions: impressions,
+            }),
+        });
+
         localStorage.removeItem("token")
         localStorage.removeItem("click_history")
         localStorage.removeItem("impressions")

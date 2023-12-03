@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Fetch from '../api/Fetch'
 import "../assets/css/pages/newsdetail.css"
@@ -13,6 +13,7 @@ const NewsDetail = () => {
     const [relatedNews, setRelatedNews] = useState();
     const { id } = useParams();
     const navigate = useNavigate();
+    const hasCalledGetUserImpression = useRef(false);
     // console.log(id)
 
     useEffect(() => {
@@ -20,8 +21,8 @@ const NewsDetail = () => {
             try {
                 const response = await Fetch.get((`/news/${id}`))
                 const response2 = await Fetch.get((`/news/related/${id}`))
-                await setSelectedNews(response.data.data.news)
-                await setRelatedNews(response2.data.data.news)
+                setSelectedNews(response.data.data.news)
+                setRelatedNews(response2.data.data.news)
             } catch (error) {
                 console.error(error)
             }
@@ -30,14 +31,19 @@ const NewsDetail = () => {
     }, [])
     // console.log("Related NEWS", relatedNews)
     // console.log("Selected NEWS", selectedNews)
+
     useEffect(() => {
-        // getUserImpression(relatedNews);
-    }, []);
+        if (!hasCalledGetUserImpression.current && relatedNews) {
+            getUserImpression(relatedNews);
+            hasCalledGetUserImpression.current = true;
+        }
+    }, [relatedNews]);
 
     const handleNewsSelect = async (id) => {
         try {
             navigate(`/news/${id}`);
-            window.location.reload();
+            const response = await Fetch.get((`/news/${id}`))
+            setSelectedNews(response.data.data.news)
         } catch (error) {
             console.log(error);
         }
