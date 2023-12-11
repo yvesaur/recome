@@ -4,12 +4,11 @@ import "../../assets/css/layout/header.css";
 import { NewsContext } from '../../context/NewsContext';
 
 const Header = () => {
-    const { isAuthenticated, setAuth, notifySuccess } = useContext(NewsContext);
+    const { isAuthenticated, setAuth, notifySuccess, currentUserID, setCurrentUserID } = useContext(NewsContext);
     const navigate = useNavigate();
     const [name, setName] = useState("");
-    const [currentUserID, setCurrentUserID] = useState(null)
 
-    async function getName() {
+    async function getUserInfo() {
         try {
             const response = await fetch("http://localhost:5000/api/v1/getuserinfo", {
                 method: "GET",
@@ -28,6 +27,7 @@ const Header = () => {
 
     const logout = async (e) => {
         e.preventDefault()
+        /*
         let clickHistory = localStorage.getItem("click_history");
         let impressions = localStorage.getItem("impressions");
         console.log("CLICK HISTORY: ", clickHistory)
@@ -41,17 +41,20 @@ const Header = () => {
                 impressions: impressions.trim(),
             }),
         });
+        */
 
         localStorage.removeItem("token")
         localStorage.removeItem("click_history")
         localStorage.removeItem("impressions")
         setAuth(false)
         notifySuccess("Logged Out Successfully.")
+        setCurrentUserID(null)
+        navigate("/")
         // window.location.reload(false);
     }
 
     useEffect(() => {
-        getName();
+        getUserInfo();
     }, [])
 
     // console.log("HEADER isAuthenticated: ", isAuthenticated)

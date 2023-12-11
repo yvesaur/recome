@@ -6,14 +6,15 @@ import { NewsContext } from '../../context/NewsContext';
 
 const RecommendedNews = () => {
     const navigate = useNavigate();
-    const [latestNews, setLatestNews] = useState([]);
-    const { getUserClick } = useContext(NewsContext);
+    const { getUserClick, currentUserID } = useContext(NewsContext);
+    const [userRecommendedNews, setUserRecommendedNews] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await Fetch.get("/news")
-                setLatestNews(response.data.data.news)
+                const response = await Fetch.get(`/news/relatedusernews/${currentUserID}`)
+                console.log("USER RECOMMENDED NEWS: ", response)
+                setUserRecommendedNews(response.data.data.news)
             } catch (error) {
                 console.error(error.message)
             }
@@ -36,7 +37,7 @@ const RecommendedNews = () => {
                 <p onClick={() => navigate('/recommended')}>See All</p>
             </div>
             <div className='recommended-news-container'>
-                {latestNews && latestNews.slice(0, 3).map((news) => {
+                {userRecommendedNews && userRecommendedNews.slice(0, 3).map((news) => {
                     return (
                         <div className='news-card recommended-news' key={news.id} onClick={() => {
                             getUserClick(news.id);

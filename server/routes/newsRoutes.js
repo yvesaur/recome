@@ -94,6 +94,41 @@ router.get("/api/v1/news/related/:id", async (req, res) => {
   }
 });
 
+// DISPLAY USER RECOMMENDED NEWS
+router.get("/api/v1/news/relatedusernews/:id", async (req, res) => {
+  try {
+    const userID = req.params.id;
+    const userRecommendedNewsID = await axios.get(
+      `http://localhost:8000/api/v1/getUserRecommendedNews/${userID}`
+    );
+
+    // Generate placeholders and parameters
+    const placeholders = userRecommendedNewsID.data
+      .map((_, i) => `($${i + 1})`)
+      .join(", ");
+    const parameters = userRecommendedNewsID.data;
+
+    const response = await db.query(
+      `SELECT * FROM news1 WHERE id IN (${placeholders})`,
+      parameters
+    );
+
+    res.status(200).json({
+      status: "success",
+      results: response.rows.length,
+      data: { news: response.rows },
+      message: "User recommended news data fetched successfully.",
+    });
+  } catch (error) {
+    console.error(error.message);
+
+    res.status(500).json({
+      status: "error",
+      message: "An error occurred while fetching User recommended news data.",
+    });
+  }
+});
+
 // DISPLAY TRENDING NEWS
 router.get("/api/v1/getTrendingNews", async (req, res) => {
   try {
@@ -130,29 +165,7 @@ router.get("/api/v1/getTrendingNews", async (req, res) => {
   }
 });
 
-router.get("/api/v1/behaviours", async (req, res) => {
-  try {
-    const response = await axios.get(
-      "http://localhost:8000/api/v1/getNewsData"
-    );
-
-    // console.log(response.data[0]);
-    res.status(200).json({
-      status: "success",
-      results: 1,
-      data: response.data,
-      message: "Behaviours data fetched successfuly.",
-    });
-  } catch (error) {
-    console.error(error.message);
-
-    res.status(500).json({
-      status: "error",
-      message: "An error occurred while fetching behaviours data.",
-    });
-  }
-});
-
+// ADD NEWS AUTHOR
 router.post("/api/v1/addAuthor", async (req, res) => {
   try {
     // Fetch all rows where the author is null
@@ -193,6 +206,7 @@ router.post("/api/v1/addAuthor", async (req, res) => {
   }
 });
 
+// ADD NEWS DATE
 router.post("/api/v1/addDate", async (req, res) => {
   try {
     // Fetch all rows where the author is null

@@ -252,12 +252,47 @@ const Register = () => {
                         <h1>Are there any specific topics or keywords you would like to exclude from your recommendations?</h1>
                         <form className='register-account-form' onSubmit={(e) => { e.preventDefault() }}>
                             <div className='exclusions-search'>
-                                <input type="search" name="keywords" id="" placeholder='Enter specific keyword...' value={exclusionInput} onChange={handleInputChange} />
+                                <input
+                                    type="search"
+                                    name="keywords"
+                                    id=""
+                                    placeholder='Enter specific keyword...'
+                                    value={exclusionInput}
+                                    onChange={handleInputChange}
+                                    onKeyPress={(e) => {
+                                        if (e.key === ' ') {
+                                            e.preventDefault();
+                                        }
+                                    }}
+                                />
                                 <button className='exclusions-btn'
                                     onClick={(e) => {
                                         handleSubmitExclusions(e)
                                     }}
                                 ><i class="fa-solid fa-plus" style={{ color: '#fefffe' }}></i></button>
+                            </div>
+
+                            <div className='excluded-topic-container'>
+                                {topic_exclusions &&
+                                    topic_exclusions.map((topic, index) => {
+                                        return (
+                                            <>
+                                                <div className='excluded-topic'>
+                                                    {topic}
+                                                    <i class="fa-solid fa-xmark" style={{ color: "#fefffe" }}
+                                                        onClick={() => {
+                                                            const currentTopics = topic_exclusions.filter(topicItem => topicItem !== topic);
+                                                            setInputs({ ...inputs, topic_exclusions: currentTopics });
+                                                        }
+
+                                                        }
+                                                    >
+                                                    </i>
+                                                </div>
+                                            </>
+                                        )
+                                    })
+                                }
                             </div>
 
                             <button className='exclusions-btn'

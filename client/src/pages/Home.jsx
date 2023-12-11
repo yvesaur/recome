@@ -8,8 +8,8 @@ import Footer from '../components/layout/Footer'
 import Header from '../components/layout/Header'
 import { NewsContext } from '../context/NewsContext'
 
-const Home = ({ isAuthenticated }) => {
-    const { isAuth } = useContext(NewsContext);
+const Home = () => {
+    const { isAuth, isAuthenticated } = useContext(NewsContext);
 
     useEffect(() => {
         isAuth();
@@ -22,7 +22,9 @@ const Home = ({ isAuthenticated }) => {
             <SelectCategory />
             <LatestNews />
             <TrendingNews />
-            <RecommendedNews />
+            {isAuthenticated &&
+                <RecommendedNews />
+            }
             <Footer />
         </div>
     )

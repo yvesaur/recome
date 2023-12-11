@@ -6,8 +6,21 @@ import { NewsContext } from '../context/NewsContext';
 
 const NewsList = ({ title, description, isRecommended, isTrending, isLatest }) => {
     const navigate = useNavigate();
-    const { latestNews, trendingNews, getUserClick, trendingNewsClicks } = useContext(NewsContext);
-    // console.log(trendingNews)
+    const { latestNews, trendingNews, getUserClick, trendingNewsClicks, currentUserID } = useContext(NewsContext);
+    const [userRecommendedNews, setUserRecommendedNews] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await Fetch.get(`/news/relatedusernews/${currentUserID}`)
+                console.log("USER RECOMMENDED NEWS: ", response)
+                setUserRecommendedNews(response.data.data.news)
+            } catch (error) {
+                console.error(error.message)
+            }
+        }
+        fetchData();
+    }, [])
 
     const handleNewsSelect = (id) => {
         try {
@@ -59,6 +72,24 @@ const NewsList = ({ title, description, isRecommended, isTrending, isLatest }) =
                                     <p className='news-date'>November 28, 2023</p>
                                 </div>
                                 <p className='news-clicks'><b>Clicks:</b> {trendingNewsClicks[index].toLocaleString()}</p>
+                            </div>
+                        )
+                    })
+                }
+                {isRecommended &&
+                    userRecommendedNews && userRecommendedNews.map((news, index) => {
+                        return (
+                            <div className="news-list-card" key={news.id} onClick={() => {
+                                getUserClick(news.id);
+                                handleNewsSelect(news.id);
+                            }}>
+                                <img className='' src={require("../assets/img/test_picture.png")} alt="NEWS THUMBNAIL" />
+                                <p className='news-list-info news-category'>{news.category}</p>
+                                <p className='news-list-info news-title'>{news.title}</p>
+                                <div>
+                                    <p className='news-author'>Jessica Soho</p>
+                                    <p className='news-date'>November 28, 2023</p>
+                                </div>
                             </div>
                         )
                     })

@@ -9,6 +9,22 @@ export const NewsContextProvider = (props) => {
   const [latestNews, setLatestNews] = useState([]);
   const [trendingNews, setTrendingNews] = useState([]);
   const [trendingNewsClicks, setTrendingNewsClicks] = useState([]);
+  const [currentUserID, setCurrentUserID] = useState(null);
+
+  async function getCurrentUserID() {
+    try {
+      const response = await fetch("http://localhost:5000/api/v1/getuserinfo", {
+        method: "GET",
+        headers: { token: localStorage.token },
+      });
+
+      const parseRes = await response.json();
+      // console.log(parseRes)
+      setCurrentUserID(parseRes.data.userid);
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -118,6 +134,9 @@ export const NewsContextProvider = (props) => {
         getUserClick,
         getUserImpression,
         trendingNewsClicks,
+        getCurrentUserID,
+        currentUserID,
+        setCurrentUserID,
       }}
     >
       {props.children}

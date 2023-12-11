@@ -145,7 +145,7 @@ router.get("/api/v1/getuserinfo", authorization, async (req, res) => {
     // res.json(req.user);
 
     const user = await pool.query(
-      "SELECT userid,username,email FROM users WHERE userid = ($1) ",
+      "SELECT userid,username,firstname,lastname,email,interest_areas,wide_interest,topic_exclusions,trending_news FROM users WHERE userid = ($1) ",
       [req.user]
     );
 

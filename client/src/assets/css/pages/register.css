@@ -177,3 +177,23 @@ img {
   text-decoration: underline;
   cursor: pointer;
 }
+
+.excluded-topic-container {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+}
+
+.excluded-topic {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--font-clr2);
+  padding: 1rem;
+  border-radius: 0.8rem;
+  width: fit-content;
+}
+
+.excluded-topic i:hover {
+  cursor: pointer;
+}

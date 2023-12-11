@@ -4,7 +4,7 @@ import "../assets/css/pages/login.css";
 import { NewsContext } from '../context/NewsContext';
 
 const Login = () => {
-    const { setAuth, notifySuccess, notifyError, isAuthenticated } = useContext(NewsContext);
+    const { setAuth, notifySuccess, notifyError, isAuthenticated, getCurrentUserID } = useContext(NewsContext);
     const navigate = useNavigate();
 
     const [inputs, setInputs] = useState({
@@ -36,6 +36,7 @@ const Login = () => {
                 localStorage.setItem("impressions", "");
                 setAuth(true);
                 notifySuccess(parseRes.message);
+                getCurrentUserID();
                 navigate("/");
             } else {
                 notifyError("An error occurred while logging in.");

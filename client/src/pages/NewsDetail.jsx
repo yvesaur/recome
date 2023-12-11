@@ -53,7 +53,7 @@ const NewsDetail = () => {
         <div id='news-detail-page'>
             <Header />
             <SelectCategory />
-            <div className='selected-new-container'>
+            <div className='selected-news-container'>
                 {selectedNews &&
                     <div className='news-card news-detail-card' key={selectedNews.id} onClick={() => {
 

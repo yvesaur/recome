@@ -1,0 +1,49 @@
+#user-information {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2rem;
+}
+
+#user-information > div:first-child {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.user-fullname {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+#user-information > div:last-child {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+#user-information > div:last-child i {
+  font-size: 1.4rem;
+}
+
+#preferences-btn:hover {
+  cursor: pointer;
+}
+
+#user-browsed-news {
+  margin: 2rem 0;
+  padding: 0 2rem;
+}
+
+.browsed-news-banner {
+  color: var(--font-clr);
+  background-color: var(--header_clr);
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.3rem;
+}
+
+.browsed-news-banner p {
+  font-size: 1.8rem;
+  font-family: "Merriweather", var(--font_fallback);
+  text-align: center;
+  font-weight: bold;
+}
