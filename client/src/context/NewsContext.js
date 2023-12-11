@@ -30,6 +30,8 @@ export const NewsContextProvider = (props) => {
     const fetchData = async () => {
       try {
         const response = await Fetch.get("/getTrendingNews");
+
+        console.log(response);
         setTrendingNews(response.data.data.news);
         setTrendingNewsClicks(response.data.data.newsClicks);
       } catch (error) {

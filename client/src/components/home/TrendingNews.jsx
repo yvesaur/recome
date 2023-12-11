@@ -8,6 +8,7 @@ import { NewsContext } from '../../context/NewsContext';
 const TrendingNews = () => {
     const navigate = useNavigate();
     const { trendingNews, getUserClick } = useContext(NewsContext);
+    console.log("TRENDING NEWS: ", trendingNews);
 
     const handleNewsSelect = (id) => {
         try {

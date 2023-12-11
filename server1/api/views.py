@@ -25,6 +25,7 @@ import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
 import torch
 from typing import List
+from collections import Counter
 
 # Establish a connection to the PostgreSQL database
 conn = psycopg2.connect(
@@ -347,6 +348,7 @@ predictions = mf_model.predict(valid_batch["userIdx"])
 true_values = [item.item() for item in valid_batch["click"]]
 
 
+
 def accuracy_at_k(predictions: List[List], true_values: List):
     hits = 0
     for preds, true in zip(predictions, true_values):
@@ -355,6 +357,13 @@ def accuracy_at_k(predictions: List[List], true_values: List):
     return hits / len(true_values)
 
 accuracy_at_k(predictions, true_values)
+
+## Add more information to the article data 
+# The item index
+news["ind"] = news["id"].map(item2ind)
+news = news.sort_values("ind").reset_index(drop=True)
+# Number of clicks in training data per article, investigate the cold start issue
+news["n_click_training"] = news["ind"].map(dict(Counter(train.click)))
 
 @api_view(['GET'])
 def getRecommendedNews(request, id):
@@ -367,8 +376,10 @@ def getRecommendedNews(request, id):
 
 @api_view(['GET'])
 def getTrendingNews(request):
-
-    return Response("TEST")
+    # 5 most clicked articles
+    # news.sort_values("n_click_training",ascending=False).head()
+    trendingnews = news.sort_values("n_click_training",ascending=False)
+    return Response(trendingnews.head(10))
 
 @api_view(['GET'])
 def getUserRecommendedNews(request, id):
