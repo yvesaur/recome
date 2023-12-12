@@ -76,6 +76,7 @@ const UserDashboard = () => {
                 </div>
             </div>
             <UserPreferenceModal
+                currentUserID={currentUserID}
                 isDialogOpen={isDialogOpen}
                 closeDialog={closeDialog}
                 interestAreas={interestAreas}

@@ -140,6 +140,7 @@ router.get("/auth/is-verify", authorization, async (req, res) => {
   }
 });
 
+// DISPLAY USER INFORMATION
 router.get("/api/v1/getuserinfo", authorization, async (req, res) => {
   try {
     // res.json(req.user);
@@ -152,13 +153,41 @@ router.get("/api/v1/getuserinfo", authorization, async (req, res) => {
     res.status(200).json({
       status: "success",
       data: user.rows[0],
-      message: "User verified successfully.",
+      message: "User Information fetched successfully.",
     });
   } catch (error) {
     console.error(error.message);
     res.status(401).json({
       status: "error",
-      message: "User not verified. Authentication failed.",
+      message: "User not verified. Getting user info failed.",
+    });
+  }
+});
+
+// UPDATE USER PREFERENCE
+router.patch("/api/v1/user/editpreference/:id", async (req, res) => {
+  const { id } = req.params;
+  const { interest_areas, wide_interest, topic_exclusions, trending_news } =
+    req.body;
+
+  const updateUserPreference = await pool.query(
+    `UPDATE users SET interest_areas = $1, wide_interest = $2, topic_exclusions = $3, trending_news = $4
+       WHERE userid = $5 RETURNING *`,
+    [interest_areas, wide_interest, topic_exclusions, trending_news, id]
+  );
+
+  res.status(200).json({
+    status: "success",
+    data: updateUserPreference.rows,
+    message: "User Preference Updated successfully.",
+  });
+
+  try {
+  } catch (error) {
+    console.error(error.message);
+    res.status(401).json({
+      status: "error",
+      message: "User not verified. Updating user preference failed.",
     });
   }
 });

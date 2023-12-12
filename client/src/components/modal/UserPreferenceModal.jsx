@@ -5,6 +5,7 @@ import "../../assets/css/modal/userpreferencemodal.css";
 import { NewsContext } from '../../context/NewsContext';
 
 const UserPreferenceModal = ({
+    currentUserID,
     isDialogOpen,
     closeDialog,
     interestAreas,
@@ -16,7 +17,7 @@ const UserPreferenceModal = ({
     isTrendingNews,
     setIsTrendingNews
 }) => {
-    const { notifyError } = useContext(NewsContext);
+    const { notifyError, notifySuccess } = useContext(NewsContext);
 
     const topicOptions = [
         { value: 'news', label: 'News' },
@@ -63,6 +64,24 @@ const UserPreferenceModal = ({
             notifyError("Interest already exists!")
         } else {
             setInterestAreas(newInterestAreas)
+        }
+    }
+
+    const updateUserPreference = async () => {
+        try {
+            const body = { interest_areas: interestAreas, wide_interest: wideInterest, topic_exclusions: topicExclusions, trending_news: isTrendingNews };
+
+            const response = await fetch(`http://localhost:5000/api/v1/user/editpreference/${currentUserID}`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            })
+
+            notifySuccess("User preference updated successfully.")
+
+        } catch (error) {
+            notifyError("An error occurred while updating user preferences.")
+            console.log(error.message)
         }
     }
 
@@ -175,7 +194,13 @@ const UserPreferenceModal = ({
                         <option value="Not Important">Not Important</option>
                     </select>
                 </div>
-                <button onClick={() => closeDialog()} className='save-changes-btn'>SAVE CHANGES</button>
+                <button
+                    onClick={() => {
+                        updateUserPreference()
+                        closeDialog()
+                    }}
+                    className='save-changes-btn'
+                >SAVE CHANGES</button>
             </dialog>
         </div>
     )
