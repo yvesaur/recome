@@ -317,16 +317,7 @@ const Register = () => {
                             setIsTrendingImportant(false);
                             setIsSubmit(true);
                         }}>
-                            <input type="button" value="Very Important" name='trending_news'
-                                onClick={(e) => {
-                                    onChangeInputs(e)
-                                    console.log("CLICKED: ", e.target.value)
-                                    e.preventDefault();
-                                    setIsTrendingImportant(false);
-                                    setIsSubmit(true);
-                                }}
-                            />
-                            <input type="button" value="Somewhat Important" name='trending_news'
+                            <input type="button" value="Important" name='trending_news'
                                 onClick={(e) => {
                                     onChangeInputs(e)
                                     console.log("CLICKED: ", e.target.value)

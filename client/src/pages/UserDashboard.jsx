@@ -4,6 +4,7 @@ import '../assets/css/pages/userdashboard.css';
 import SelectCategory from '../components/SelectCategory';
 import Footer from '../components/layout/Footer';
 import Header from '../components/layout/Header';
+import UserPreferenceModal from '../components/modal/UserPreferenceModal';
 import { NewsContext } from '../context/NewsContext';
 
 const UserDashboard = () => {
@@ -12,6 +13,11 @@ const UserDashboard = () => {
     const [name, setName] = useState("");
     const [currentUserID, setCurrentUserID] = useState(null);
     const [currentUserInfo, setCurrentUserInfo] = useState([]);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [interestAreas, setInterestAreas] = useState([]);
+    const [wideInterest, setWideInterest] = useState(true);
+    const [topicExclusions, setTopicExclusions] = useState([]);
+    const [isTrendingNews, setIsTrendingNews] = useState("");
 
     async function getUserInfo() {
         try {
@@ -25,39 +31,27 @@ const UserDashboard = () => {
             setName(parseRes.data.username)
             setCurrentUserID(parseRes.data.userid)
             setCurrentUserInfo(parseRes.data)
-
+            setInterestAreas(parseRes.data.interest_areas)
+            setWideInterest(parseRes.data.wide_interest)
+            setTopicExclusions(parseRes.data.topic_exclusions)
+            setIsTrendingNews(parseRes.data.trending_news)
         } catch (error) {
             console.error(error.message)
         }
     }
 
-    const logout = async (e) => {
-        e.preventDefault()
-        let clickHistory = localStorage.getItem("click_history");
-        let impressions = localStorage.getItem("impressions");
-        console.log("CLICK HISTORY: ", clickHistory)
-        console.log("IMPRESSIONS: ", impressions)
-
-        const response = await fetch(`http://localhost:5000/api/v1/addBehaviour/${currentUserID}`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                click_history: clickHistory,
-                impressions: impressions.trim(),
-            }),
-        });
-
-        localStorage.removeItem("token")
-        localStorage.removeItem("click_history")
-        localStorage.removeItem("impressions")
-        setAuth(false)
-        notifySuccess("Logged Out Successfully.")
-        // window.location.reload(false);
-    }
-
     useEffect(() => {
         getUserInfo();
     }, [])
+
+    const openDialog = () => {
+        setIsDialogOpen(true)
+    };
+
+    const closeDialog = () => {
+        setIsDialogOpen(false)
+    }
+
     return (
         <div id='user-dashboard'>
             <Header isAuthenticated={isAuthenticated} />
@@ -73,7 +67,7 @@ const UserDashboard = () => {
                 </div>
                 <div>
                     <label for="preferences-btn">Edit Preferences</label>
-                    <i id='preferences-btn' class="fa-solid fa-sliders"></i>
+                    <i onClick={openDialog} id='preferences-btn' class="fa-solid fa-sliders"></i>
                 </div>
             </div>
             <div id='user-browsed-news'>
@@ -81,6 +75,18 @@ const UserDashboard = () => {
                     <p>RECENTLY VISITED NEWS</p>
                 </div>
             </div>
+            <UserPreferenceModal
+                isDialogOpen={isDialogOpen}
+                closeDialog={closeDialog}
+                interestAreas={interestAreas}
+                wideInterest={wideInterest}
+                topicExclusions={topicExclusions}
+                isTrendingNews={isTrendingNews}
+                setWideInterest={setWideInterest}
+                setIsTrendingNews={setIsTrendingNews}
+                setInterestAreas={setInterestAreas}
+                setTopicExclusions={setTopicExclusions}
+            />
             <Footer />
         </div>
     )

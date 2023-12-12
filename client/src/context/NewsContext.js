@@ -56,7 +56,7 @@ export const NewsContextProvider = (props) => {
   const notifySuccess = (text) =>
     toast.success(text, {
       position: "top-right",
-      autoClose: 2000,
+      autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -68,7 +68,7 @@ export const NewsContextProvider = (props) => {
   const notifyError = (text) =>
     toast.error(text, {
       position: "top-right",
-      autoClose: 2000,
+      autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
