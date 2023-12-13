@@ -263,13 +263,17 @@ const Register = () => {
                                         if (e.key === ' ') {
                                             e.preventDefault();
                                         }
+                                        if (e.key === 'Enter') {
+                                            e.preventDefault()
+                                            if (topic_exclusions.includes(e.target.value)) {
+                                                notifyError("Keyword already exists!")
+                                            } else {
+                                                handleSubmitExclusions(e)
+                                            }
+                                        }
+
                                     }}
                                 />
-                                <button className='exclusions-btn'
-                                    onClick={(e) => {
-                                        handleSubmitExclusions(e)
-                                    }}
-                                ><i class="fa-solid fa-plus" style={{ color: '#fefffe' }}></i></button>
                             </div>
 
                             <div className='excluded-topic-container'>

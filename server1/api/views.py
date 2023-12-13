@@ -44,7 +44,7 @@ cur = conn.cursor()
 # conn.close()
 
 # Execute a query for behaviours
-cur.execute("SELECT * FROM news1")
+cur.execute("SELECT * FROM news5")
 # Fetch all the rows for news
 rows = cur.fetchall()
 column_names = [desc[0] for desc in cur.description]  # Get the column names
@@ -54,12 +54,10 @@ data = pd.DataFrame(rows, columns=column_names)
 data.columns = [
     'News ID',
     "Category",
-    "SubCategory",
     "Title",
+    "IMG URL",
     "Abstract",
     "URL",
-    "Title Entities",
-    "Abstract Entities",
     "Author",
     "Date"
 ]
@@ -168,7 +166,7 @@ def recomeModel(row_index, num_similar_items):
 #==========================================
 
 # Execute a query for behaviours
-cur.execute("SELECT * FROM behaviours")
+cur.execute("SELECT * FROM behaviours1")
 # Fetch all the rows for news
 rows = cur.fetchall()
 column_names = [desc[0] for desc in cur.description] # Get the column names 
@@ -183,7 +181,7 @@ unique_userIds = raw_behaviour['userid'].unique()
 # Allocate a unique index for each user, but let the zeroth index be a UNK index:
 ind2user = {idx +1: itemid for idx, itemid in enumerate(unique_userIds)}
 user2ind = {itemid : idx for idx, itemid in ind2user.items()}
-# print(f"We have {len(user2ind)} unique users in the dataset")
+print(f"We have {len(user2ind)} unique users in the dataset")
 
 # Create a new column with userIdx:
 raw_behaviour['userIdx'] = raw_behaviour['userid'].map(lambda x: user2ind.get(x,0))
@@ -191,7 +189,7 @@ raw_behaviour['userIdx'] = raw_behaviour['userid'].map(lambda x: user2ind.get(x,
 
 
 # Execute a query for news
-cur.execute("SELECT * FROM news1")
+cur.execute("SELECT * FROM news5")
 # Fetch all the rows for news
 rows = cur.fetchall()
 column_names = [desc[0] for desc in cur.description] # Get the column names 
@@ -214,11 +212,11 @@ raw_behaviour['click_history_idx'] = raw_behaviour.click_history.map(lambda s:  
 # raw_behaviour.head()
 
 
-# collect one click and one no-click from impressions:
 def process_impression(s):
     list_of_strings = s.split(" ")
     itemid_rel_tuple = [l.split("-") for l in list_of_strings]
     noclicks = []
+    click = None  # Initialize click
     for entry in itemid_rel_tuple:
         if entry[1] =='0':
             noclicks.append(entry[0])
@@ -247,7 +245,7 @@ behaviour = raw_behaviour[['epochhrs','userIdx','click_history_idx','noclicks','
 # behaviour.head()
 
 
-behaviour.loc[:,'noclick'] = behaviour['noclicks'].map(lambda x : x[0])
+behaviour.loc[:,'noclick'] = behaviour['noclicks'].map(lambda x : x[0] if len(x) > 0 else 0)
 # behaviour.head()
 
 
@@ -257,7 +255,7 @@ train = behaviour[behaviour['epochhrs']< test_time_th]
 valid =  behaviour[behaviour['epochhrs']>= test_time_th]
 
 
-class MindDataset(Dataset):
+class NewsDataset(Dataset):
     # A fairly simple torch dataset module that can take a pandas dataframe (as above), 
     # and convert the relevant fields into a dictionary of arrays that can be used in a dataloader
     def __init__(self, df):
@@ -275,9 +273,9 @@ class MindDataset(Dataset):
 
 # Build datasets and dataloaders of train and validation dataframes:
 bs = 1024
-ds_train = MindDataset(df=train)
+ds_train = NewsDataset(df=train)
 train_loader = DataLoader(ds_train, batch_size=bs, shuffle=True)
-ds_valid = MindDataset(df=valid)
+ds_valid = NewsDataset(df=valid)
 valid_loader = DataLoader(ds_valid, batch_size=bs, shuffle=False)
 
 batch = next(iter(train_loader))
@@ -332,13 +330,13 @@ class NewsMF(pl.LightningModule):
         return optimizer
 
 
-# mf_model = NewsMF(num_users=len(ind2user)+1, num_items = len(ind2item)+1, dim=15)
+mf_model = NewsMF(num_users=len(ind2user)+1, num_items = len(ind2item)+1, dim=15)
 
-# trainer = pl.Trainer(max_epochs=10, accelerator="gpu")
-# trainer.fit(model=mf_model, train_dataloaders=train_loader, val_dataloaders=valid_loader)
+trainer = pl.Trainer(max_epochs=50, accelerator="gpu")
+trainer.fit(model=mf_model, train_dataloaders=train_loader, val_dataloaders=valid_loader)
 
 # Save the model
-# trainer.save_checkpoint("model_user1.ckpt")
+trainer.save_checkpoint("model_user1.ckpt")
 
 # Load the trained model
 mf_model = NewsMF.load_from_checkpoint(checkpoint_path="model_user1.ckpt", num_users=len(ind2user)+1, num_items = len(ind2item)+1, dim=15)
@@ -380,7 +378,7 @@ def getTrendingNews(request):
     # 5 most clicked articles
     # news.sort_values("n_click_training",ascending=False).head()
     trendingnews = news.sort_values("n_click_training",ascending=False)
-    return Response(trendingnews.head(10))
+    return Response(trendingnews.head(50))
 
 @api_view(['GET'])
 def getUserRecommendedNews(request, id):
@@ -391,4 +389,4 @@ def getUserRecommendedNews(request, id):
     userRecommendations = news[news.id.isin([(ind2item[item + 1])  for item in recommendations])]
 
 
-    return Response(userRecommendations['id'].head(20))
+    return Response(userRecommendations['id'].head(50))

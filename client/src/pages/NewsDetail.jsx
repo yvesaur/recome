@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Fetch from '../api/Fetch'
 import "../assets/css/pages/newsdetail.css"
 import SelectCategory from '../components/SelectCategory'
@@ -8,13 +8,19 @@ import Header from '../components/layout/Header'
 import { NewsContext } from '../context/NewsContext'
 
 const NewsDetail = () => {
-    const { getUserClick, getUserImpression } = useContext(NewsContext);
+    const { getUserClick, getUserImpression, isAuth, formatDate } = useContext(NewsContext);
     const [selectedNews, setSelectedNews] = useState();
     const [relatedNews, setRelatedNews] = useState();
     const { id } = useParams();
     const navigate = useNavigate();
     const hasCalledGetUserImpression = useRef(false);
     // console.log(id)
+
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -31,6 +37,10 @@ const NewsDetail = () => {
     }, [])
     // console.log("Related NEWS", relatedNews)
     // console.log("Selected NEWS", selectedNews)
+
+    useEffect(() => {
+        isAuth()
+    }, [])
 
     useEffect(() => {
         if (!hasCalledGetUserImpression.current && relatedNews) {
@@ -60,17 +70,17 @@ const NewsDetail = () => {
                     }}>
                         <p className='news-category'>{selectedNews.category}</p>
                         <p className='news-title'>{selectedNews.title}</p>
-                        <img src={require("../assets/img/test_picture.png")} alt="NEWS THUMBNAIL" />
-                        <p className='news-abstract'>{selectedNews.abstract}</p>
                         <div>
                             <p className='news-author'>{selectedNews.author}</p>
-                            <p className='news-date'>{selectedNews.date}</p>
+                            <p className='news-date'>{formatDate(selectedNews.date)}</p>
                         </div>
+                        <img className='selectedNews-img' src={selectedNews.img_url} alt="NEWS THUMBNAIL" />
+                        <p className='news-abstract'>{selectedNews.abstract}</p>
                     </div>
 
                 }
             </div>
-            <h1>Related</h1>
+            <h1>Related  News you might like</h1>
             <div className='related-news-container'>
                 {relatedNews && relatedNews.slice(0, 4).map((news) => {
                     return (
@@ -79,12 +89,12 @@ const NewsDetail = () => {
                                 getUserClick(news.id);
                                 handleNewsSelect(news.id);
                             }}>
-                                <img className='news-thumbnail' src={require("../assets/img/test_picture.png")} alt="NEWS THUMBNAIL" />
+                                <img id='news-thumbnail' src={news.img_url} alt="NEWS THUMBNAIL" />
                                 <p className='related-category'>{news.category}</p>
                                 <p className='related-title'>{news.title}</p>
                                 <div>
                                     <p className='news-author'>{news.author}</p>
-                                    <p className='news-date'>{news.date}</p>
+                                    <p className='news-date'>{formatDate(news.date)}</p>
                                 </div>
                             </div>
                         )

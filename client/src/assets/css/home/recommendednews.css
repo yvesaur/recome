@@ -8,6 +8,12 @@
   margin-bottom: 1rem;
 }
 
+.recommended-news > img {
+  height: auto;
+  width: 100%;
+  border-radius: 1rem;
+}
+
 .recommended-news-header {
   display: flex;
   align-items: center;

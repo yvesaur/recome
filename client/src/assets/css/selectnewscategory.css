@@ -1,0 +1,24 @@
+#select-news-category {
+  background-color: var(--header_clr);
+  color: var(--font-clr);
+}
+
+#select-news-category > ul {
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+  font-size: 1.5rem;
+}
+
+#select-news-category li {
+  border-left: 1px solid var(--font-clr);
+  border-right: 1px solid var(--font-clr);
+  border-bottom: 1px solid var(--font-clr);
+  padding: 0 0.5rem;
+}
+
+#select-news-category .active {
+  color: var(--btn_clr);
+  border-bottom: 0;
+  font-weight: bold;
+}

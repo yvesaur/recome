@@ -13,7 +13,7 @@ CREATE TABLE
     );
 
 CREATE TABLE
-    behaviours (
+    behaviours1 (
         id INT PRIMARY KEY NOT NULL,
         userid VARCHAR(50),
         timestamp VARCHAR(50),
@@ -42,3 +42,7 @@ select * from behaviours where userid = 'U7';
 
 ALTER TABLE news1
 ADD COLUMN date VARCHAR(50);
+
+UPDATE behaviours1
+SET impressions = 'N37-1 N1360-1 N2034-1 N1175-0'
+WHERE id = 2;

@@ -14,6 +14,14 @@
   font-size: 3rem;
 }
 
+.latestNews-img,
+.trendingNews-img,
+.recommendedNews-img {
+  height: auto;
+  width: 100%;
+  border-radius: 1rem;
+}
+
 .news-list-header p {
   font-size: 1.3rem;
   text-align: justify;

@@ -1,6 +1,22 @@
-.news-thumbnail {
-  width: 8rem;
-  height: 5rem;
+#news-detail-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#news-detail-page > h1 {
+  font-weight: bold;
+}
+
+.related-news-container #news-thumbnail {
+  height: auto;
+  width: 100%;
+  border-radius: 1rem;
+}
+
+.selectedNews-img {
+  height: auto;
+  width: 100%;
 }
 
 .selected-news-container {

@@ -6,7 +6,7 @@ import { NewsContext } from '../../context/NewsContext'
 
 const LatestNews = () => {
     const navigate = useNavigate();
-    const { getUserClick } = useContext(NewsContext);
+    const { getUserClick, formatDate } = useContext(NewsContext);
     const [latestNews, setLatestNews] = useState([])
 
     useEffect(() => {
@@ -40,12 +40,12 @@ const LatestNews = () => {
                             getUserClick(news.id);
                             handleNewsSelect(news.id);
                         }}>
-                            <img className='news-thumbnail' src={require("../../assets/img/test_picture.png")} alt="NEWS THUMBNAIL" />
+                            <img className='news-thumbnail' src={news.img_url} alt="NEWS THUMBNAIL" />
                             <p className='news-category'>{news.category}</p>
                             <p className='news-title'>{news.title}</p>
                             <div>
                                 <p className='news-author'>{news.author}</p>
-                                <p className='news-date'>{news.date}</p>
+                                <p className='news-date'>{formatDate(news.date)}</p>
                             </div>
                         </div>
                     )

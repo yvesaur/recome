@@ -9,7 +9,30 @@ const getRandomDate = require("../utils/getDate");
 // DISPLAY NEWS
 router.get("/api/v1/news", async (req, res) => {
   try {
-    const response = await db.query("SELECT * FROM news1 LIMIT 20");
+    const response = await db.query("SELECT * FROM news5 LIMIT 20");
+
+    res.status(200).json({
+      status: "success",
+      results: 1,
+      data: {
+        news: response.rows,
+      },
+      message: "News data fetched successfuly.",
+    });
+  } catch (error) {
+    console.error(error.message);
+
+    res.status(500).json({
+      status: "error",
+      message: "An error occurred while fetching news data.",
+    });
+  }
+});
+
+// DISPLAY ALL NEWS
+router.get("/api/v1/fetchNews", async (req, res) => {
+  try {
+    const response = await db.query("SELECT * FROM news5");
 
     res.status(200).json({
       status: "success",
@@ -34,7 +57,7 @@ router.get("/api/v1/news/:id", async (req, res) => {
   try {
     const reqID = req.params.id;
     const getSingleNewsData = await db.query(
-      "SELECT * FROM news1 WHERE id = ($1)",
+      "SELECT * FROM news5 WHERE id = ($1)",
       [reqID]
     );
 
@@ -73,7 +96,7 @@ router.get("/api/v1/news/related/:id", async (req, res) => {
     const parameters = relatedNewsID.data;
 
     const response = await db.query(
-      `SELECT * FROM news1 WHERE id IN (${placeholders})`,
+      `SELECT * FROM news5 WHERE id IN (${placeholders})`,
       parameters
     );
 
@@ -109,7 +132,7 @@ router.get("/api/v1/news/relatedusernews/:id", async (req, res) => {
     const parameters = userRecommendedNewsID.data;
 
     const response = await db.query(
-      `SELECT * FROM news1 WHERE id IN (${placeholders})`,
+      `SELECT * FROM news5 WHERE id IN (${placeholders})`,
       parameters
     );
 
@@ -143,7 +166,7 @@ router.get("/api/v1/getTrendingNews", async (req, res) => {
     const parameters = trendingNewsID.data.id;
 
     const response = await db.query(
-      `SELECT * FROM news1 WHERE id IN (${placeholders})`,
+      `SELECT * FROM news5 WHERE id IN (${placeholders})`,
       parameters
     );
 
@@ -172,7 +195,7 @@ router.post("/api/v1/addAuthor", async (req, res) => {
     const rows = await db.query(
       `
       SELECT *
-      FROM news1
+      FROM news5
       WHERE author IS NULL
       `
     );
@@ -213,7 +236,7 @@ router.post("/api/v1/addDate", async (req, res) => {
     const rows = await db.query(
       `
       SELECT id
-      FROM news1
+      FROM news5
       WHERE date IS NULL
       `
     );

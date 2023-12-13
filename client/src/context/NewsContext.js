@@ -11,6 +11,14 @@ export const NewsContextProvider = (props) => {
   const [trendingNewsClicks, setTrendingNewsClicks] = useState([]);
   const [currentUserID, setCurrentUserID] = useState(null);
 
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const formattedDate = `${date.toLocaleString("default", {
+      month: "long",
+    })} ${date.getDate()}, ${date.getFullYear()}`;
+    return formattedDate;
+  }
+
   async function getCurrentUserID() {
     try {
       const response = await fetch("http://localhost:5000/api/v1/getuserinfo", {
@@ -139,6 +147,7 @@ export const NewsContextProvider = (props) => {
         getCurrentUserID,
         currentUserID,
         setCurrentUserID,
+        formatDate,
       }}
     >
       {props.children}

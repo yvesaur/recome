@@ -6,7 +6,7 @@ import { NewsContext } from '../context/NewsContext';
 
 const NewsList = ({ title, description, isRecommended, isTrending, isLatest }) => {
     const navigate = useNavigate();
-    const { latestNews, trendingNews, getUserClick, trendingNewsClicks, currentUserID } = useContext(NewsContext);
+    const { latestNews, trendingNews, getUserClick, trendingNewsClicks, currentUserID, formatDate } = useContext(NewsContext);
     const [userRecommendedNews, setUserRecommendedNews] = useState([]);
 
     useEffect(() => {
@@ -46,12 +46,12 @@ const NewsList = ({ title, description, isRecommended, isTrending, isLatest }) =
                                 getUserClick(news.id);
                                 handleNewsSelect(news.id);
                             }}>
-                                <img className='' src={require("../assets/img/test_picture.png")} alt="NEWS THUMBNAIL" />
+                                <img className='latestNews-img' src={news.img_url} alt="NEWS THUMBNAIL" />
                                 <p className='news-list-info news-category'>{news.category}</p>
                                 <p className='news-list-info news-title'>{news.title}</p>
                                 <div>
                                     <p className='news-author'>{news.author}</p>
-                                    <p className='news-date'>{news.date}</p>
+                                    <p className='news-date'>{formatDate(news.date)}</p>
                                 </div>
                             </div>
                         )
@@ -64,12 +64,12 @@ const NewsList = ({ title, description, isRecommended, isTrending, isLatest }) =
                                 getUserClick(news.id);
                                 handleNewsSelect(news.id);
                             }}>
-                                <img className='' src={require("../assets/img/test_picture.png")} alt="NEWS THUMBNAIL" />
+                                <img className='trendingNews-img' src={news.img_url} alt="NEWS THUMBNAIL" />
                                 <p className='news-list-info news-category'>{news.category}</p>
                                 <p className='news-list-info news-title'>{news.title}</p>
                                 <div>
-                                    <p className='news-author'>Jessica Soho</p>
-                                    <p className='news-date'>November 28, 2023</p>
+                                    <p className='news-author'>{news.author}</p>
+                                    <p className='news-date'>{formatDate(news.date)}</p>
                                 </div>
                                 <p className='news-clicks'><b>Clicks:</b> {trendingNewsClicks[index].toLocaleString()}</p>
                             </div>
@@ -83,12 +83,12 @@ const NewsList = ({ title, description, isRecommended, isTrending, isLatest }) =
                                 getUserClick(news.id);
                                 handleNewsSelect(news.id);
                             }}>
-                                <img className='' src={require("../assets/img/test_picture.png")} alt="NEWS THUMBNAIL" />
+                                <img className='recommendedNews-img' src={news.img_url} alt="NEWS THUMBNAIL" />
                                 <p className='news-list-info news-category'>{news.category}</p>
                                 <p className='news-list-info news-title'>{news.title}</p>
                                 <div>
-                                    <p className='news-author'>Jessica Soho</p>
-                                    <p className='news-date'>November 28, 2023</p>
+                                    <p className='news-author'>{news.author}</p>
+                                    <p className='news-date'>{formatDate(news.date)}</p>
                                 </div>
                             </div>
                         )

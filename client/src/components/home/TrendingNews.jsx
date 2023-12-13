@@ -7,7 +7,7 @@ import { NewsContext } from '../../context/NewsContext';
 
 const TrendingNews = () => {
     const navigate = useNavigate();
-    const { trendingNews, getUserClick } = useContext(NewsContext);
+    const { trendingNews, getUserClick, formatDate } = useContext(NewsContext);
     console.log("TRENDING NEWS: ", trendingNews);
 
     const handleNewsSelect = (id) => {
@@ -31,12 +31,12 @@ const TrendingNews = () => {
                             getUserClick(news.id);
                             handleNewsSelect(news.id);
                         }}>
-                            <img src={require("../../assets/img/test_picture.png")} alt="NEWS THUMBNAIL" />
+                            <img src={news.img_url} alt="NEWS THUMBNAIL" />
                             <p className='news-category'>{news.category}</p>
                             <p className='news-title'>{news.title}</p>
                             <div>
                                 <p className='news-author'>{news.author}</p>
-                                <p className='news-date'>{news.date}</p>
+                                <p className='news-date'>{formatDate(news.date)}</p>
                             </div>
                         </div>
                     )
