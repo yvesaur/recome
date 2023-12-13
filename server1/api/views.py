@@ -150,13 +150,14 @@ def recomeModel(row_index, num_similar_items):
         cate = data['Category'][row_index]
         name = data['Title'][row_index]
         cate_data = data[data['Category'] == cate]
+        cate_data = cate_data.reset_index(drop=True)
 
         row_index2 = cate_data[cate_data['Title'] == name].index
         headline_features = recome_headline_vectorizer.fit_transform(cate_data['Title'].values)
         couple_dist = pairwise_distances(headline_features, headline_features[row_index2])
         indices = np.argsort(couple_dist.ravel())[0:num_similar_items]
-        df = pd.DataFrame({'NewsID': df2[df2['Category'] == cate]['News ID'].values[indices],
-                            'headline': df2[df2['Category'] == cate]['Title'].values[indices],
+        df = pd.DataFrame({'NewsID': cate_data[cate_data['Category'] == cate]['News ID'].values[indices],
+                            'headline': cate_data[cate_data['Category'] == cate]['Title'].values[indices],
                            'Category': cate_data['Category'].values[indices],
                            'Abstract': cate_data['Abstract'].values[indices],
                            'Euclidean Distance Similarity': couple_dist[indices].ravel()})
