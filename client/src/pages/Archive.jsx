@@ -1,4 +1,5 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import NewsArchive from '../components/NewsArchive'
 import SelectCategory from '../components/SelectCategory'
 import Footer from '../components/layout/Footer'
@@ -8,6 +9,12 @@ import { NewsContext } from '../context/NewsContext'
 const Archive = () => {
     const { isAuthenticated } = useContext(NewsContext);
     const [search, setSearch] = useState("")
+
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
     return (
         <div id='archive-page'>
             <Header isAuthenticated={isAuthenticated} setSearch={setSearch} />

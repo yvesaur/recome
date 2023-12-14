@@ -16,11 +16,6 @@ const NewsDetail = () => {
     const hasCalledGetUserImpression = useRef(false);
     // console.log(id)
 
-    const { pathname } = useLocation();
-
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, [pathname]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -54,6 +49,7 @@ const NewsDetail = () => {
             navigate(`/news/${id}`);
             const response = await Fetch.get((`/news/${id}`))
             setSelectedNews(response.data.data.news)
+            window.location.reload()
         } catch (error) {
             console.log(error);
         }
@@ -61,7 +57,7 @@ const NewsDetail = () => {
 
     return (
         <div id='news-detail-page'>
-            <Header />
+            <Header isDisabled={true} />
             <SelectCategory />
             <div className='selected-news-container'>
                 {selectedNews &&

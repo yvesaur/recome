@@ -5,7 +5,7 @@ import "../../assets/css/layout/header.css";
 import { NewsContext } from '../../context/NewsContext';
 import SelectNewsCategory from '../SelectNewsCategory';
 
-const Header = ({ setSearch, isHome }) => {
+const Header = ({ setSearch, isDisabled }) => {
     const { isAuthenticated, setAuth, notifySuccess, currentUserID, setCurrentUserID } = useContext(NewsContext);
     const navigate = useNavigate();
     const [name, setName] = useState("");
@@ -78,7 +78,7 @@ const Header = ({ setSearch, isHome }) => {
             <div id='header'>
 
                 <input
-                    className={`search-news ${isHome ? 'search-disable' : ''}`}
+                    className={`search-news ${isDisabled ? 'search-disable' : ''}`}
                     type="search"
                     name="searchNews"
                     id="searchNews"

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Fetch from '../api/Fetch';
 import "../assets/css/newsarchive.css";
 import { NewsContext } from '../context/NewsContext';
+import Loader from './animation/Loader';
 
 const NewsArchive = ({ search }) => {
     const { getUserClick, formatDate } = useContext(NewsContext);
@@ -40,22 +41,28 @@ const NewsArchive = ({ search }) => {
     return (
         <div className='news-archive'>
             <div className='all-news-container'>
-                {filteredNews.map((news) => {
-                    return (
-                        <div className='news-card all-news' key={news.id} onClick={() => {
-                            getUserClick(news.id);
-                            handleNewsSelect(news.id);
-                        }}>
-                            <img src={news.img_url} alt="NEWS THUMBNAIL" />
-                            <p className='news-category'>{news.category}</p>
-                            <p className='news-title'>{news.title}</p>
-                            <div>
-                                <p className='news-author'>{news.author}</p>
-                                <p className='news-date'>{formatDate(news.date)}</p>
+                {filteredNews.length > 0 ? (
+                    filteredNews.map((news) => {
+                        return (
+                            <div className='news-card all-news' key={news.id} onClick={() => {
+                                getUserClick(news.id);
+                                handleNewsSelect(news.id);
+                            }}>
+                                <img src={news.img_url} alt="NEWS THUMBNAIL" />
+                                <p className='news-category'>{news.category}</p>
+                                <p className='news-title'>{news.title}</p>
+                                <div>
+                                    <p className='news-author'>{news.author}</p>
+                                    <p className='news-date'>{formatDate(news.date)}</p>
+                                </div>
                             </div>
-                        </div>
-                    )
-                })}
+                        )
+                    })
+                ) : (search.length > 0) ? (
+                    <h1 className='no-search-found'>No Search Found</h1>
+                ) : (
+                    <Loader />
+                )}
                 {
                     /* 
                     {allNews && allNews.filter((news) => {

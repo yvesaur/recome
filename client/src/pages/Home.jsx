@@ -18,7 +18,7 @@ const Home = () => {
 
     return (
         <div id='home-page'>
-            <Header isAuthenticated={isAuthenticated} isHome={true} />
+            <Header isAuthenticated={isAuthenticated} isDisabled={true} />
             <SelectCategory />
             <LatestNews />
             <TrendingNews />
