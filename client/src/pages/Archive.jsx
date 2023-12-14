@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import NewsArchive from '../components/NewsArchive'
 import SelectCategory from '../components/SelectCategory'
 import Footer from '../components/layout/Footer'
@@ -7,12 +7,13 @@ import { NewsContext } from '../context/NewsContext'
 
 const Archive = () => {
     const { isAuthenticated } = useContext(NewsContext);
+    const [search, setSearch] = useState("")
     return (
         <div id='archive-page'>
-            <Header isAuthenticated={isAuthenticated} />
+            <Header isAuthenticated={isAuthenticated} setSearch={setSearch} />
             <SelectCategory />
             <h1>News Archive</h1>
-            <NewsArchive />
+            <NewsArchive search={search} />
             <Footer />
         </div>
     )

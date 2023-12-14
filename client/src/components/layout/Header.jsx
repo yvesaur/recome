@@ -1,10 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { debounce } from 'lodash';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../../assets/css/layout/header.css";
 import { NewsContext } from '../../context/NewsContext';
 import SelectNewsCategory from '../SelectNewsCategory';
 
-const Header = () => {
+const Header = ({ setSearch, isHome }) => {
     const { isAuthenticated, setAuth, notifySuccess, currentUserID, setCurrentUserID } = useContext(NewsContext);
     const navigate = useNavigate();
     const [name, setName] = useState("");
@@ -60,11 +61,30 @@ const Header = () => {
 
     // console.log("HEADER isAuthenticated: ", isAuthenticated)
 
+    const debouncedSearch = useCallback(
+        debounce((search) => {
+            setSearch(search);
+        }, 500),
+        []
+    );
+
+    const handleSearch = (event) => {
+        debouncedSearch(event.target.value);
+    };
+
     return (
         <>
 
             <div id='header'>
-                <input className='search-news' type="search" name="searchNews" id="searchNews" placeholder='search' />
+
+                <input
+                    className={`search-news ${isHome ? 'search-disable' : ''}`}
+                    type="search"
+                    name="searchNews"
+                    id="searchNews"
+                    placeholder='search'
+                    onChange={(e) => handleSearch(e)}
+                />
                 <img onClick={() => navigate("/")} src={require("../../assets/img/recome-light.png")} alt="Recome Logo Icon" />
                 {isAuthenticated ? (
                     <div className='logged-user'>

@@ -9,6 +9,12 @@
   font-weight: bold;
 }
 
+.search-disable {
+  pointer-events: none;
+  background-color: #ddd;
+  color: #aaa;
+}
+
 img {
   height: 5rem;
   width: auto;
