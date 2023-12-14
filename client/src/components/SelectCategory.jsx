@@ -24,6 +24,9 @@ const SelectCategory = () => {
                 <li>
                     <NavLink activeClassName="active" to="/trending">Trending</NavLink>
                 </li>
+                <li>
+                    <NavLink activeClassName="active" to="/archive">All</NavLink>
+                </li>
             </ul>
 
         </nav>

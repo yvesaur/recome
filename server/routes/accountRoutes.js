@@ -192,4 +192,54 @@ router.patch("/api/v1/user/editpreference/:id", async (req, res) => {
   }
 });
 
+// GET USER CLICK HISTORY
+router.get("/api/v1/getClickHistory/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const getClickHistory = await pool.query(
+      `SELECT string_agg(click_history, ' ') as click_history 
+       FROM (
+         SELECT click_history 
+         FROM behaviours1 
+         WHERE userid = '${id}' 
+         ORDER BY TO_TIMESTAMP(timestamp, 'MM/DD/YYYY HH12:MI:SS AM') DESC
+       ) sub`
+    );
+
+    // Convert the click_history string into an array
+    const clickHistoryArrayParams = [
+      ...new Set(getClickHistory.rows[0].click_history.split(" ")),
+    ];
+
+    const placeholders = clickHistoryArrayParams
+      .map((_, i) => `($${i + 1})`)
+      .join(", ");
+
+    const quotedParams = clickHistoryArrayParams
+      .map((param) => `'${param}'`)
+      .join(",");
+    const response = await pool.query(
+      `SELECT news5.* 
+         FROM unnest(ARRAY[${quotedParams}]) WITH ORDINALITY as t(id, ord) 
+         JOIN news5 ON t.id = news5.id 
+         ORDER BY t.ord`
+    );
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        userClickedNews: response.rows,
+        clickHistoryArrayParams: clickHistoryArrayParams,
+      },
+      message: "User clicked news fetched successfully",
+    });
+  } catch (error) {
+    console.error(error.message);
+    res.status(401).json({
+      status: "error",
+      message: "An error occurred while fetching user clicked news",
+    });
+  }
+});
+
 module.exports = router;

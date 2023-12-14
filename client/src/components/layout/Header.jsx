@@ -29,21 +29,23 @@ const Header = ({ setSearch, isDisabled }) => {
 
     const logout = async (e) => {
         e.preventDefault()
-        /*
+
         let clickHistory = localStorage.getItem("click_history");
         let impressions = localStorage.getItem("impressions");
         console.log("CLICK HISTORY: ", clickHistory)
         console.log("IMPRESSIONS: ", impressions)
 
-        const response = await fetch(`http://localhost:5000/api/v1/addBehaviour/${currentUserID}`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                click_history: clickHistory,
-                impressions: impressions.trim(),
-            }),
-        });
-        */
+        if (clickHistory.trim() !== "" && impressions.trim() !== "") {
+            const response = await fetch(`http://localhost:5000/api/v1/addBehaviour/${currentUserID}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    click_history: clickHistory.trim(),
+                    impressions: impressions.trim(),
+                }),
+            });
+        }
+
 
         localStorage.removeItem("token")
         localStorage.removeItem("click_history")
@@ -52,7 +54,6 @@ const Header = ({ setSearch, isDisabled }) => {
         notifySuccess("Logged Out Successfully.")
         setCurrentUserID(null)
         navigate("/")
-        // window.location.reload(false);
     }
 
     useEffect(() => {
@@ -102,7 +103,7 @@ const Header = ({ setSearch, isDisabled }) => {
                     </div>
                 )}
             </div>
-            <SelectNewsCategory></SelectNewsCategory>
+            {/* <SelectNewsCategory></SelectNewsCategory> */}
         </>
     )
 }

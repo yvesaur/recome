@@ -10,6 +10,7 @@ export const NewsContextProvider = (props) => {
   const [trendingNews, setTrendingNews] = useState([]);
   const [trendingNewsClicks, setTrendingNewsClicks] = useState([]);
   const [currentUserID, setCurrentUserID] = useState(null);
+  const [userClickedNews, setUserClickedNews] = useState([]);
 
   function formatDate(dateString) {
     const date = new Date(dateString);
@@ -61,7 +62,7 @@ export const NewsContextProvider = (props) => {
     fetchData();
   }, []);
 
-  const notifySuccess = (text) =>
+  const notifySuccess = async (text) =>
     toast.success(text, {
       position: "top-right",
       autoClose: 1000,
@@ -73,7 +74,7 @@ export const NewsContextProvider = (props) => {
       theme: "light",
     });
 
-  const notifyError = (text) =>
+  const notifyError = async (text) =>
     toast.error(text, {
       position: "top-right",
       autoClose: 1000,
@@ -148,6 +149,7 @@ export const NewsContextProvider = (props) => {
         currentUserID,
         setCurrentUserID,
         formatDate,
+        userClickedNews,
       }}
     >
       {props.children}

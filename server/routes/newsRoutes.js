@@ -6,10 +6,12 @@ const { Pool } = require("pg");
 const generateRandomAuthorName = require("../utils/getAuthor");
 const getRandomDate = require("../utils/getDate");
 
-// DISPLAY NEWS
+// DISPLAY LATEST NEWS
 router.get("/api/v1/news", async (req, res) => {
   try {
-    const response = await db.query("SELECT * FROM news5 LIMIT 20");
+    const response = await db.query(
+      "SELECT * FROM news5 WHERE date IS NOT NULL ORDER BY date DESC LIMIT 20"
+    );
 
     res.status(200).json({
       status: "success",
@@ -32,7 +34,9 @@ router.get("/api/v1/news", async (req, res) => {
 // DISPLAY ALL NEWS
 router.get("/api/v1/fetchNews", async (req, res) => {
   try {
-    const response = await db.query("SELECT * FROM news5");
+    const response = await db.query(
+      "SELECT * FROM news5 WHERE date IS NOT NULL ORDER BY date DESC"
+    );
 
     res.status(200).json({
       status: "success",

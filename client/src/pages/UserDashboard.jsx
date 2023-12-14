@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Fetch from '../api/Fetch';
 import '../assets/css/pages/userdashboard.css';
 import SelectCategory from '../components/SelectCategory';
 import Footer from '../components/layout/Footer';
@@ -8,7 +9,7 @@ import UserPreferenceModal from '../components/modal/UserPreferenceModal';
 import { NewsContext } from '../context/NewsContext';
 
 const UserDashboard = () => {
-    const { isAuthenticated, setAuth, notifySuccess } = useContext(NewsContext);
+    const { isAuthenticated, setAuth, notifySuccess, getUserClick, formatDate } = useContext(NewsContext);
     const navigate = useNavigate();
     const [name, setName] = useState("");
     const [currentUserID, setCurrentUserID] = useState(null);
@@ -18,6 +19,7 @@ const UserDashboard = () => {
     const [wideInterest, setWideInterest] = useState(true);
     const [topicExclusions, setTopicExclusions] = useState([]);
     const [isTrendingNews, setIsTrendingNews] = useState("");
+    const [userClickedNews, setUserClickedNews] = useState([]);
 
     async function getUserInfo() {
         try {
@@ -44,12 +46,37 @@ const UserDashboard = () => {
         getUserInfo();
     }, [])
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await Fetch.get(`/getClickHistory/${currentUserID}`);
+                console.log("USER CLICKED NEWS: ", response.data.data.userClickedNews);
+                setUserClickedNews(response.data.data.userClickedNews);
+            } catch (error) {
+                console.error(error.message);
+            }
+        };
+        fetchData();
+    }, [currentUserID]);
+
+
+    console.log("USER CLICKED NEWS", userClickedNews)
+
     const openDialog = () => {
         setIsDialogOpen(true)
     };
 
     const closeDialog = () => {
         setIsDialogOpen(false)
+    }
+
+    const handleNewsSelect = async (id) => {
+        try {
+            navigate(`/news/${id}`);
+            const response = await Fetch.get((`/news/${id}`))
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
@@ -74,6 +101,27 @@ const UserDashboard = () => {
                 <div className='browsed-news-banner'>
                     <p>RECENTLY VISITED NEWS</p>
                 </div>
+            </div>
+            <div className='clicked-news-container'>
+                {
+                    userClickedNews.map((news) => {
+                        return (
+                            <div className='news-card all-news' key={news.id} onClick={() => {
+                                getUserClick(news.id);
+                                handleNewsSelect(news.id);
+                            }}>
+                                <img src={news.img_url} alt="NEWS THUMBNAIL" />
+                                <p className='news-category'>{news.category}</p>
+                                <p className='news-title'>{news.title}</p>
+                                <div>
+                                    <p className='news-author'>{news.author}</p>
+                                    <p className='news-date'>{formatDate(news.date)}</p>
+                                </div>
+                            </div>
+                        )
+                    })
+                }
+
             </div>
             <UserPreferenceModal
                 currentUserID={currentUserID}
