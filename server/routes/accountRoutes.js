@@ -211,10 +211,6 @@ router.get("/api/v1/getClickHistory/:id", async (req, res) => {
       ...new Set(getClickHistory.rows[0].click_history.split(" ")),
     ];
 
-    const placeholders = clickHistoryArrayParams
-      .map((_, i) => `($${i + 1})`)
-      .join(", ");
-
     const quotedParams = clickHistoryArrayParams
       .map((param) => `'${param}'`)
       .join(",");

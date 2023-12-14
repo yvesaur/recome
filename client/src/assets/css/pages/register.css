@@ -24,6 +24,11 @@
   align-items: center;
   width: max(45vw, 400px);
   gap: 1rem;
+  height: 70vh;
+}
+
+.interest-container {
+  text-align: center;
 }
 
 .wideInterest-container {
@@ -90,6 +95,11 @@ img {
   font-weight: bold;
 }
 
+.interest-options {
+  display: grid;
+  grid-template-columns: repeat(2, 200px);
+}
+
 .interest-container .register-account-form input:hover {
   background-color: var(--font-clr2);
   color: var(--font-clr);
@@ -134,7 +144,7 @@ img {
 .interest-container .register-account-form {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  width: 60%;
+  width: 80%;
 }
 
 .wideInterest-container .register-account-form {

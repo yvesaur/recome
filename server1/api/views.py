@@ -3,6 +3,10 @@ import psycopg2
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
+import subprocess
+import signal
+import time
+
 import pandas as pd
 import numpy as np
 from nltk.corpus import stopwords
@@ -172,8 +176,8 @@ rows = cur.fetchall()
 column_names = [desc[0] for desc in cur.description] # Get the column names 
 raw_behaviour = pd.DataFrame(rows, columns=column_names) # Create a DataFrame from the rows, with the column names
 
-# print(f"The dataset originally consists of {len(raw_behaviour)} number of interactions.")
-#raw_behaviour.head()
+print(f"The dataset originally consists of {len(raw_behaviour)} number of interactions.")
+# raw_behaviour.head()
 
 
 ## Indexize users
@@ -253,9 +257,10 @@ behaviour.loc[:,'noclick'] = behaviour['noclicks'].map(lambda x : x[0] if len(x)
 test_time_th = behaviour['epochhrs'].quantile(0.9)
 train = behaviour[behaviour['epochhrs']< test_time_th]
 valid =  behaviour[behaviour['epochhrs']>= test_time_th]
+full = behaviour[behaviour['epochhrs'] == behaviour['epochhrs'].max()]
 
 
-class NewsDataset(Dataset):
+class MindDataset(Dataset):
     # A fairly simple torch dataset module that can take a pandas dataframe (as above), 
     # and convert the relevant fields into a dictionary of arrays that can be used in a dataloader
     def __init__(self, df):
@@ -273,9 +278,9 @@ class NewsDataset(Dataset):
 
 # Build datasets and dataloaders of train and validation dataframes:
 bs = 1024
-ds_train = NewsDataset(df=train)
+ds_train = MindDataset(df=train)
 train_loader = DataLoader(ds_train, batch_size=bs, shuffle=True)
-ds_valid = NewsDataset(df=valid)
+ds_valid = MindDataset(df=valid)
 valid_loader = DataLoader(ds_valid, batch_size=bs, shuffle=False)
 
 batch = next(iter(train_loader))
@@ -339,7 +344,7 @@ trainer.fit(model=mf_model, train_dataloaders=train_loader, val_dataloaders=vali
 trainer.save_checkpoint("model_user1.ckpt")
 
 # Load the trained model
-mf_model = NewsMF.load_from_checkpoint(checkpoint_path="model_user1.ckpt", num_users=len(ind2user)+1, num_items = len(ind2item)+1, dim=15)
+mf_model = NewsMF.load_from_checkpoint(checkpoint_path="model_user1.ckpt", num_users=len(ind2user)+1, num_items = len(ind2item)+1, dim=15) 
 
 
 valid_batch = next(iter(valid_loader))
@@ -357,12 +362,22 @@ def accuracy_at_k(predictions: List[List], true_values: List):
 
 accuracy_at_k(predictions, true_values)
 
+
 ## Add more information to the article data 
 # The item index
 news["ind"] = news["id"].map(item2ind)
-news = news.sort_values("ind").reset_index(drop=True)
+print(news["ind"])
 # Number of clicks in training data per article, investigate the cold start issue
-news["n_click_training"] = news["ind"].map(dict(Counter(train.click)))
+news["n_click_training"] = news["ind"].map(dict(Counter(raw_behaviour.click))).fillna(0)
+# 5 most clicked articles
+# news.sort_values("n_click_training",ascending=False).head()
+
+def runserver():
+    return subprocess.Popen(['python', 'manage.py', 'runserver'])
+
+def restart_server(process):
+    process.send_signal(signal.SIGTERM)
+    return runserver()
 
 @api_view(['GET'])
 def getRecommendedNews(request, id):
@@ -382,11 +397,12 @@ def getTrendingNews(request):
 
 @api_view(['GET'])
 def getUserRecommendedNews(request, id):
-    user_idx = 5
+    print(id)
+    user_idx = raw_behaviour[raw_behaviour["userid"] == id].userIdx.values[0]
     items = torch.arange(0, len(ind2item))
     user = torch.zeros_like(items) + user_idx
     recommendations = mf_model.predict_single_user(user)
     userRecommendations = news[news.id.isin([(ind2item[item + 1])  for item in recommendations])]
 
 
-    return Response(userRecommendations['id'].head(50))
+    return Response(userRecommendations['id'].head(100))

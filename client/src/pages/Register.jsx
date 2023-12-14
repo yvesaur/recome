@@ -25,21 +25,25 @@ const Register = () => {
     const [isTrendingImportant, setIsTrendingImportant] = useState(false);
     const [isSubmit, setIsSubmit] = useState(false);
 
-    const [isHealthActive, setIsHealthActive] = useState(false);
-    const [isSportsActive, setIsSportsActive] = useState(false);
     const [isNewsActive, setIsNewsActive] = useState(false);
-    const [isWeatherActive, setIsWeatherActive] = useState(false);
-    const [isVideoActive, setIsVideoActive] = useState(false);
-    const [isMoviesActive, setIsMoviesActive] = useState(false);
-    const [isLifestyleActive, setIsLifestyleActive] = useState(false);
-    const [isAutosActive, setIsAutosActive] = useState(false);
-    const [isFoodDrinkActive, setIsFoodDrinkActive] = useState(false);
-    const [isFinanceActive, setIsFinanceActive] = useState(false);
-    const [isMusicActive, setIsMusicActive] = useState(false);
-    const [isKidsActive, setIsKidsActive] = useState(false);
-    const [isEntertainmentActive, setIsEntertainmentActive] = useState(false);
+    const [isTvShowbizActive, setIsTvShowbizActive] = useState(false);
+    const [isSportsActive, setIsSportsActive] = useState(false);
+    const [isFemailActive, setIsFemailActive] = useState(false);
+    const [isMoneyActive, setIsMoneyActive] = useState(false);
+    const [isHealthActive, setIsHealthActive] = useState(false);
+    const [isScienceTechActive, setIsScienceTechActive] = useState(false);
     const [isTravelActive, setIsTravelActive] = useState(false);
+    const [isDebateActive, setIsDebateActive] = useState(false);
+    const [isShoppingUkActive, setIsShoppingUkActive] = useState(false);
+    const [isHomeActive, setIsHomeActive] = useState(false);
+    const [isYourMoneyActive, setIsYourMoneyActive] = useState(false);
+    const [isPropertyActive, setIsPropertyActive] = useState(false);
+    const [isShoppingUsActive, setIsShoppingUsActive] = useState(false);
     const [isTvActive, setIsTvActive] = useState(false);
+    const [isWellnessUsActive, setIsWellnessUsActive] = useState(false);
+    const [isGalleriesActive, setIsGalleriesActive] = useState(false);
+    const [isVideoActive, setIsVideoActive] = useState(false);
+    const [areAllCategoriesActive, setAreAllCategoriesActive] = useState(false);
 
     const onChangeInputs = (e) => {
         setInputs({ ...inputs, [e.target.name]: e.target.value })
@@ -107,6 +111,28 @@ const Register = () => {
         }
     };
 
+    const toggleAllCategories = () => {
+        setAreAllCategoriesActive(!areAllCategoriesActive);
+        setIsNewsActive(!areAllCategoriesActive);
+        setIsTvShowbizActive(!areAllCategoriesActive);
+        setIsSportsActive(!areAllCategoriesActive);
+        setIsFemailActive(!areAllCategoriesActive);
+        setIsMoneyActive(!areAllCategoriesActive);
+        setIsHealthActive(!areAllCategoriesActive);
+        setIsScienceTechActive(!areAllCategoriesActive);
+        setIsTravelActive(!areAllCategoriesActive);
+        setIsDebateActive(!areAllCategoriesActive);
+        setIsShoppingUkActive(!areAllCategoriesActive);
+        setIsHomeActive(!areAllCategoriesActive);
+        setIsYourMoneyActive(!areAllCategoriesActive);
+        setIsPropertyActive(!areAllCategoriesActive);
+        setIsShoppingUsActive(!areAllCategoriesActive);
+        setIsTvActive(!areAllCategoriesActive);
+        setIsWellnessUsActive(!areAllCategoriesActive);
+        setIsGalleriesActive(!areAllCategoriesActive);
+        setIsVideoActive(!areAllCategoriesActive);
+    }
+
     return (
         <div id='register-page' className=''>
             {isDetail && (
@@ -138,67 +164,80 @@ const Register = () => {
                     <div className='interest-container'>
                         <img src={require("../assets/img/recome-light.png")} alt="Recome Logo Icon" />
                         <h1>What are your primary areas of interest?</h1>
-                        <form className='register-account-form'>
-                            <input className={isHealthActive ? 'active' : ''} type="button" value="Health" name='interest_areas' onClick={(e) => {
-                                setIsHealthActive(!isHealthActive)
-                                onChangeInputsArray(e, isHealthActive);
-                            }} />
-                            <input type="button" className={isSportsActive ? 'active' : ''} value="Sports" name='interest_areas' onClick={(e) => {
-                                setIsSportsActive(!isSportsActive)
-                                onChangeInputsArray(e, isSportsActive);
-                            }} />
-                            <input type="button" className={isNewsActive ? 'active' : ''} value="News" name='interest_areas' onClick={(e) => {
+                        <form className='register-account-form interest-options'>
+                            <input type="button" className={areAllCategoriesActive ? 'active' : ''} value="ALL TOPIC" onClick={toggleAllCategories} />
+                            <input type="button" className={isNewsActive ? 'active' : ''} value="news" name='interest_areas' onClick={(e) => {
                                 setIsNewsActive(!isNewsActive)
                                 onChangeInputsArray(e, isNewsActive);
                             }} />
-                            <input type="button" className={isWeatherActive ? 'active' : ''} value="Weather" name='interest_areas' onClick={(e) => {
+                            <input type="button" className={isTvShowbizActive ? 'active' : ''} value="tvshowbiz" name='interest_areas' onClick={(e) => {
+                                setIsTvShowbizActive(!isTvShowbizActive)
+                                onChangeInputsArray(e, isTvShowbizActive);
+                            }} />
+                            <input type="button" className={isSportsActive ? 'active' : ''} value="sport" name='interest_areas' onClick={(e) => {
+                                setIsSportsActive(!isSportsActive)
+                                onChangeInputsArray(e, isSportsActive);
+                            }} />
+                            <input type="button" className={isFemailActive ? 'active' : ''} value="femail" name='interest_areas' onClick={(e) => {
                                 onChangeInputsArray(e)
-                                setIsWeatherActive(!isWeatherActive)
-                                onChangeInputsArray(e, isWeatherActive)
+                                setIsFemailActive(!isFemailActive)
+                                onChangeInputsArray(e, isFemailActive)
                             }} />
-                            <input type="button" className={isVideoActive ? 'active' : ''} value="Video" name='interest_areas' onClick={(e) => {
-                                setIsVideoActive(!isVideoActive)
-                                onChangeInputsArray(e, isVideoActive)
+                            <input type="button" className={isMoneyActive ? 'active' : ''} value="money" name='interest_areas' onClick={(e) => {
+                                setIsMoneyActive(!isMoneyActive)
+                                onChangeInputsArray(e, isMoneyActive)
                             }} />
-                            <input type="button" className={isMoviesActive ? 'active' : ''} value="Movies" name='interest_areas' onClick={(e) => {
-                                setIsMoviesActive(!isMoviesActive)
-                                onChangeInputsArray(e, isMoviesActive)
+                            <input type="button" className={isHealthActive ? 'active' : ''} value="health" name='interest_areas' onClick={(e) => {
+                                setIsHealthActive(!isHealthActive)
+                                onChangeInputsArray(e, isHealthActive)
                             }} />
-                            <input type="button" className={isLifestyleActive ? 'active' : ''} value="Lifestyle" name='interest_areas' onClick={(e) => {
-                                setIsLifestyleActive(!isLifestyleActive)
-                                onChangeInputsArray(e, isLifestyleActive)
+                            <input type="button" className={isScienceTechActive ? 'active' : ''} value="sciencetech" name='interest_areas' onClick={(e) => {
+                                setIsScienceTechActive(!isScienceTechActive)
+                                onChangeInputsArray(e, isScienceTechActive)
                             }} />
-                            <input type="button" className={isAutosActive ? 'active' : ''} value="Autos" name='interest_areas' onClick={(e) => {
-                                setIsAutosActive(!isAutosActive)
-                                onChangeInputsArray(e, isAutosActive)
-                            }} />
-                            <input type="button" className={isFoodDrinkActive ? 'active' : ''} value="Food and Drink" name='interest_areas' onClick={(e) => {
-                                setIsFoodDrinkActive(!isFoodDrinkActive)
-                                onChangeInputsArray(e, isFoodDrinkActive)
-                            }} />
-                            <input type="button" className={isFinanceActive ? 'active' : ''} value="Finance" name='interest_areas' onClick={(e) => {
-                                setIsFinanceActive(!isFinanceActive)
-                                onChangeInputsArray(e, isFinanceActive)
-                            }} />
-                            <input type="button" className={isMusicActive ? 'active' : ''} value="Music" name='interest_areas' onClick={(e) => {
-                                setIsMusicActive(!isMusicActive)
-                                onChangeInputsArray(e, isMusicActive)
-                            }} />
-                            <input type="button" className={isKidsActive ? 'active' : ''} value="Kids" name='interest_areas' onClick={(e) => {
-                                setIsKidsActive(!isKidsActive)
-                                onChangeInputsArray(e, isKidsActive)
-                            }} />
-                            <input type="button" className={isEntertainmentActive ? 'active' : ''} value="Entertainment" name='interest_areas' onClick={(e) => {
-                                setIsEntertainmentActive(!isEntertainmentActive)
-                                onChangeInputsArray(e, isEntertainmentActive)
-                            }} />
-                            <input type="button" className={isTravelActive ? 'active' : ''} value="Travel" name='interest_areas' onClick={(e) => {
+                            <input type="button" className={isTravelActive ? 'active' : ''} value="travel" name='interest_areas' onClick={(e) => {
                                 setIsTravelActive(!isTravelActive)
                                 onChangeInputsArray(e, isTravelActive)
                             }} />
-                            <input type="button" className={isTvActive ? 'active' : ''} value="TV" name='interest_areas' onClick={(e) => {
+                            <input type="button" className={isDebateActive ? 'active' : ''} value="debate" name='interest_areas' onClick={(e) => {
+                                setIsDebateActive(!isDebateActive)
+                                onChangeInputsArray(e, isDebateActive)
+                            }} />
+                            <input type="button" className={isShoppingUkActive ? 'active' : ''} value="shopping-uk" name='interest_areas' onClick={(e) => {
+                                setIsShoppingUkActive(!isShoppingUkActive)
+                                onChangeInputsArray(e, isShoppingUkActive)
+                            }} />
+                            <input type="button" className={isHomeActive ? 'active' : ''} value="home" name='interest_areas' onClick={(e) => {
+                                setIsHomeActive(!isHomeActive)
+                                onChangeInputsArray(e, isHomeActive)
+                            }} />
+                            <input type="button" className={isYourMoneyActive ? 'active' : ''} value="yourmoney" name='interest_areas' onClick={(e) => {
+                                setIsYourMoneyActive(!isYourMoneyActive)
+                                onChangeInputsArray(e, isYourMoneyActive)
+                            }} />
+                            <input type="button" className={isPropertyActive ? 'active' : ''} value="property" name='interest_areas' onClick={(e) => {
+                                setIsPropertyActive(!isPropertyActive)
+                                onChangeInputsArray(e, isPropertyActive)
+                            }} />
+                            <input type="button" className={isShoppingUsActive ? 'active' : ''} value="shopping-us" name='interest_areas' onClick={(e) => {
+                                setIsShoppingUsActive(!isShoppingUsActive)
+                                onChangeInputsArray(e, isShoppingUsActive)
+                            }} />
+                            <input type="button" className={isTvActive ? 'active' : ''} value="tv" name='wellness-uk' onClick={(e) => {
                                 setIsTvActive(!isTvActive)
                                 onChangeInputsArray(e, isTvActive)
+                            }} />
+                            <input type="button" className={isWellnessUsActive ? 'active' : ''} value="wellness-us" name='interest_areas' onClick={(e) => {
+                                setIsWellnessUsActive(!isWellnessUsActive)
+                                onChangeInputsArray(e, isWellnessUsActive)
+                            }} />
+                            <input type="button" className={isGalleriesActive ? 'active' : ''} value="galleries" name='interest_areas' onClick={(e) => {
+                                setIsGalleriesActive(!isGalleriesActive)
+                                onChangeInputsArray(e, isGalleriesActive)
+                            }} />
+                            <input type="button" className={isVideoActive ? 'active' : ''} value="video" name='interest_areas' onClick={(e) => {
+                                setIsVideoActive(!isVideoActive)
+                                onChangeInputsArray(e, isVideoActive)
                             }} />
                         </form>
                         <button className='interest-btn'

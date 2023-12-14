@@ -163,15 +163,15 @@ router.get("/api/v1/getTrendingNews", async (req, res) => {
       "http://localhost:8000/api/v1/getTrendingNews"
     );
 
-    // Generate placeholders and parameters
-    const placeholders = trendingNewsID.data.id
-      .map((_, i) => `($${i + 1})`)
-      .join(", ");
     const parameters = trendingNewsID.data.id;
 
+    const quotedParams = parameters.map((param) => `'${param}'`).join(",");
+
     const response = await db.query(
-      `SELECT * FROM news5 WHERE id IN (${placeholders})`,
-      parameters
+      `SELECT news5.* 
+           FROM unnest(ARRAY[${quotedParams}]) WITH ORDINALITY as t(id, ord) 
+           JOIN news5 ON t.id = news5.id 
+           ORDER BY t.ord`
     );
 
     const newsClicks = trendingNewsID.data.n_click_training;

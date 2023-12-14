@@ -20,23 +20,26 @@ const UserPreferenceModal = ({
     const { notifyError, notifySuccess } = useContext(NewsContext);
 
     const topicOptions = [
+        { value: 'all', label: 'All' },
         { value: 'news', label: 'News' },
-        { value: 'sports', label: 'Sports' },
-        { value: 'weather', label: 'Weather' },
-        { value: 'foodanddrink', label: 'Food and Drink' },
-        { value: 'travel', label: 'Travel' },
-        { value: 'video', label: 'Video' },
-        { value: 'entertainment', label: 'Entertainment' },
-        { value: 'lifestyle', label: 'Lifestyle' },
-        { value: 'autos', label: 'Autos' },
-        { value: 'finance', label: 'Finance' },
+        { value: 'tvshowbiz', label: 'TV Showbiz' },
+        { value: 'sport', label: 'Sport' },
+        { value: 'femail', label: 'Femail' },
+        { value: 'money', label: 'Money' },
         { value: 'health', label: 'Health' },
-        { value: 'music', label: 'Music' },
-        { value: 'tv', label: 'TV' },
-        { value: 'kids', label: 'Kids' },
-        { value: 'movies', label: 'Movies' },
-        { value: 'middleeast', label: 'Middle East' },
-        { value: 'northamerica', label: 'North America' },
+        { value: 'sciencetech', label: 'Science and Tech' },
+        { value: 'travel', label: 'Travel' },
+        { value: 'debate', label: 'Debate' },
+        { value: 'shopping-uk', label: 'Shopping UK' },
+        { value: 'home', label: 'Home' },
+        { value: 'yourmoney', label: 'Your Money' },
+        { value: 'property', label: 'Property' },
+        { value: 'shopping-us', label: 'Shopping US' },
+        { value: 'wellness-uk', label: 'Wellness UK' },
+        { value: 'wellness-us', label: 'Wellness US' },
+        { value: 'galleries', label: 'Galleries' },
+        { value: 'video', label: 'Video' },
+        { value: 'bestbuys', label: 'Best buys' },
     ];
 
     const handleChange = (e) => {
@@ -59,11 +62,20 @@ const UserPreferenceModal = ({
     }
 
     const addInterest = (selectedOption) => {
-        const newInterestAreas = [...interestAreas, selectedOption.value]
-        if (interestAreas.includes(selectedOption.value)) {
-            notifyError("Interest already exists!")
+        if (selectedOption.value === 'all') {
+            // Add all options
+            const newInterestAreas = topicOptions
+                .filter(option => option.value !== 'all')
+                .map(option => option.value);
+            setInterestAreas(newInterestAreas);
         } else {
-            setInterestAreas(newInterestAreas)
+            // Add selected option
+            const newInterestAreas = [...interestAreas, selectedOption.value]
+            if (interestAreas.includes(selectedOption.value)) {
+                notifyError("Interest already exists!")
+            } else {
+                setInterestAreas(newInterestAreas)
+            }
         }
     }
 

@@ -11,6 +11,33 @@ const NewsList = ({ title, description, isRecommended, isTrending, isLatest, sea
     const { latestNews, trendingNews, getUserClick, trendingNewsClicks, currentUserID, formatDate } = useContext(NewsContext);
     const [userRecommendedNews, setUserRecommendedNews] = useState([]);
 
+    const [interestAreas, setInterestAreas] = useState([]);
+    const [wideInterest, setWideInterest] = useState(true);
+    const [topicExclusions, setTopicExclusions] = useState([]);
+    const [isTrendingNews, setIsTrendingNews] = useState("");
+
+    async function getUserInfo() {
+        try {
+            const response = await fetch("http://localhost:5000/api/v1/getuserinfo", {
+                method: "GET",
+                headers: { token: localStorage.token }
+            });
+
+            const parseRes = await response.json()
+            // console.log(parseRes)
+            setInterestAreas(parseRes.data.interest_areas)
+            setWideInterest(parseRes.data.wide_interest)
+            setTopicExclusions(parseRes.data.topic_exclusions)
+            setIsTrendingNews(parseRes.data.trending_news)
+        } catch (error) {
+            console.error(error.message)
+        }
+    }
+
+    useEffect(() => {
+        getUserInfo();
+    }, [])
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -46,9 +73,13 @@ const NewsList = ({ title, description, isRecommended, isTrending, isLatest, sea
 
     const filteredUserRecommendedNews = useMemo(() => {
         return userRecommendedNews.filter((news) => {
-            return search.toLowerCase() === '' ? news : news.title.toLowerCase().includes(search);
+            const titleLower = news.title.toLowerCase();
+            const searchLower = search.toLowerCase();
+            const isExcludedKeyword = topicExclusions.some(keyword => titleLower.includes(keyword));
+            const isIncludedCategory = interestAreas.includes(news.category);
+            return !isExcludedKeyword && isIncludedCategory && (searchLower === '' ? news : titleLower.includes(searchLower));
         });
-    }, [userRecommendedNews, search]);
+    }, [userRecommendedNews, search, topicExclusions, interestAreas]);
 
     return (
         <div id='news-list'>
