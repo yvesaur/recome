@@ -373,12 +373,12 @@ news["n_click_training"] = news["ind"].map(dict(Counter(raw_behaviour.click))).f
 # news.sort_values("n_click_training",ascending=False).head()
 
 def runserver():
-    return subprocess.Popen(['python', 'manage.py', 'runserver'])
+    return subprocess.Popen(['python3.7', 'manage.py', 'runserver'])
 
-def restart_server(process):
-    process.send_signal(signal.SIGTERM)
+def restart_server():
+    # process.send_signal(signal.SIGTERM)
     return runserver()
-
+ 
 @api_view(['GET'])
 def getRecommendedNews(request, id):
     ind = df2[df2['News ID'] == id].index[0]
@@ -405,4 +405,4 @@ def getUserRecommendedNews(request, id):
     userRecommendations = news[news.id.isin([(ind2item[item + 1])  for item in recommendations])]
 
 
-    return Response(userRecommendations['id'].head(100))
+    return Response(userRecommendations['id'].head(150))

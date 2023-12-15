@@ -10,7 +10,7 @@ const getRandomDate = require("../utils/getDate");
 router.get("/api/v1/news", async (req, res) => {
   try {
     const response = await db.query(
-      "SELECT * FROM news5 WHERE date IS NOT NULL ORDER BY date DESC LIMIT 20"
+      "SELECT * FROM news5 WHERE date IS NOT NULL ORDER BY date DESC LIMIT 50"
     );
 
     res.status(200).json({

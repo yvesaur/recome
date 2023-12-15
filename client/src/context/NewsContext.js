@@ -108,8 +108,8 @@ export const NewsContextProvider = (props) => {
 
   const getUserClick = async (newClick) => {
     if (isAuthenticated) {
-      let clickHistory = localStorage.getItem("click_history");
-      let impressions = localStorage.getItem("impressions");
+      let clickHistory = localStorage.getItem("click_history") || "";
+      let impressions = localStorage.getItem("impressions") || "";
 
       localStorage.setItem("click_history", clickHistory + " " + newClick);
       localStorage.setItem("impressions", impressions + `${newClick}-1 `);

@@ -86,6 +86,7 @@ const Register = () => {
                 localStorage.setItem("token", parseRes.data.token);
                 setAuth(true);
                 notifySuccess(parseRes.message);
+                window.location.reload();
             } else {
                 notifyError("An error occurred while registering your account.");
             }

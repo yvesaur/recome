@@ -23,7 +23,7 @@ router.post("/auth/register", validinfo, async (req, res) => {
 
     // 1.1 Set the user ID
     const userid = await pool.query("SELECT COUNT(userid) from users");
-    const ParUserid = `U${parseInt(userid.rows[0].count) + 1}`;
+    const ParUserid = `U${parseInt(userid.rows[0].count) + 100 + 1}`;
 
     // 2. Check if it exists
     const user = await pool.query("SELECT * FROM users WHERE email = ($1)", [

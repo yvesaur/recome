@@ -38,6 +38,7 @@ const Login = () => {
                 notifySuccess(parseRes.message);
                 getCurrentUserID();
                 navigate("/");
+                window.location.reload();
             } else {
                 notifyError("An error occurred while logging in.");
             }

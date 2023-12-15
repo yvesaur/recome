@@ -30,8 +30,8 @@ const Header = ({ setSearch, isDisabled }) => {
     const logout = async (e) => {
         e.preventDefault()
 
-        let clickHistory = localStorage.getItem("click_history");
-        let impressions = localStorage.getItem("impressions");
+        let clickHistory = localStorage.getItem("click_history") || "";
+        let impressions = localStorage.getItem("impressions") || "";
         console.log("CLICK HISTORY: ", clickHistory)
         console.log("IMPRESSIONS: ", impressions)
 

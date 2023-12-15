@@ -81,7 +81,7 @@ const NewsList = ({ title, description, isRecommended, isTrending, isLatest, sea
         });
     }, [userRecommendedNews, search, topicExclusions, interestAreas]);
 
-    return (
+    return ( 
         <div id='news-list'>
             <div className='news-list-header'>
                 <div>
