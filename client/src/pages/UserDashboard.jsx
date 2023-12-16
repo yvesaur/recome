@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Fetch from '../api/Fetch';
 import '../assets/css/pages/userdashboard.css';
 import SelectCategory from '../components/SelectCategory';
+import Loader from '../components/animation/Loader';
 import Footer from '../components/layout/Footer';
 import Header from '../components/layout/Header';
 import UserPreferenceModal from '../components/modal/UserPreferenceModal';
@@ -103,7 +104,7 @@ const UserDashboard = () => {
                 </div>
             </div>
             <div className='clicked-news-container'>
-                {
+                {userClickedNews.length > 0 ? (
                     userClickedNews.map((news) => {
                         return (
                             <div className='news-card all-news' key={news.id} onClick={() => {
@@ -120,6 +121,9 @@ const UserDashboard = () => {
                             </div>
                         )
                     })
+                ) : (
+                    <Loader />
+                )
                 }
 
             </div>

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Fetch from '../../api/Fetch'
 import "../../assets/css/home/latestnews.css"
 import { NewsContext } from '../../context/NewsContext'
+import Loader from '../animation/Loader'
 
 const LatestNews = () => {
     const navigate = useNavigate();
@@ -34,22 +35,26 @@ const LatestNews = () => {
         <div id='latest-news'>
             <h2>Latest</h2>
             <div className='latest-news-container'>
-                {latestNews && latestNews.slice(0, 5).map((news, index) => {
-                    return (
-                        <div className={`news-card latest-news-${index}`} key={news.id} onClick={() => {
-                            getUserClick(news.id);
-                            handleNewsSelect(news.id);
-                        }}>
-                            <img className='news-thumbnail' src={news.img_url} alt="NEWS THUMBNAIL" />
-                            <p className='news-category'>{news.category}</p>
-                            <p className='news-title'>{news.title}</p>
-                            <div>
-                                <p className='news-author'>{news.author}</p>
-                                <p className='news-date'>{formatDate(news.date)}</p>
+                {latestNews.length > 0 ? (
+                    latestNews.slice(0, 5).map((news, index) => {
+                        return (
+                            <div className={`news-card latest-news-${index}`} key={news.id} onClick={() => {
+                                getUserClick(news.id);
+                                handleNewsSelect(news.id);
+                            }}>
+                                <img className='news-thumbnail' src={news.img_url} alt="NEWS THUMBNAIL" />
+                                <p className='news-category'>{news.category}</p>
+                                <p className='news-title'>{news.title}</p>
+                                <div>
+                                    <p className='news-author'>{news.author}</p>
+                                    <p className='news-date'>{formatDate(news.date)}</p>
+                                </div>
                             </div>
-                        </div>
-                    )
-                })}
+                        )
+                    })
+                ) : (
+                    <Loader />
+                )}
             </div>
             <p onClick={() => navigate('/latest')}>See All</p>
         </div>
