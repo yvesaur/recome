@@ -91,25 +91,30 @@ const NewsList = ({ title, description, isRecommended, isTrending, isLatest, sea
                 </div>
             </div>
             <div className='news-list-container'>
-                {!isTrending && !isRecommended && !isLatest && <Loader />}
-                {isLatest && filteredLatestNews.length > 0 && filteredLatestNews.map((news) => {
-                    return (
-                        <div className="news-list-card" key={news.id} onClick={() => {
-                            getUserClick(news.id);
-                            handleNewsSelect(news.id);
-                        }}>
-                            <img className='latestNews-img' src={news.img_url} alt="NEWS THUMBNAIL" />
-                            <p className='news-list-info news-category'>{news.category}</p>
-                            <p className='news-list-info news-title'>{news.title}</p>
-                            <div>
-                                <p className='news-author'>{news.author}</p>
-                                <p className='news-date'>{formatDate(news.date)}</p>
-                            </div>
-                        </div>
+                {isLatest ? (
+                    filteredLatestNews.length > 0 ? (
+                        filteredLatestNews.map((news) => {
+                            return (
+                                <div className="news-list-card" key={news.id} onClick={() => {
+                                    getUserClick(news.id);
+                                    handleNewsSelect(news.id);
+                                }}>
+                                    <img className='latestNews-img' src={news.img_url} alt="NEWS THUMBNAIL" />
+                                    <p className='news-list-info news-category'>{news.category}</p>
+                                    <p className='news-list-info news-title'>{news.title}</p>
+                                    <div>
+                                        <p className='news-author'>{news.author}</p>
+                                        <p className='news-date'>{formatDate(news.date)}</p>
+                                    </div>
+                                </div>
+                            )
+                        })
+                    ) : (
+                        <Loader />
                     )
-                })}
-                {isTrending &&
-                    filteredTrendingNews.length > 0 && (
+                ) : null}
+                {isTrending ? (
+                    filteredTrendingNews.length > 0 ? (
                         filteredTrendingNews.map((news, index) => {
                             return (
                                 <div className="news-list-card" key={news.id} onClick={() => {
@@ -127,10 +132,12 @@ const NewsList = ({ title, description, isRecommended, isTrending, isLatest, sea
                                 </div>
                             )
                         })
+                    ) : (
+                        <Loader />
                     )
-                }
-                {isRecommended &&
-                    filteredUserRecommendedNews.length > 0 && (
+                ) : null}
+                {isRecommended ? (
+                    filteredUserRecommendedNews.length > 0 ? (
                         filteredUserRecommendedNews.map((news) => {
                             return (
                                 <div className="news-list-card" key={news.id} onClick={() => {
@@ -147,8 +154,10 @@ const NewsList = ({ title, description, isRecommended, isTrending, isLatest, sea
                                 </div>
                             )
                         })
+                    ) : (
+                        <Loader />
                     )
-                }
+                ) : null}
             </div>
         </div>
     )

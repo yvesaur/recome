@@ -38,7 +38,7 @@ const RecommendedNews = () => {
                 <p onClick={() => navigate('/recommended')}>See All</p>
             </div>
             <div className='recommended-news-container'>
-                {RecommendedNews.length > 0 ? (
+                {userRecommendedNews.length > 0 ? (
                     userRecommendedNews.slice(0, 3).map((news) => {
                         return (
                             <div className='news-card recommended-news' key={news.id} onClick={() => {
