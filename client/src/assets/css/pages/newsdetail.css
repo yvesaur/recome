@@ -6,6 +6,7 @@
 
 #news-detail-page > h1 {
   font-weight: bold;
+  margin-top: 3rem;
 }
 
 .related-news-container #news-thumbnail {
@@ -23,6 +24,20 @@
   display: flex;
   justify-content: center;
   pointer-events: none;
+}
+
+.selected-news-link {
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: "Merriweather", var(--font_fallback);
+  color: var(--font-clr2);
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.selected-news-link > a:hover {
+  text-decoration: underline;
 }
 
 .news-detail-card {
