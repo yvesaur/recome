@@ -138,4 +138,24 @@
     height: fit-content;
   }
   /* NewsList.jsx */
+
+  /* NewsArchive.jsx */
+  #news-archive {
+    margin: 2rem;
+  }
+
+  #news-archihve #news-archive > .all-news-container {
+    display: block;
+    margin: 1rem;
+  }
+
+  #news-archive > .all-news-container .all-news-card {
+    width: 300px;
+    height: fit-content;
+  }
+
+  #news-archive > .all-news-container p {
+    font-size: 0.8rem;
+  }
+  /* NewsArchive.jsx */
 }
