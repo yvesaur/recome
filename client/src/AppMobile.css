@@ -1,3 +1,114 @@
 /* Mobile Layout */
 @media screen and (max-width: 480px) {
+  /* Header.jsx*/
+  #header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  #header > img {
+    height: 4.5rem;
+    width: auto;
+  }
+
+  #header > .search-news {
+    display: none;
+  }
+
+  #header > .register-guest,
+  #header > .logged-user {
+    align-self: flex-end;
+    font-size: 0.8rem;
+    gap: 1rem;
+  }
+
+  #header > .logged-user i {
+    font-size: 1rem;
+  }
+
+  #header > .logged-user h4 {
+    margin: auto;
+  }
+
+  #header > .register-guest > button {
+    padding: 2px 0.5rem;
+  }
+  /* Header.jsx */
+
+  /* SelectCategory.jsx */
+  #select-category {
+  }
+
+  #select-category > .category-ul {
+    gap: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+  }
+
+  #select-category > ul > li {
+    font-size: 0.8rem;
+  }
+  /* SelectCategory.jsx */
+
+  /* Footer.jsx */
+  #footer > img {
+    height: 4.5rem;
+    width: auto;
+  }
+  /* Footer.jsx */
+
+  /* LatestNews.jsx */
+  #latest-news > .latest-news-container {
+    display: grid;
+    grid-template: none;
+    grid-template-rows: repeat(auto-fill, minmax(350px, 1fr));
+    grid-template-areas:
+      "latest-news-0"
+      "latest-news-1"
+      "latest-news-2"
+      "latest-news-3"
+      "latest-news-4";
+  }
+
+  #latest-news p {
+    font-size: 0.8rem;
+  }
+
+  #latest-news .see-all-btn {
+    font-size: 1rem;
+  }
+
+  #latest-news > .latest-news-0,
+  #latest-news > .latest-news-1,
+  #latest-news > .latest-news-2,
+  #latest-news > .latest-news-3,
+  #latest-news > .latest-news-4 {
+    grid-area: span;
+  }
+
+  /* LatestNews.jsx */
+  #trending-news p {
+    font-size: 0.8rem;
+  }
+
+  #trending-news > .trending-news-container {
+    grid-template: none;
+    grid-template-rows: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 0.5rem;
+  }
+  /* LatestNews.jsx */
+
+  /* RecommendedNews.jsx */
+  #recommended-news p {
+    font-size: 0.8rem;
+  }
+
+  #recommended-news > .recommended-news-container {
+    grid-template: none;
+    grid-template-rows: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 0.5rem;
+  }
+  /* RecommendedNews.jsx */
 }
