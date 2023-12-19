@@ -201,7 +201,7 @@ const UserPreferenceModal = ({
                 </div>
                 <div>
                     <label >Trending News recommendation? </label>
-                    <select value={isTrendingNews} onChange={(e) => handleChange(e)}>
+                    <select className='trending-news-select' value={isTrendingNews} onChange={(e) => handleChange(e)}>
                         <option value="Important">Important</option>
                         <option value="Not Important">Not Important</option>
                     </select>
