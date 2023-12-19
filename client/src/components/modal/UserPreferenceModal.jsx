@@ -165,7 +165,7 @@ const UserPreferenceModal = ({
                                 topicExclusions.map((exclusion, index) => {
                                     return (
                                         <>
-                                            <div className='selected-options'>
+                                            <div className='selected-options excluded-topics'>
                                                 {exclusion}
                                                 <i
                                                     class="fa-solid fa-xmark"

@@ -152,6 +152,7 @@
   #news-archive > .all-news-container .all-news-card {
     width: 300px;
     height: fit-content;
+    margin: auto;
   }
 
   #news-archive > .all-news-container p {
@@ -304,7 +305,9 @@
   }
 
   #user-dashboard > .clicked-news-container .clicked-news-card {
-    margin: 0.4rem 2rem;
+    margin: 0.4rem 1.5rem;
+    padding: 1rem;
+    border-radius: 1rem;
   }
 
   #user-dashboard > .clicked-news-container .clicked-news-card img {
@@ -329,11 +332,13 @@
   #user-preference-modal > dialog label {
     font-size: 0.8rem;
   }
-
+  #user-preference-modal > dialog div:last-of-type label {
+    width: 130px;
+  }
   #user-preference-modal .options-container .selected-options {
     font-size: 0.8rem;
+    overflow: scroll;
   }
-
   #user-preference-modal select,
   #user-preference-modal #add-exclusions {
     height: 30px;
@@ -348,5 +353,15 @@
   #user-preference-modal .select-topic {
     font-size: 0.8rem;
   }
+
+  #topic-exclusions .excluded-topics {
+    width: 130px;
+  }
   /* UserPreferenceModal.jsx */
+
+  /* Loader.jsx */
+  #loader-container {
+    width: 100%;
+  }
+  /* Loader.jsx */
 }
