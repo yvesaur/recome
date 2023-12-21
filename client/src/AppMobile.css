@@ -224,7 +224,8 @@
   }
 
   #register-page > .exclusions-container .excluded-topic-container {
-    grid-template-columns: repeat(auto-fill, 92px);
+    grid-template-columns: repeat(auto-fill, 100px);
+    justify-content: center;
   }
 
   #register-page > .exclusions-container > .register-account-form {
