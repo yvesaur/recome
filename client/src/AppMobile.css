@@ -364,4 +364,29 @@
     width: 100%;
   }
   /* Loader.jsx */
+
+  /* NewsDetail.jsx */
+  #news-detail-page p {
+    font-size: 0.8rem;
+  }
+
+  #news-detail-page > h1 {
+    font-size: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  #news-detail-page > .selected-news-link {
+    font-size: 1rem;
+    text-decoration: underline;
+  }
+
+  #news-detail-page > .selected-news-container .news-detail-card {
+    width: 80vw;
+  }
+
+  #news-detail-page > .related-news-container .related-news {
+    width: 300px;
+    height: max-content;
+  }
+  /* NewsDetail.jsx */
 }
