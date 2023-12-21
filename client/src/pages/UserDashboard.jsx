@@ -10,7 +10,7 @@ import UserPreferenceModal from '../components/modal/UserPreferenceModal';
 import { NewsContext } from '../context/NewsContext';
 
 const UserDashboard = () => {
-    const { isAuthenticated, setAuth, notifySuccess, getUserClick, formatDate } = useContext(NewsContext);
+    const { isAuthenticated, isAuth, getUserClick, formatDate } = useContext(NewsContext);
     const navigate = useNavigate();
     const [name, setName] = useState("");
     const [currentUserID, setCurrentUserID] = useState(null);
@@ -45,6 +45,10 @@ const UserDashboard = () => {
 
     useEffect(() => {
         getUserInfo();
+    }, [])
+
+    useEffect(() => {
+        isAuth();
     }, [])
 
     useEffect(() => {
