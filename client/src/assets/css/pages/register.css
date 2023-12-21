@@ -191,7 +191,7 @@ img {
 .excluded-topic-container {
   display: grid;
   gap: 0.5rem;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
 }
 
 .excluded-topic {
@@ -199,9 +199,11 @@ img {
   justify-content: space-between;
   align-items: center;
   background-color: var(--font-clr2);
-  padding: 1rem;
+  padding: 0.5rem;
   border-radius: 0.8rem;
-  width: fit-content;
+  gap: 0.5rem;
+  width: 100%;
+  overflow-x: auto;
 }
 
 .excluded-topic i:hover {

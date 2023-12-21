@@ -4,7 +4,6 @@ import Fetch from '../api/Fetch';
 import "../assets/css/newslist.css";
 import { NewsContext } from '../context/NewsContext';
 import Loader from './animation/Loader';
-import RecommendedNews from './home/RecommendedNews';
 
 const NewsList = ({ title, description, isRecommended, isTrending, isLatest, search }) => {
     const navigate = useNavigate();

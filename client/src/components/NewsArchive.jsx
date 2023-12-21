@@ -39,12 +39,12 @@ const NewsArchive = ({ search }) => {
     }, [allNews, search]);
 
     return (
-        <div className='news-archive'>
+        <div id='news-archive'>
             <div className='all-news-container'>
                 {filteredNews.length > 0 ? (
                     filteredNews.map((news) => {
                         return (
-                            <div className='news-card all-news' key={news.id} onClick={() => {
+                            <div className='news-card all-news-card' key={news.id} onClick={() => {
                                 getUserClick(news.id);
                                 handleNewsSelect(news.id);
                             }}>

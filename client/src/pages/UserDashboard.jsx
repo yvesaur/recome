@@ -86,7 +86,7 @@ const UserDashboard = () => {
             <SelectCategory />
             <div id='user-information'>
                 <div>
-                    <i class="fa-regular fa-user fa-5x"></i>
+                    <i class="fa-regular fa-user user-pfp"></i>
                     <div>
                         <p className='user-fullname'>{currentUserInfo.firstname} {currentUserInfo.lastname}</p>
                         <p><b>username:</b> {currentUserInfo.username}</p>
@@ -107,7 +107,7 @@ const UserDashboard = () => {
                 {userClickedNews.length > 0 ? (
                     userClickedNews.map((news) => {
                         return (
-                            <div className='news-card all-news' key={news.id} onClick={() => {
+                            <div className='news-card all-news clicked-news-card' key={news.id} onClick={() => {
                                 getUserClick(news.id);
                                 handleNewsSelect(news.id);
                             }}>

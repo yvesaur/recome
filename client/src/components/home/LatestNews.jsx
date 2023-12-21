@@ -56,7 +56,7 @@ const LatestNews = () => {
                     <Loader />
                 )}
             </div>
-            <p onClick={() => navigate('/latest')}>See All</p>
+            <p className='see-all-btn' onClick={() => navigate('/latest')}>See All</p>
         </div>
     )
 }

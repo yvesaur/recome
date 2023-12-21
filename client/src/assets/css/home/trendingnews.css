@@ -1,6 +1,6 @@
 #trending-news {
-  margin: 3rem 2rem 0 2rem;
-  padding: 0 0 3rem 0;
+  margin: 3rem 2rem 2rem 2rem;
+  padding: 0 0 2rem 0;
   border-bottom: 4px solid var(--outline_clr);
 }
 
@@ -39,5 +39,4 @@
 .trending-news {
   padding: 1rem;
   border-radius: 12px;
-  border: 1px solid var(--outline_clr1);
 }

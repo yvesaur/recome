@@ -165,7 +165,7 @@ const UserPreferenceModal = ({
                                 topicExclusions.map((exclusion, index) => {
                                     return (
                                         <>
-                                            <div className='selected-options'>
+                                            <div className='selected-options excluded-topics'>
                                                 {exclusion}
                                                 <i
                                                     class="fa-solid fa-xmark"
@@ -201,7 +201,7 @@ const UserPreferenceModal = ({
                 </div>
                 <div>
                     <label >Trending News recommendation? </label>
-                    <select value={isTrendingNews} onChange={(e) => handleChange(e)}>
+                    <select className='trending-news-select' value={isTrendingNews} onChange={(e) => handleChange(e)}>
                         <option value="Important">Important</option>
                         <option value="Not Important">Not Important</option>
                     </select>
