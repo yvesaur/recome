@@ -15,8 +15,11 @@ const NewsDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const hasCalledGetUserImpression = useRef(false);
-    // console.log(id)
+    const { pathname } = useLocation();
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -48,8 +51,9 @@ const NewsDetail = () => {
     const handleNewsSelect = async (id) => {
         try {
             const response = await Fetch.get((`/news/${id}`))
+            const response2 = await Fetch.get((`/news/related/${id}`))
             setSelectedNews(response.data.data.news)
-            window.location.reload()
+            setRelatedNews(response2.data.data.news)
             navigate(`/news/${id}`);
         } catch (error) {
             console.log(error);
