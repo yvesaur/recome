@@ -17,17 +17,6 @@ react-router-dom
 axios
 react-toastify
 
-userID
-username
-firstName
-lastName
-email
-password
-impressionID
-interest_areas
-wide_interest
-topic_exclusions
-trending_news
 
 
 
