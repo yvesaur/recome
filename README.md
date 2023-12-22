@@ -1,5 +1,5 @@
 <p align="center">
-  <img align="center" src="/doc/img/recome-banner.png" alt="Recome Banner" width="500" height="200"> 
+  <img align="center" src="/doc/img/recome-banner.png" alt="Recome Banner" width="450" height="175"> 
 
   <div align="center">
     
@@ -19,11 +19,11 @@
 Join me on this transformative journey in news discovery, where technology meets information, and each user's experience through the news landscape is personalized and intuitive.
 
 <p align="center">
-  <img align="center" src="/doc/img/recome_desktopview.png" alt="Recome Banner" width="400" height="275"> 
-  <img align="center" src="/doc/img/recome_mobile_view.png" alt="Recome Banner" height="275" width="150"> 
+  <img align="center" src="/doc/img/recome_desktopview.png" alt="Recome Banner" width="425" height="300"> 
+  <img align="center" src="/doc/img/recome_mobile_view.png" alt="Recome Banner" height="300" width="175"> 
 </p>
 
-## Current Features
+## :sparkles: Current Features
  - **Browse and read news**
  - **News Recommender**
     - Recommended news based on clicked news
@@ -34,7 +34,7 @@ Join me on this transformative journey in news discovery, where technology meets
     - Filter news based on keywords, topics, etc.
     - See Recently Visited News
 
-## Getting Started
+## :computer: Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing.
 
@@ -127,7 +127,7 @@ Remember to commit changes and push them to your forked repository before creati
   
 Feel free to explore, experiment, and enhance the project as needed!
 
-## Built With 
+## :hammer: Built With 
 
 * [PostgreSQL](https://www.postgresql.org/) - SQL Relational Database
 * [Express](https://expressjs.com/) - Backend Web Framework for Node.JS (**Server #0**)
@@ -135,19 +135,17 @@ Feel free to explore, experiment, and enhance the project as needed!
 * [React](https://react.dev/) - JavaSript User Interface library 
 * [Node](https://nodejs.org/en) - Powerful JavaScript runtime environment
 
-## Contributing
+## :mailbox: Contributing
 
-Please read [CONTRIBUTING.md](CONTRIBUTING) for details on our code of conduct, and the process for submitting pull requests to us.
+I appreciate your interest in contributing to the repository! To ensure a streamlined process and effective collaboration, I encourage contributors to follow these guidelines.
 
-## Versioning
+Please read our [Contribution Guidelines](CONTRIBUTING.md) for the process for submitting pull requests.
 
-The repository uses [`SemVer`](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+## :heartbeat: Authors / Contributors
 
-## Authors / Contributors
+### [**Yves Casio**](https://github.com/yvesaur) - This is the first open-sourced project that I will be doing, contributing to the repository will be a big help in further advancing this project. 
 
-* **Yves Casio** - This is the first heavy project that I will be doing
+## :key: License 
 
-## License 
-
-This project is licensed under the **GNU Affero General Public License (AGPL)** v3 - see the [LICENSE.md](LICENSE) file for details
+This project is licensed under the **`GNU Affero General Public License (AGPL) v3`** - see the [LICENSE.md](LICENSE) file for details
 
