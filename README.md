@@ -1,5 +1,5 @@
 <p align="center">
-  <img align="center" src="recome-banner.png" alt="Recome Banner" width="500" height="200"> 
+  <img align="center" src="/doc/img/recome-banner.png" alt="Recome Banner" width="500" height="200"> 
 
   <div align="center">
     
@@ -7,6 +7,7 @@
   ![GitHub watchers](https://img.shields.io/github/watchers/yvesaur/recome)
   ![GitHub Repo stars](https://img.shields.io/github/stars/yvesaur/recome)
   ![GitHub release (with filter)](https://img.shields.io/github/v/release/yvesaur/recome) 
+  ![GitHub License](https://img.shields.io/github/license/yvesaur/recome)
   </div>
 </p>
 
@@ -17,7 +18,21 @@
 
 Join me on this transformative journey in news discovery, where technology meets information, and each user's journey through the news landscape is personalized, intuitive, and enlightening
 
-## Features
+<p>
+  <img align="center" src="/doc/img/recome_desktopview.png" alt="Recome Banner" width="750" height="500"> 
+  <img align="center" src="/doc/img/recome_mobile_view.png" alt="Recome Banner" height="500" width="250"> 
+</p>
+
+## Current Features
+ - **Browse and read news**
+ - **News Recommender**
+    - Recommended news based on clicked news
+    - Recommended news based on user behaviour
+ - **User Account**
+    - Registration
+    - Login
+    - Filter news based on keywords, topics, etc.
+    - See Recently Visited News
 
 ## Getting Started
 
@@ -26,7 +41,7 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 #### Needed:
- - **Node v18.17.0**
+ - **Node v18.17**
  - **Python v3.7**
  - **PostgreSQL v16.1**
 #### Optional:
@@ -36,9 +51,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development environment running on your local machine
-
-Say what the step will be
+clone the repository
 
 ## Built With 
 
@@ -62,7 +75,7 @@ The repository uses [SemVer](http://semver.org/) for versioning. For the version
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
-## License ![GitHub License](https://img.shields.io/github/license/yvesaur/recome)
+## License 
 
 This project is licensed under the **GNU Affero General Public License (AGPL)** v3 - see the [LICENSE.md](LICENSE) file for details
 
