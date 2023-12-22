@@ -139,7 +139,7 @@ Feel free to explore, experiment, and enhance the project as needed!
 
 I appreciate your interest in contributing to the repository! To ensure a streamlined process and effective collaboration, I encourage contributors to follow these guidelines.
 
-Please read our [Contribution Guidelines](CONTRIBUTING.md) for the process for submitting pull requests.
+Please read the [Contribution Guidelines](CONTRIBUTING.md) for the process for submitting pull requests.
 
 ## :heartbeat: Authors / Contributors
 
