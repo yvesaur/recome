@@ -7,7 +7,7 @@
   ![GitHub watchers](https://img.shields.io/github/watchers/yvesaur/recome)
   ![GitHub Repo stars](https://img.shields.io/github/stars/yvesaur/recome)
   ![GitHub release (with filter)](https://img.shields.io/github/v/release/yvesaur/recome) 
-  ![GitHub License](https://img.shields.io/github/license/yvesaur/recome)
+
   </div>
 </p>
 
