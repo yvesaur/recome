@@ -1,5 +1,7 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
+import "./AppMobile.css";
+import "./AppTablet.css";
 
 /* COMPONENTS EXPORTS */
 import { ToastContainer } from "react-toastify";

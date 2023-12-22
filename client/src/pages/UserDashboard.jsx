@@ -3,13 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import Fetch from '../api/Fetch';
 import '../assets/css/pages/userdashboard.css';
 import SelectCategory from '../components/SelectCategory';
+import Loader from '../components/animation/Loader';
 import Footer from '../components/layout/Footer';
 import Header from '../components/layout/Header';
 import UserPreferenceModal from '../components/modal/UserPreferenceModal';
 import { NewsContext } from '../context/NewsContext';
 
 const UserDashboard = () => {
-    const { isAuthenticated, setAuth, notifySuccess, getUserClick, formatDate } = useContext(NewsContext);
+    const { isAuthenticated, isAuth, getUserClick, formatDate } = useContext(NewsContext);
     const navigate = useNavigate();
     const [name, setName] = useState("");
     const [currentUserID, setCurrentUserID] = useState(null);
@@ -44,6 +45,10 @@ const UserDashboard = () => {
 
     useEffect(() => {
         getUserInfo();
+    }, [])
+
+    useEffect(() => {
+        isAuth();
     }, [])
 
     useEffect(() => {
@@ -85,7 +90,7 @@ const UserDashboard = () => {
             <SelectCategory />
             <div id='user-information'>
                 <div>
-                    <i class="fa-regular fa-user fa-5x"></i>
+                    <i class="fa-regular fa-user user-pfp"></i>
                     <div>
                         <p className='user-fullname'>{currentUserInfo.firstname} {currentUserInfo.lastname}</p>
                         <p><b>username:</b> {currentUserInfo.username}</p>
@@ -103,10 +108,10 @@ const UserDashboard = () => {
                 </div>
             </div>
             <div className='clicked-news-container'>
-                {
+                {userClickedNews.length > 0 ? (
                     userClickedNews.map((news) => {
                         return (
-                            <div className='news-card all-news' key={news.id} onClick={() => {
+                            <div className='news-card all-news clicked-news-card' key={news.id} onClick={() => {
                                 getUserClick(news.id);
                                 handleNewsSelect(news.id);
                             }}>
@@ -120,6 +125,9 @@ const UserDashboard = () => {
                             </div>
                         )
                     })
+                ) : (
+                    <Loader />
+                )
                 }
 
             </div>

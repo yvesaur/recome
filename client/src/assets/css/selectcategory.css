@@ -5,10 +5,14 @@
 
 #select-category ul {
   display: flex;
-  gap: 1.5rem;
   justify-content: center;
+  align-items: center;
   list-style-type: none;
   border-bottom: 1px solid var(--outline_clr1);
+}
+
+.category-ul {
+  gap: 1.5rem;
 }
 
 .active {

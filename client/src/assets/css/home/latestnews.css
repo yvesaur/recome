@@ -42,7 +42,6 @@
 
 .latest-news-0 {
   padding: 1rem;
-  border-bottom: 1px solid var(--outline_clr1);
   grid-area: latest-news-0;
 }
 
@@ -53,20 +52,25 @@
 
 .latest-news-2 {
   padding: 1rem;
-  border-left: 1px solid var(--outline_clr1);
-  border-right: 1px solid var(--outline_clr1);
   grid-area: latest-news-2;
 }
 
 .latest-news-3 {
   padding: 1rem;
   grid-area: latest-news-3;
-  border-bottom: 1px solid var(--outline_clr1);
 }
 
 .latest-news-4 {
   padding: 1rem;
   grid-area: latest-news-4;
+}
+
+.latest-news-0,
+.latest-news-1,
+.latest-news-2,
+.latest-news-3,
+.latest-news-4 {
+  border-radius: 1rem;
 }
 
 .news-category {

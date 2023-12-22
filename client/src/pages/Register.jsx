@@ -322,7 +322,9 @@ const Register = () => {
                                         return (
                                             <>
                                                 <div className='excluded-topic'>
-                                                    {topic}
+                                                    <p>
+                                                        {topic}
+                                                    </p>
                                                     <i class="fa-solid fa-xmark" style={{ color: "#fefffe" }}
                                                         onClick={() => {
                                                             const currentTopics = topic_exclusions.filter(topicItem => topicItem !== topic);

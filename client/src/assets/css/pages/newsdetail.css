@@ -4,8 +4,9 @@
   gap: 0;
 }
 
-#news-detail-page > h1 {
+h1 {
   font-weight: bold;
+  margin-top: 3rem;
 }
 
 .related-news-container #news-thumbnail {
@@ -25,13 +26,27 @@
   pointer-events: none;
 }
 
+.selected-news-link {
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: "Merriweather", var(--font_fallback);
+  color: var(--font-clr2);
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.selected-news-link > a:hover {
+  text-decoration: underline;
+}
+
 .news-detail-card {
   width: 50vw;
 }
 
 .related-news {
   width: 400px;
-  padding: 0.3rem;
+  padding: 0.5rem;
   border-radius: 1rem;
 }
 
@@ -40,7 +55,7 @@
   flex-wrap: wrap;
   justify-content: center;
   padding: 1rem 1rem;
-  gap: 0.5rem;
+  gap: 1rem;
 }
 
 .related-news-container .related-title {

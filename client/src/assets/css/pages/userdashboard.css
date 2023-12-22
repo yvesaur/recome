@@ -14,6 +14,10 @@
   font-weight: bold;
 }
 
+.user-pfp {
+  font-size: 5rem;
+}
+
 #user-information > div:last-child {
   display: flex;
   gap: 0.5rem;
@@ -50,5 +54,21 @@
 
 .clicked-news-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  margin: 0 2rem 2rem 2rem;
+}
+
+.clicked-news-container .clicked-news-card p {
+  font-size: 1rem;
+}
+
+.clicked-news-container .clicked-news-card {
+  height: auto;
+}
+
+.clicked-news-container .clicked-news-card img {
+  border-radius: 1rem;
+  height: auto;
+  width: 100%;
 }

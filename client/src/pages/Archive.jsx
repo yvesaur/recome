@@ -7,7 +7,7 @@ import Header from '../components/layout/Header'
 import { NewsContext } from '../context/NewsContext'
 
 const Archive = () => {
-    const { isAuthenticated } = useContext(NewsContext);
+    const { isAuthenticated, isAuth } = useContext(NewsContext);
     const [search, setSearch] = useState("")
 
     const { pathname } = useLocation();
@@ -15,6 +15,11 @@ const Archive = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [pathname]);
+
+    useEffect(() => {
+        isAuth()
+    }, [])
+
     return (
         <div id='archive-page'>
             <Header isAuthenticated={isAuthenticated} setSearch={setSearch} />

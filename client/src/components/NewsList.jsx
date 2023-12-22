@@ -4,7 +4,6 @@ import Fetch from '../api/Fetch';
 import "../assets/css/newslist.css";
 import { NewsContext } from '../context/NewsContext';
 import Loader from './animation/Loader';
-import RecommendedNews from './home/RecommendedNews';
 
 const NewsList = ({ title, description, isRecommended, isTrending, isLatest, search }) => {
     const navigate = useNavigate();
@@ -81,7 +80,7 @@ const NewsList = ({ title, description, isRecommended, isTrending, isLatest, sea
         });
     }, [userRecommendedNews, search, topicExclusions, interestAreas]);
 
-    return ( 
+    return (
         <div id='news-list'>
             <div className='news-list-header'>
                 <div>
@@ -91,8 +90,8 @@ const NewsList = ({ title, description, isRecommended, isTrending, isLatest, sea
                 </div>
             </div>
             <div className='news-list-container'>
-                {isLatest &&
-                    filteredLatestNews.length > 0 && (
+                {isLatest ? (
+                    filteredLatestNews.length > 0 ? (
                         filteredLatestNews.map((news) => {
                             return (
                                 <div className="news-list-card" key={news.id} onClick={() => {
@@ -109,10 +108,12 @@ const NewsList = ({ title, description, isRecommended, isTrending, isLatest, sea
                                 </div>
                             )
                         })
+                    ) : (
+                        <Loader />
                     )
-                }
-                {isTrending &&
-                    filteredTrendingNews.length > 0 && (
+                ) : null}
+                {isTrending ? (
+                    filteredTrendingNews.length > 0 ? (
                         filteredTrendingNews.map((news, index) => {
                             return (
                                 <div className="news-list-card" key={news.id} onClick={() => {
@@ -130,10 +131,12 @@ const NewsList = ({ title, description, isRecommended, isTrending, isLatest, sea
                                 </div>
                             )
                         })
+                    ) : (
+                        <Loader />
                     )
-                }
-                {isRecommended &&
-                    filteredUserRecommendedNews.length > 0 && (
+                ) : null}
+                {isRecommended ? (
+                    filteredUserRecommendedNews.length > 0 ? (
                         filteredUserRecommendedNews.map((news) => {
                             return (
                                 <div className="news-list-card" key={news.id} onClick={() => {
@@ -150,8 +153,10 @@ const NewsList = ({ title, description, isRecommended, isTrending, isLatest, sea
                                 </div>
                             )
                         })
+                    ) : (
+                        <Loader />
                     )
-                }
+                ) : null}
             </div>
         </div>
     )
