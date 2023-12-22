@@ -1,24 +1,42 @@
-### RecoMe ![Recome Banner](recome-banner.png)
+<p align="center">
+  <img align="center" src="recome-banner.png" alt="Recome Banner" width="500" height="200"> 
+
+  <div align="center">
+    
+  ![Static Badge](https://img.shields.io/badge/status-pre_release-green)
+  ![GitHub watchers](https://img.shields.io/github/watchers/yvesaur/recome)
+  ![GitHub Repo stars](https://img.shields.io/github/stars/yvesaur/recome)
+  ![GitHub release (with filter)](https://img.shields.io/github/v/release/yvesaur/recome) 
+  </div>
+</p>
+
 ---
 
 **A personalized news web application with a news recommender model using NLP, CNN, and Filtering algorithm**
 
 
-Join us on this transformative journey in news discovery, where technology meets information, and each user's journey through the news landscape is personalized, intuitive, and enlightening
+Join me on this transformative journey in news discovery, where technology meets information, and each user's journey through the news landscape is personalized, intuitive, and enlightening
 
 ## Features
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+These instructions will get you a copy of the project up and running on your local machine for development and testing.
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+#### Needed:
+ - **Node v18.17.0**
+ - **Python v3.7**
+ - **PostgreSQL v16.1**
+#### Optional:
+ - **Postman**
+ - **pgAdmin**
+
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development environment running
+A step by step series of examples that tell you how to get a development environment running on your local machine
 
 Say what the step will be
 
@@ -36,7 +54,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING) for details on our code of conduct, 
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+The repository uses [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
 
 ## Authors
 
@@ -44,10 +62,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
-## License ![GitHub License](https://img.shields.io/github/license/yvesito/recome)
+## License ![GitHub License](https://img.shields.io/github/license/yvesaur/recome)
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details
+This project is licensed under the **GNU Affero General Public License (AGPL)** v3 - see the [LICENSE.md](LICENSE) file for details
 
-## Acknowledgments
-
-lorem ipsum
