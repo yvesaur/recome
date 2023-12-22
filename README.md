@@ -16,18 +16,18 @@
 **A personalized news web application with a news recommender model using NLP, CNN, and Filtering algorithm**
 
 
-Join me on this transformative journey in news discovery, where technology meets information, and each user's journey through the news landscape is personalized, intuitive, and enlightening
+Join me on this transformative journey in news discovery, where technology meets information, and each user's experience through the news landscape is personalized and intuitive.
 
-<p>
-  <img align="center" src="/doc/img/recome_desktopview.png" alt="Recome Banner" width="750" height="500"> 
-  <img align="center" src="/doc/img/recome_mobile_view.png" alt="Recome Banner" height="500" width="250"> 
+<p align="center">
+  <img align="center" src="/doc/img/recome_desktopview.png" alt="Recome Banner" width="400" height="275"> 
+  <img align="center" src="/doc/img/recome_mobile_view.png" alt="Recome Banner" height="275" width="150"> 
 </p>
 
 ## Current Features
  - **Browse and read news**
  - **News Recommender**
     - Recommended news based on clicked news
-    - Recommended news based on user behaviour
+    - Recommended news based on user behavior
  - **User Account**
     - Registration
     - Login
@@ -49,9 +49,80 @@ These instructions will get you a copy of the project up and running on your loc
  - **pgAdmin**
 
 
-### Installing
+### Installing - How to run locally and make changes
 
-clone the repository
+1. **Fork and Clone the Repository**
+    ```bash
+    git clone <forked-repository-ssh.git>
+    cd recome
+    ```
+
+2. **Install dependencies**
+    - Server 0
+      ```bash
+      cd recome/server
+      npm install
+      ```
+    - Server 1
+      ```bash
+      cd recome/server1
+      pip install -r requirements.txt
+      ```
+     - Client
+       ```bash
+       cd recome/client
+       npm install
+       ```
+
+3. **Create Environment Variables**
+    ```bash
+    cd recome/server
+    touch .env
+    ```
+    - Environment Variable Inputs:
+      ```properties
+      PORT=
+      PGUSER=
+      PGHOST=
+      PGPASSWORD=
+      PGDATABASE=
+      PGPORT=
+      JWT_SECRET=
+      ```
+
+4. **Start the local server**
+
+    - Server 0
+      ```bash
+      cd recome/server
+      npm start
+      ```
+    - Server 1
+      ```bash
+      cd recome/server1
+      python manage.py runserver
+      ```
+     - Client
+       ```bash
+       cd recome/client
+       npm start
+       ```
+
+5. **Explore, Test, and Make Changes**
+
+   After following the installation steps outlined above, you're set to explore the project, test its functionalities, and make any necessary changes.
+
+### Making Changes
+- To make changes, navigate to the respective directories:
+  - For server-side changes, access `server/` or `server1/` directories.
+  - For client-side modifications, navigate to `client/`.
+
+- Implement the desired changes following best coding practices.
+- Test the changes locally to verify their effectiveness.
+
+Remember to commit changes and push them to your forked repository before creating a pull request.
+  
+Feel free to explore, experiment, and enhance the project as needed!
 
 ## Built With 
 
