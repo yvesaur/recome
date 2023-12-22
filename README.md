@@ -13,7 +13,7 @@
 
 ---
 
-**A personalized news web application with a news recommender model using NLP, CNN, and Filtering algorithm**
+**A personalized news web application with a news recommender model using `NLP`, `CNN`, and `Filtering algorithm`**
 
 
 Join me on this transformative journey in news discovery, where technology meets information, and each user's experience through the news landscape is personalized and intuitive.
@@ -41,12 +41,12 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 #### Needed:
- - **Node v18.17**
- - **Python v3.7**
- - **PostgreSQL v16.1**
+ - `Node v18.17`
+ - `Python v3.7`
+ - `PostgreSQL v16.1`
 #### Optional:
- - **Postman**
- - **pgAdmin**
+ - `Postman`
+ - `pgAdmin 4`
 
 
 ### Installing - How to run locally and make changes
@@ -58,17 +58,18 @@ These instructions will get you a copy of the project up and running on your loc
     ```
 
 2. **Install dependencies**
-    - Server 0
+    - `Server 0`
+  
       ```bash
       cd recome/server
       npm install
       ```
-    - Server 1
+    - `Server 1`
       ```bash
       cd recome/server1
       pip install -r requirements.txt
       ```
-     - Client
+     - `Client`
        ```bash
        cd recome/client
        npm install
@@ -79,7 +80,8 @@ These instructions will get you a copy of the project up and running on your loc
     cd recome/server
     touch .env
     ```
-    - Environment Variable Inputs:
+    - Variables
+  
       ```properties
       PORT=
       PGUSER=
@@ -92,17 +94,18 @@ These instructions will get you a copy of the project up and running on your loc
 
 4. **Start the local server**
 
-    - Server 0
+    - `Server 0`
+  
       ```bash
       cd recome/server
       npm start
       ```
-    - Server 1
+    - `Server 1`
       ```bash
       cd recome/server1
       python manage.py runserver
       ```
-     - Client
+     - `Client`
        ```bash
        cd recome/client
        npm start
@@ -138,13 +141,11 @@ Please read [CONTRIBUTING.md](CONTRIBUTING) for details on our code of conduct, 
 
 ## Versioning
 
-The repository uses [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+The repository uses [`SemVer`](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
 
-## Authors
+## Authors / Contributors
 
 * **Yves Casio** - This is the first heavy project that I will be doing
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License 
 
