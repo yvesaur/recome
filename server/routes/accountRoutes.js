@@ -6,7 +6,7 @@ const validinfo = require("../middleware/validInfo");
 const authorization = require("../middleware/authorization");
 
 // registering
-router.post("/auth/register", validinfo, async (req, res) => {
+router.post("/api/v1/auth/register", validinfo, async (req, res) => {
   try {
     // 1. Destructure
     const {
@@ -80,7 +80,7 @@ router.post("/auth/register", validinfo, async (req, res) => {
 });
 
 // login
-router.post("/auth/login", validinfo, async (req, res) => {
+router.post("/api/v1/auth/login", validinfo, async (req, res) => {
   try {
     // 1. Destructure
     const { email, password } = req.body;
@@ -122,7 +122,7 @@ router.post("/auth/login", validinfo, async (req, res) => {
 });
 
 // Verify User
-router.get("/auth/is-verify", authorization, async (req, res) => {
+router.get("/api/v1/auth/is-verify", authorization, async (req, res) => {
   {
     try {
       res.status(200).json({

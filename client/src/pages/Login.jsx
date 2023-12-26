@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
+import Fetch from '../api/Fetch';
 import "../assets/css/pages/login.css";
 import { NewsContext } from '../context/NewsContext';
 
@@ -23,22 +24,19 @@ const Login = () => {
         try {
             const body = { email, password };
 
-            const response = await fetch("http://localhost:5000/auth/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(body),
-            });
+            const response = await Fetch.post("/auth/login", body, {
+                headers: { "Content-Type": "application/json" }
+            })
 
-            const parseRes = await response.json();
-            if (parseRes.data.token) {
-                localStorage.setItem("token", parseRes.data.token);
+            console.log("LOGGED IN SUCCESSFULLY: ", response)
+            if (response.data.data.token) {
+                localStorage.setItem("token", response.data.data.token);
                 localStorage.setItem("click_history", "");
                 localStorage.setItem("impressions", "");
                 setAuth(true);
-                notifySuccess(parseRes.message);
+                notifySuccess(response.data.message);
                 getCurrentUserID();
                 navigate("/");
-                window.location.reload();
             } else {
                 notifyError("An error occurred while logging in.");
             }

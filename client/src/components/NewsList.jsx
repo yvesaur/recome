@@ -17,17 +17,16 @@ const NewsList = ({ title, description, isRecommended, isTrending, isLatest, sea
 
     async function getUserInfo() {
         try {
-            const response = await fetch("http://localhost:5000/api/v1/getuserinfo", {
-                method: "GET",
-                headers: { token: localStorage.token }
-            });
+            const response = await Fetch.get("/getuserinfo", {
+                headers: {
+                    token: localStorage.token
+                }
+            })
 
-            const parseRes = await response.json()
-            // console.log(parseRes)
-            setInterestAreas(parseRes.data.interest_areas)
-            setWideInterest(parseRes.data.wide_interest)
-            setTopicExclusions(parseRes.data.topic_exclusions)
-            setIsTrendingNews(parseRes.data.trending_news)
+            setInterestAreas(response.data.data.interest_areas)
+            setWideInterest(response.data.data.wide_interest)
+            setTopicExclusions(response.data.data.topic_exclusions)
+            setIsTrendingNews(response.data.data.trending_news)
         } catch (error) {
             console.error(error.message)
         }

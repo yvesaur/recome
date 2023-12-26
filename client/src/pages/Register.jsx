@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Fetch from '../api/Fetch';
 import "../assets/css/pages/register.css";
 import { NewsContext } from '../context/NewsContext';
 
@@ -76,17 +77,17 @@ const Register = () => {
         try {
             const body = { username, firstName, lastName, email, password, interest_areas, wide_interest, topic_exclusions, trending_news };
 
-            const response = await fetch("http://localhost:5000/auth/register", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(body),
-            });
-            const parseRes = await response.json();
-            if (parseRes.data.token) {
-                localStorage.setItem("token", parseRes.data.token);
+            const response = await Fetch.post("/auth/register", body, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+
+            if (response.data.data.token) {
+                localStorage.setItem("token", response.data.data.token);
                 setAuth(true);
-                notifySuccess(parseRes.message);
-                window.location.reload();
+                notifySuccess(response.data.message);
+                // window.location.reload();
             } else {
                 notifyError("An error occurred while registering your account.");
             }

@@ -1,6 +1,7 @@
 import { debounce } from 'lodash';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Fetch from '../../api/Fetch';
 import "../../assets/css/layout/header.css";
 import { NewsContext } from '../../context/NewsContext';
 import SelectNewsCategory from '../SelectNewsCategory';
@@ -12,15 +13,14 @@ const Header = ({ setSearch, isDisabled }) => {
 
     async function getUserInfo() {
         try {
-            const response = await fetch("http://localhost:5000/api/v1/getuserinfo", {
-                method: "GET",
-                headers: { token: localStorage.token }
-            });
+            const response = await Fetch.get("/getuserinfo", {
+                headers: {
+                    token: localStorage.token
+                }
+            })
 
-            const parseRes = await response.json()
-            console.log(parseRes)
-            setName(parseRes.data.username)
-            setCurrentUserID(parseRes.data.userid)
+            setName(response.data.data.username)
+            setCurrentUserID(response.data.data.userid)
 
         } catch (error) {
             console.error(error.message)
@@ -36,16 +36,13 @@ const Header = ({ setSearch, isDisabled }) => {
         console.log("IMPRESSIONS: ", impressions)
 
         if (clickHistory.trim() !== "" && impressions.trim() !== "") {
-            const response = await fetch(`http://localhost:5000/api/v1/addBehaviour/${currentUserID}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    click_history: clickHistory.trim(),
-                    impressions: impressions.trim(),
-                }),
-            });
+            const response = await Fetch.post(`/addBehaviour/${currentUserID}`, {
+                click_history: clickHistory.trim(),
+                impressions: impressions.trim(),
+            }, {
+                headers: { "Content-Type": "application/json" }
+            })
         }
-
 
         localStorage.removeItem("token")
         localStorage.removeItem("click_history")
