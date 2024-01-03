@@ -401,8 +401,6 @@ const Register = () => {
                 </>
             }
         </div>
-
-
     )
 }
 
