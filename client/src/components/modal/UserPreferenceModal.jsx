@@ -1,6 +1,7 @@
 
 import React, { useContext, useState } from 'react';
 import Select from "react-select";
+import Fetch from '../../api/Fetch';
 import "../../assets/css/modal/userpreferencemodal.css";
 import { NewsContext } from '../../context/NewsContext';
 
@@ -83,11 +84,9 @@ const UserPreferenceModal = ({
         try {
             const body = { interest_areas: interestAreas, wide_interest: wideInterest, topic_exclusions: topicExclusions, trending_news: isTrendingNews };
 
-            const response = await fetch(`http://localhost:5000/api/v1/user/editpreference/${currentUserID}`, {
-                method: "PATCH",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(body)
-            })
+            const response = await Fetch.patch(`/user/editpreference/${currentUserID}`, body, {
+                headers: { "Content-Type": "application/json" }
+            });
 
             notifySuccess("User preference updated successfully.")
 

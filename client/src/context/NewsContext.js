@@ -11,6 +11,9 @@ export const NewsContextProvider = (props) => {
   const [trendingNewsClicks, setTrendingNewsClicks] = useState([]);
   const [currentUserID, setCurrentUserID] = useState(null);
   const [userClickedNews, setUserClickedNews] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  console.log("isLoggedIn? CONTEXT ", isLoggedIn);
 
   function formatDate(dateString) {
     const date = new Date(dateString);
@@ -22,14 +25,13 @@ export const NewsContextProvider = (props) => {
 
   async function getCurrentUserID() {
     try {
-      const response = await fetch("http://localhost:5000/api/v1/getuserinfo", {
-        method: "GET",
-        headers: { token: localStorage.token },
+      const response = await Fetch.get("/getuserinfo", {
+        headers: {
+          token: localStorage.token,
+        },
       });
 
-      const parseRes = await response.json();
-      // console.log(parseRes)
-      setCurrentUserID(parseRes.data.userid);
+      setCurrentUserID(response.data.data.userid);
     } catch (error) {
       console.error(error.message);
     }
@@ -92,13 +94,13 @@ export const NewsContextProvider = (props) => {
 
   async function isAuth() {
     try {
-      const response = await fetch("http://localhost:5000/auth/is-verify", {
-        method: "GET",
-        headers: { token: localStorage.token },
+      const response = await Fetch.get("/auth/is-verify", {
+        headers: {
+          token: localStorage.token,
+        },
       });
 
-      const parseRes = await response.json();
-      parseRes.data === true
+      response.data.data === true
         ? setIsAuthenticated(true)
         : setIsAuthenticated(false);
     } catch (error) {
@@ -150,6 +152,8 @@ export const NewsContextProvider = (props) => {
         setCurrentUserID,
         formatDate,
         userClickedNews,
+        isLoggedIn,
+        setIsLoggedIn,
       }}
     >
       {props.children}
