@@ -200,7 +200,7 @@ router.get("/api/v1/getClickHistory/:id", async (req, res) => {
       `SELECT string_agg(click_history, ' ') as click_history 
        FROM (
          SELECT click_history 
-         FROM behaviours1 
+         FROM behaviours 
          WHERE userid = '${id}' 
          ORDER BY TO_TIMESTAMP(timestamp, 'MM/DD/YYYY HH12:MI:SS AM') DESC
        ) sub`
@@ -215,9 +215,9 @@ router.get("/api/v1/getClickHistory/:id", async (req, res) => {
       .map((param) => `'${param}'`)
       .join(",");
     const response = await pool.query(
-      `SELECT news5.* 
+      `SELECT news.* 
          FROM unnest(ARRAY[${quotedParams}]) WITH ORDINALITY as t(id, ord) 
-         JOIN news5 ON t.id = news5.id 
+         JOIN news ON t.id = news.id 
          ORDER BY t.ord`
     );
 

@@ -10,7 +10,7 @@ const getRandomDate = require("../utils/getDate");
 router.get("/api/v1/news", async (req, res) => {
   try {
     const response = await db.query(
-      "SELECT * FROM news5 WHERE date IS NOT NULL ORDER BY date DESC LIMIT 50"
+      "SELECT * FROM news WHERE date IS NOT NULL ORDER BY date DESC LIMIT 50"
     );
 
     res.status(200).json({
@@ -35,7 +35,7 @@ router.get("/api/v1/news", async (req, res) => {
 router.get("/api/v1/fetchNews", async (req, res) => {
   try {
     const response = await db.query(
-      "SELECT * FROM news5 WHERE date IS NOT NULL ORDER BY date DESC"
+      "SELECT * FROM news WHERE date IS NOT NULL ORDER BY date DESC"
     );
 
     res.status(200).json({
@@ -61,7 +61,7 @@ router.get("/api/v1/news/:id", async (req, res) => {
   try {
     const reqID = req.params.id;
     const getSingleNewsData = await db.query(
-      "SELECT * FROM news5 WHERE id = ($1)",
+      "SELECT * FROM news WHERE id = ($1)",
       [reqID]
     );
 
@@ -89,7 +89,7 @@ router.get("/api/v1/news/related/:id", async (req, res) => {
   try {
     const reqID = req.params.id;
     const relatedNewsID = await axios.get(
-      `http://localhost:8000/api/v1/getRecommendedNews/${reqID}`
+      `http://localhost:8000/api1/v1/getRecommendedNews/${reqID}`
     );
     console.log(reqID);
 
@@ -100,7 +100,7 @@ router.get("/api/v1/news/related/:id", async (req, res) => {
     const parameters = relatedNewsID.data;
 
     const response = await db.query(
-      `SELECT * FROM news5 WHERE id IN (${placeholders})`,
+      `SELECT * FROM news WHERE id IN (${placeholders})`,
       parameters
     );
 
@@ -126,7 +126,7 @@ router.get("/api/v1/news/relatedusernews/:id", async (req, res) => {
   try {
     const userID = req.params.id;
     const userRecommendedNewsID = await axios.get(
-      `http://localhost:8000/api/v1/getUserRecommendedNews/${userID}`
+      `http://localhost:8000/api1/v1/getUserRecommendedNews/${userID}`
     );
 
     // Generate placeholders and parameters
@@ -136,7 +136,7 @@ router.get("/api/v1/news/relatedusernews/:id", async (req, res) => {
     const parameters = userRecommendedNewsID.data;
 
     const response = await db.query(
-      `SELECT * FROM news5 WHERE id IN (${placeholders})`,
+      `SELECT * FROM news WHERE id IN (${placeholders})`,
       parameters
     );
 
@@ -160,7 +160,7 @@ router.get("/api/v1/news/relatedusernews/:id", async (req, res) => {
 router.get("/api/v1/getTrendingNews", async (req, res) => {
   try {
     const trendingNewsID = await axios.get(
-      "http://localhost:8000/api/v1/getTrendingNews"
+      "http://localhost:8000/api1/v1/getTrendingNews"
     );
 
     const parameters = trendingNewsID.data.id;
@@ -168,9 +168,9 @@ router.get("/api/v1/getTrendingNews", async (req, res) => {
     const quotedParams = parameters.map((param) => `'${param}'`).join(",");
 
     const response = await db.query(
-      `SELECT news5.* 
+      `SELECT news.* 
            FROM unnest(ARRAY[${quotedParams}]) WITH ORDINALITY as t(id, ord) 
-           JOIN news5 ON t.id = news5.id 
+           JOIN news ON t.id = news.id 
            ORDER BY t.ord`
     );
 
@@ -199,7 +199,7 @@ router.post("/api/v1/addAuthor", async (req, res) => {
     const rows = await db.query(
       `
       SELECT *
-      FROM news5
+      FROM news
       WHERE author IS NULL
       `
     );
@@ -240,7 +240,7 @@ router.post("/api/v1/addDate", async (req, res) => {
     const rows = await db.query(
       `
       SELECT id
-      FROM news5
+      FROM news
       WHERE date IS NULL
       `
     );

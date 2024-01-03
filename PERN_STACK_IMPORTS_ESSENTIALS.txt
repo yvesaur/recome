@@ -8,6 +8,7 @@ cors
 axios
 jsonwebtoken
 bcrypt
+pm2
 
 morgan
 
@@ -16,6 +17,7 @@ FRONTEND:
 react-router-dom
 axios
 react-toastify
+dotenv
 
 
 

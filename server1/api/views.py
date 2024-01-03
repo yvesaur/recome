@@ -54,7 +54,7 @@ cur = conn.cursor()
 # conn.close()
 
 # Execute a query for behaviours
-cur.execute("SELECT * FROM news5")
+cur.execute("SELECT * FROM news")
 # Fetch all the rows for news
 rows = cur.fetchall()
 column_names = [desc[0] for desc in cur.description]  # Get the column names
@@ -176,7 +176,7 @@ def recomeModel(row_index, num_similar_items):
 #==========================================
 
 # Execute a query for behaviours
-cur.execute("SELECT * FROM behaviours1")
+cur.execute("SELECT * FROM behaviours")
 # Fetch all the rows for news
 rows = cur.fetchall()
 column_names = [desc[0] for desc in cur.description] # Get the column names 
@@ -199,7 +199,7 @@ raw_behaviour['userIdx'] = raw_behaviour['userid'].map(lambda x: user2ind.get(x,
 
 
 # Execute a query for news
-cur.execute("SELECT * FROM news5")
+cur.execute("SELECT * FROM news")
 # Fetch all the rows for news
 rows = cur.fetchall()
 column_names = [desc[0] for desc in cur.description] # Get the column names 

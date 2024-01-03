@@ -12,12 +12,12 @@ router.post("/api/v1/addBehaviour/:id", async (req, res) => {
 
     const { click_history, impressions } = req.body;
 
-    const id = await db.query("SELECT COUNT(id) from behaviours1");
+    const id = await db.query("SELECT COUNT(id) from behaviours");
     const parseid = parseInt(id.rows[0].count) + 1;
 
     const addBehaviour = await db.query(
       `INSERT INTO 
-        behaviours1(id,userid,timestamp, click_history, impressions)
+        behaviours(id,userid,timestamp, click_history, impressions)
         VALUES($1,$2,$3,$4,$5)
         RETURNING * `,
       [parseid, userid, timestamp, click_history, impressions]
@@ -42,7 +42,7 @@ router.post("/api/v1/addBehaviour/:id", async (req, res) => {
 router.get("/api/v1/behaviours", async (req, res) => {
   try {
     const response = await axios.get(
-      "http://localhost:8000/api/v1/getNewsData"
+      "http://localhost:8000/api1/v1/getNewsData"
     );
 
     // console.log(response.data[0]);
