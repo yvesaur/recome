@@ -8,3 +8,4 @@ nltk==3.6.3
 scikit-learn==1.0.1
 torch==1.10.0
 pytorch-lightning==1.5.2
+python-dotenv==0.21.1

@@ -1,5 +1,8 @@
 import requests
 import psycopg2
+import os
+from dotenv import load_dotenv
+
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
@@ -31,13 +34,16 @@ import torch
 from typing import List
 from collections import Counter
 
+# Load environment variables from .env file
+load_dotenv()
+
 # Establish a connection to the PostgreSQL database
 conn = psycopg2.connect(
-    dbname="recome",
-    user="postgres",
-    password="postgres",
-    host="localhost",
-    port="5432"
+    dbname=os.getenv("DB_NAME"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    host=os.getenv("DB_HOST"),
+    port=os.getenv("DB_PORT")
 )
 
 # Create a cursor object
