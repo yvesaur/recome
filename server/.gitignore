@@ -149,6 +149,10 @@ dist
 # comment the following lines
 !.yarn/cache
 
+
+# SSL
+DigiCertGlobalRootCA.crt.pem
+
 # and uncomment the following lines
 # .pnp.*
 

@@ -34,58 +34,7 @@ import torch
 from typing import List
 from collections import Counter
 
-# Load environment variables from .env file
-load_dotenv()
-
-# Establish a connection to the PostgreSQL database
-conn = psycopg2.connect(
-    dbname=os.getenv("DB_NAME"),
-    user=os.getenv("DB_USER"),
-    password=os.getenv("DB_PASSWORD"),
-    host=os.getenv("DB_HOST"),
-    port=os.getenv("DB_PORT")
-)
-
-# Create a cursor object
-cur = conn.cursor()
-
-# Close the connection
-# cur.close()
-# conn.close()
-
-# Execute a query for behaviours
-cur.execute("SELECT * FROM news")
-# Fetch all the rows for news
-rows = cur.fetchall()
-column_names = [desc[0] for desc in cur.description]  # Get the column names
-# Create a DataFrame from the rows, with the column names
-data = pd.DataFrame(rows, columns=column_names)
-
-data.columns = [
-    'News ID',
-    "Category",
-    "Title",
-    "IMG URL",
-    "Abstract",
-    "URL",
-    "Author",
-    "Date"
-]
-
-print('the number of articles before processing :', len(data))
-data.drop_duplicates(subset=['Title'], inplace=True)
-print('The number of articles after processing :', len(data))
-
-data.isna().sum()
-
-data.dropna(inplace=True)
-
-print('the number of articles before processing :', len(data))
-data = data[data['Title'].apply((lambda x: len(x.split()) >= 4))]
-print('The number of articles after processing :', len(data))
-
-df2 = data.copy()
-
+# ===== FUNCTIONS ===== #
 # This function is to remove stopwords from a particular column and to tokenize it
 def rem_stopwords_tokenize(data, name):
 
@@ -109,11 +58,7 @@ def rem_stopwords_tokenize(data, name):
         x.append(getting(i))
     data[name] = x
 
-
-# Making a function to lemmatize all the words
-lemmatizer = WordNetLemmatizer()
-
-
+# Lemmatize all the words
 def lemmatize_all(data, name):
     arr = data[name]
     a = []
@@ -126,17 +71,6 @@ def lemmatize_all(data, name):
         a.append(b)
     data[name] = a
 
-
-# Removing Stop words from Title Column
-rem_stopwords_tokenize(data, 'Title')
-
-# Lemmatizing the Title column
-lemmatize_all(data, 'Title')
-
-# Making a copy of data to use in the future
-data4 = data.copy()
-
-
 def convert_to_string(data, name):
     t = data[name].values
     p = []
@@ -145,14 +79,7 @@ def convert_to_string(data, name):
         p.append(listToStr)
     data[name] = p
 
-
-convert_to_string(data, 'Title')
-
-headline_vectorizer = CountVectorizer()
-
-recome_headline_vectorizer = TfidfVectorizer(min_df=0)
-
-
+# News Recommendations model for News
 def recomeModel(row_index, num_similar_items):
     try:
         cate = data['Category'][row_index]
@@ -173,6 +100,74 @@ def recomeModel(row_index, num_similar_items):
     except IndexError:
         return pd.DataFrame(df2[df2['Category'] == cate])  # return an empty DataFrame in case of an IndexError
 
+# ===== FUNCTIONS ===== #
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Establish a connection to the PostgreSQL database
+conn = psycopg2.connect(
+    dbname=os.getenv("DB_NAME"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    host=os.getenv("DB_HOST"),
+    port=os.getenv("DB_PORT")
+)
+
+# Create a cursor object
+cur = conn.cursor()
+
+# Execute a query for behaviours
+cur.execute("SELECT * FROM news")
+# Fetch all the rows for news
+rows = cur.fetchall()
+column_names = [desc[0] for desc in cur.description]  # Get the column names
+# Create a DataFrame from the rows, with the column names
+data = pd.DataFrame(rows, columns=column_names)
+
+data.columns = [
+    'News ID',
+    "Category",
+    "Title",
+    "IMG URL",
+    "Abstract",
+    "URL",
+    "Author",
+    "Date"
+]
+
+# print('the number of articles before processing :', len(data))
+data.drop_duplicates(subset=['Title'], inplace=True)
+# print('The number of articles after processing :', len(data))
+
+data.isna().sum()
+
+data.dropna(inplace=True)
+
+# print('the number of articles before processing :', len(data))
+data = data[data['Title'].apply((lambda x: len(x.split()) >= 4))]
+# print('The number of articles after processing :', len(data))
+
+df2 = data.copy()
+
+# Making a function to lemmatize all the words
+lemmatizer = WordNetLemmatizer()
+
+# Removing Stop words from Title Column
+rem_stopwords_tokenize(data, 'Title')
+
+# Lemmatizing the Title column
+lemmatize_all(data, 'Title')
+
+# Making a copy of data to use in the future
+data4 = data.copy()
+
+convert_to_string(data, 'Title')
+
+headline_vectorizer = CountVectorizer()
+
+recome_headline_vectorizer = TfidfVectorizer(min_df=0)
+
 #==========================================
 
 # Execute a query for behaviours
@@ -182,7 +177,7 @@ rows = cur.fetchall()
 column_names = [desc[0] for desc in cur.description] # Get the column names 
 raw_behaviour = pd.DataFrame(rows, columns=column_names) # Create a DataFrame from the rows, with the column names
 
-print(f"The dataset originally consists of {len(raw_behaviour)} number of interactions.")
+# print(f"The dataset originally consists of {len(raw_behaviour)} number of interactions.")
 # raw_behaviour.head()
 
 
@@ -191,7 +186,7 @@ unique_userIds = raw_behaviour['userid'].unique()
 # Allocate a unique index for each user, but let the zeroth index be a UNK index:
 ind2user = {idx +1: itemid for idx, itemid in enumerate(unique_userIds)}
 user2ind = {itemid : idx for idx, itemid in ind2user.items()}
-print(f"We have {len(user2ind)} unique users in the dataset")
+# print(f"We have {len(user2ind)} unique users in the dataset")
 
 # Create a new column with userIdx:
 raw_behaviour['userIdx'] = raw_behaviour['userid'].map(lambda x: user2ind.get(x,0))
@@ -204,7 +199,7 @@ cur.execute("SELECT * FROM news")
 rows = cur.fetchall()
 column_names = [desc[0] for desc in cur.description] # Get the column names 
 news = pd.DataFrame(rows, columns=column_names) # Create a DataFrame from the rows, with the column names
-print(f"The news data consist in total of {len(news)} number of news.")
+# print(f"The news data consist in total of {len(news)} number of news.")
 
 # Build index of items
 ind2item = {idx +1: itemid for idx, itemid in enumerate(news['id'].values)}
@@ -358,7 +353,6 @@ predictions = mf_model.predict(valid_batch["userIdx"])
 true_values = [item.item() for item in valid_batch["click"]]
 
 
-
 def accuracy_at_k(predictions: List[List], true_values: List):
     hits = 0
     for preds, true in zip(predictions, true_values):
@@ -372,27 +366,23 @@ accuracy_at_k(predictions, true_values)
 ## Add more information to the article data 
 # The item index
 news["ind"] = news["id"].map(item2ind)
-print(news["ind"])
+# print(news["ind"])
 # Number of clicks in training data per article, investigate the cold start issue
 news["n_click_training"] = news["ind"].map(dict(Counter(raw_behaviour.click))).fillna(0)
 # 5 most clicked articles
 # news.sort_values("n_click_training",ascending=False).head()
 
-def runserver():
-    return subprocess.Popen(['python3.7', 'manage.py', 'runserver'])
-
-def restart_server():
-    # process.send_signal(signal.SIGTERM)
-    return runserver()
- 
 @api_view(['GET'])
 def getRecommendedNews(request, id):
-    ind = df2[df2['News ID'] == id].index[0]
-    print(ind)
-    dd = recomeModel(ind, 10)
-    dd.head(10)
-    return Response(dd['NewsID'].head(10))
-
+    if id in df2['News ID'].values:
+        ind = df2[df2['News ID'] == id].index[0]
+        # print(ind)
+        dd = recomeModel(ind, 10)
+        dd.head(10)
+        return Response(dd['NewsID'].head(10))
+    else:
+        print("News ID does not exist")
+        ind = None
 
 @api_view(['GET'])
 def getTrendingNews(request):
@@ -403,12 +393,11 @@ def getTrendingNews(request):
 
 @api_view(['GET'])
 def getUserRecommendedNews(request, id):
-    print(id)
+    # print(id)
     user_idx = raw_behaviour[raw_behaviour["userid"] == id].userIdx.values[0]
     items = torch.arange(0, len(ind2item))
     user = torch.zeros_like(items) + user_idx
     recommendations = mf_model.predict_single_user(user)
     userRecommendations = news[news.id.isin([(ind2item[item + 1])  for item in recommendations])]
-
 
     return Response(userRecommendations['id'].head(150))

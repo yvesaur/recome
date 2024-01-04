@@ -2,20 +2,18 @@ CREATE TABLE
     news (
         id VARCHAR(15) PRIMARY KEY NOT NULL,
         category VARCHAR(50),
-        subcategory VARCHAR(50),
         title TEXT,
+        img_url TEXT,
         abstract TEXT,
         url TEXT,
-        title_entities TEXT,
-        abstract_entities TEXT,
         author VARCHAR(255)
         date VARCHAR(50)
     );
 
 CREATE TABLE
-    behaviours1 (
+    behaviours (
         id INT PRIMARY KEY NOT NULL,
-        userid VARCHAR(50),
+        userid VARCHAR(15),
         timestamp VARCHAR(50),
         click_history TEXT,
         impressions TEXT
