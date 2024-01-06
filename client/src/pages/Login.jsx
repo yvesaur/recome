@@ -5,7 +5,7 @@ import "../assets/css/pages/login.css";
 import { NewsContext } from '../context/NewsContext';
 
 const Login = () => {
-    const { setAuth, notifySuccess, notifyError, isAuthenticated, getCurrentUserID, isLoggedIn, setIsLoggedIn } = useContext(NewsContext);
+    const { setAuth, notifySuccess, notifyError, isAuthenticated, getCurrentUserID } = useContext(NewsContext);
     const navigate = useNavigate();
 
     const [inputs, setInputs] = useState({
@@ -33,7 +33,6 @@ const Login = () => {
                 localStorage.setItem("impressions", "");
                 setAuth(true);
                 notifySuccess(response.data.message);
-                setIsLoggedIn(!isLoggedIn);
                 getCurrentUserID();
                 navigate("/");
             } else {
@@ -46,25 +45,21 @@ const Login = () => {
     }
 
     return (
-        isLoggedIn ? (
-            navigate("/")
-        ) : (
-            <div id='login-page'>
-                <div className='container'>
-                    <img src={require("../assets/img/recome-light.png")} alt="Recome Logo Icon" />
-                    <h1>Sign In</h1>
-                    <form onSubmit={onSubmitForm} className='login-account-form'>
-                        <input type="email" name='email' placeholder='Email Address*' required value={email} onChange={(e) => onChangeInputs(e)} />
-                        <input type="password" name='password' placeholder='Password*' required value={password} onChange={(e) => onChangeInputs(e)} />
-                        <button>Log In</button>
-                    </form>
-                    <div className='container-nav'>
-                        <p>Forgot your password?</p>
-                        <p onClick={() => navigate("/register")}>Don't have an account? register here</p>
-                    </div>
+        <div id='login-page'>
+            <div className='container'>
+                <img src={require("../assets/img/recome-light.png")} alt="Recome Logo Icon" />
+                <h1>Sign In</h1>
+                <form onSubmit={onSubmitForm} className='login-account-form'>
+                    <input type="email" name='email' placeholder='Email Address*' required value={email} onChange={(e) => onChangeInputs(e)} />
+                    <input type="password" name='password' placeholder='Password*' required value={password} onChange={(e) => onChangeInputs(e)} />
+                    <button>Log In</button>
+                </form>
+                <div className='container-nav'>
+                    <p>Forgot your password?</p>
+                    <p onClick={() => navigate("/register")}>Don't have an account? register here</p>
                 </div>
             </div>
-        )
+        </div>
     )
 }
 

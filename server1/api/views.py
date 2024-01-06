@@ -34,6 +34,186 @@ import torch
 from typing import List
 from collections import Counter
 
+from apscheduler.schedulers.background import BackgroundScheduler
+from datetime import datetime
+
+# Define global variables
+global cur, data, df2, lemmatizer, data4, headline_vectorizer, recome_headline_vectorizer
+global raw_behaviour, unique_userIds, ind2user, user2ind, news, ind2item, item2ind
+global behaviour, test_time_th, train, valid, full, bs, ds_train, train_loader
+global ds_valid, valid_loader, batch, mf_model, trainer, valid_batch, predictions, true_values
+
+def train_models():
+    global cur, data, df2, lemmatizer, data4, headline_vectorizer, recome_headline_vectorizer
+    global raw_behaviour, unique_userIds, ind2user, user2ind, news, ind2item, item2ind
+    global behaviour, test_time_th, train, valid, full, bs, ds_train, train_loader
+    global ds_valid, valid_loader, batch, mf_model, trainer, valid_batch, predictions, true_values
+    print("TRAINING MODEL: Job executed at", datetime.now())
+    # Execute a query for behaviours
+    cur.execute("SELECT * FROM news")
+    # Fetch all the rows for news
+    rows = cur.fetchall()
+    column_names = [desc[0] for desc in cur.description]  # Get the column names
+    # Create a DataFrame from the rows, with the column names
+    data = pd.DataFrame(rows, columns=column_names)
+
+    data.columns = [
+        'News ID',
+        "Category",
+        "Title",
+        "IMG URL",
+        "Abstract",
+        "URL",
+        "Author",
+        "Date"
+    ]
+
+    # print('the number of articles before processing :', len(data))
+    data.drop_duplicates(subset=['Title'], inplace=True)
+    # print('The number of articles after processing :', len(data))
+
+    data.isna().sum()
+
+    data.dropna(inplace=True)
+
+    # print('the number of articles before processing :', len(data))
+    data = data[data['Title'].apply((lambda x: len(x.split()) >= 4))]
+    # print('The number of articles after processing :', len(data))
+
+    df2 = data.copy()
+
+    # Making a function to lemmatize all the words
+    lemmatizer = WordNetLemmatizer()
+
+    # Removing Stop words from Title Column
+    rem_stopwords_tokenize(data, 'Title')
+
+    # Lemmatizing the Title column
+    lemmatize_all(data, 'Title')
+
+    # Making a copy of data to use in the future
+    data4 = data.copy()
+
+    convert_to_string(data, 'Title')
+
+    headline_vectorizer = CountVectorizer()
+
+    recome_headline_vectorizer = TfidfVectorizer(min_df=0)
+
+    #==========================================
+
+    # Execute a query for behaviours
+    cur.execute("SELECT * FROM behaviours")
+    # Fetch all the rows for news
+    rows = cur.fetchall()
+    column_names = [desc[0] for desc in cur.description] # Get the column names 
+    raw_behaviour = pd.DataFrame(rows, columns=column_names) # Create a DataFrame from the rows, with the column names
+
+    # print(f"The dataset originally consists of {len(raw_behaviour)} number of interactions.")
+    # raw_behaviour.head()
+
+
+    ## Indexize users
+    unique_userIds = raw_behaviour['userid'].unique()
+    # Allocate a unique index for each user, but let the zeroth index be a UNK index:
+    ind2user = {idx +1: itemid for idx, itemid in enumerate(unique_userIds)}
+    user2ind = {itemid : idx for idx, itemid in ind2user.items()}
+    # print(f"We have {len(user2ind)} unique users in the dataset")
+
+    # Create a new column with userIdx:
+    raw_behaviour['userIdx'] = raw_behaviour['userid'].map(lambda x: user2ind.get(x,0))
+    # raw_behaviour.head()
+
+
+    # Execute a query for news
+    cur.execute("SELECT * FROM news")
+    # Fetch all the rows for news
+    rows = cur.fetchall()
+    column_names = [desc[0] for desc in cur.description] # Get the column names 
+    news = pd.DataFrame(rows, columns=column_names) # Create a DataFrame from the rows, with the column names
+    # print(f"The news data consist in total of {len(news)} number of news.")
+
+    # Build index of items
+    ind2item = {idx +1: itemid for idx, itemid in enumerate(news['id'].values)}
+    item2ind = {itemid : idx for idx, itemid in ind2item.items()}
+
+    # news.head()
+
+
+    raw_behaviour['click_history_idx'] = raw_behaviour.click_history.map(lambda s:  process_click_history(s))
+    # raw_behaviour.head()
+
+
+    raw_behaviour['noclicks'], raw_behaviour['click'] = zip(*raw_behaviour['impressions'].map(process_impression))
+    # We can then indexize these two new columns:
+    raw_behaviour['noclicks'] = raw_behaviour['noclicks'].map(lambda list_of_strings: [item2ind.get(l, 0) for l in list_of_strings])
+    raw_behaviour['click'] = raw_behaviour['click'].map(lambda x: item2ind.get(x,0))
+
+    # raw_behaviour.head()
+
+
+    # convert timestamp value to hours since epoch
+    raw_behaviour['epochhrs'] = pd.to_datetime(raw_behaviour['timestamp']).values.astype(np.int64)/(1e6)/1000/3600
+    raw_behaviour['epochhrs'] = raw_behaviour['epochhrs'].round()
+
+    ## find first publish date
+    #raw_behaviour[['click','epochhrs']].groupby("click").min("epochhrs").reset_index()
+
+
+    ## Select the columns that we now want to use for further analysis
+    behaviour = raw_behaviour[['epochhrs','userIdx','click_history_idx','noclicks','click']]
+    # behaviour.head()
+
+
+    behaviour.loc[:,'noclick'] = behaviour['noclicks'].map(lambda x : x[0] if len(x) > 0 else 0)
+    # behaviour.head()
+
+
+    # Let us use the last 10pct of the data as our validation data:
+    test_time_th = behaviour['epochhrs'].quantile(0.9)
+    train = behaviour[behaviour['epochhrs']< test_time_th]
+    valid =  behaviour[behaviour['epochhrs']>= test_time_th]
+    full = behaviour[behaviour['epochhrs'] == behaviour['epochhrs'].max()]
+
+
+    # Build datasets and dataloaders of train and validation dataframes:
+    bs = 1024
+    ds_train = MindDataset(df=train)
+    train_loader = DataLoader(ds_train, batch_size=bs, shuffle=True)
+    ds_valid = MindDataset(df=valid)
+    valid_loader = DataLoader(ds_valid, batch_size=bs, shuffle=False)
+
+    batch = next(iter(train_loader))
+
+
+    mf_model = NewsMF(num_users=len(ind2user)+1, num_items = len(ind2item)+1, dim=15)
+
+    trainer = pl.Trainer(max_epochs=50, accelerator="gpu")
+    trainer.fit(model=mf_model, train_dataloaders=train_loader, val_dataloaders=valid_loader)
+
+    # Save the model
+    trainer.save_checkpoint("model_user1.ckpt")
+
+    # Load the trained model
+    mf_model = NewsMF.load_from_checkpoint(checkpoint_path="model_user1.ckpt", num_users=len(ind2user)+1, num_items = len(ind2item)+1, dim=15) 
+
+
+    valid_batch = next(iter(valid_loader))
+    predictions = mf_model.predict(valid_batch["userIdx"])
+    true_values = [item.item() for item in valid_batch["click"]]
+
+
+    print("MODEL ACCURACY: ", accuracy_at_k(predictions, true_values))
+
+    ## Add more information to the article data 
+    # The item index
+    news["ind"] = news["id"].map(item2ind)
+    # print(news["ind"])
+    # Number of clicks in training data per article, investigate the cold start issue
+    news["n_click_training"] = news["ind"].map(dict(Counter(raw_behaviour.click))).fillna(0)
+    # 5 most clicked articles
+    # news.sort_values("n_click_training",ascending=False).head()
+
 # ===== FUNCTIONS ===== #
 # This function is to remove stopwords from a particular column and to tokenize it
 def rem_stopwords_tokenize(data, name):
@@ -79,6 +259,48 @@ def convert_to_string(data, name):
         p.append(listToStr)
     data[name] = p
 
+
+# Indexize click history field
+def process_click_history(s):
+    list_of_strings = str(s).split(" ")
+    return [item2ind.get(l, 0) for l in list_of_strings]
+
+def process_impression(s):
+    list_of_strings = s.split(" ")
+    itemid_rel_tuple = [l.split("-") for l in list_of_strings]
+    noclicks = []
+    click = None  # Initialize click
+    for entry in itemid_rel_tuple:
+        if entry[1] =='0':
+            noclicks.append(entry[0])
+        if entry[1] =='1':
+            click = entry[0]
+    return noclicks, click
+
+class MindDataset(Dataset):
+    # A fairly simple torch dataset module that can take a pandas dataframe (as above), 
+    # and convert the relevant fields into a dictionary of arrays that can be used in a dataloader
+    def __init__(self, df):
+        # Create a dictionary of tensors out of the dataframe
+        self.data = {
+            'userIdx' : torch.tensor(df.userIdx.values),
+            'click' : torch.tensor(df.click.values),
+            'noclick' : torch.tensor(df.noclick.values)
+        }
+    def __len__(self):
+        return len(self.data['userIdx'])
+    def __getitem__(self, idx):
+        return {key: val[idx] for key, val in self.data.items()}
+
+def accuracy_at_k(predictions: List[List], true_values: List):
+    hits = 0
+    for preds, true in zip(predictions, true_values):
+        if true in preds:
+            hits += 1
+    return hits / len(true_values)
+# ===== FUNCTIONS ===== #
+
+# ===== MODELS ===== #
 # News Recommendations model for News
 def recomeModel(row_index, num_similar_items):
     try:
@@ -100,194 +322,7 @@ def recomeModel(row_index, num_similar_items):
     except IndexError:
         return pd.DataFrame(df2[df2['Category'] == cate])  # return an empty DataFrame in case of an IndexError
 
-# ===== FUNCTIONS ===== #
-
-# Load environment variables from .env file
-load_dotenv()
-
-# Establish a connection to the PostgreSQL database
-conn = psycopg2.connect(
-    dbname=os.getenv("DB_NAME"),
-    user=os.getenv("DB_USER"),
-    password=os.getenv("DB_PASSWORD"),
-    host=os.getenv("DB_HOST"),
-    port=os.getenv("DB_PORT")
-)
-
-# Create a cursor object
-cur = conn.cursor()
-
-# Execute a query for behaviours
-cur.execute("SELECT * FROM news")
-# Fetch all the rows for news
-rows = cur.fetchall()
-column_names = [desc[0] for desc in cur.description]  # Get the column names
-# Create a DataFrame from the rows, with the column names
-data = pd.DataFrame(rows, columns=column_names)
-
-data.columns = [
-    'News ID',
-    "Category",
-    "Title",
-    "IMG URL",
-    "Abstract",
-    "URL",
-    "Author",
-    "Date"
-]
-
-# print('the number of articles before processing :', len(data))
-data.drop_duplicates(subset=['Title'], inplace=True)
-# print('The number of articles after processing :', len(data))
-
-data.isna().sum()
-
-data.dropna(inplace=True)
-
-# print('the number of articles before processing :', len(data))
-data = data[data['Title'].apply((lambda x: len(x.split()) >= 4))]
-# print('The number of articles after processing :', len(data))
-
-df2 = data.copy()
-
-# Making a function to lemmatize all the words
-lemmatizer = WordNetLemmatizer()
-
-# Removing Stop words from Title Column
-rem_stopwords_tokenize(data, 'Title')
-
-# Lemmatizing the Title column
-lemmatize_all(data, 'Title')
-
-# Making a copy of data to use in the future
-data4 = data.copy()
-
-convert_to_string(data, 'Title')
-
-headline_vectorizer = CountVectorizer()
-
-recome_headline_vectorizer = TfidfVectorizer(min_df=0)
-
-#==========================================
-
-# Execute a query for behaviours
-cur.execute("SELECT * FROM behaviours")
-# Fetch all the rows for news
-rows = cur.fetchall()
-column_names = [desc[0] for desc in cur.description] # Get the column names 
-raw_behaviour = pd.DataFrame(rows, columns=column_names) # Create a DataFrame from the rows, with the column names
-
-# print(f"The dataset originally consists of {len(raw_behaviour)} number of interactions.")
-# raw_behaviour.head()
-
-
-## Indexize users
-unique_userIds = raw_behaviour['userid'].unique()
-# Allocate a unique index for each user, but let the zeroth index be a UNK index:
-ind2user = {idx +1: itemid for idx, itemid in enumerate(unique_userIds)}
-user2ind = {itemid : idx for idx, itemid in ind2user.items()}
-# print(f"We have {len(user2ind)} unique users in the dataset")
-
-# Create a new column with userIdx:
-raw_behaviour['userIdx'] = raw_behaviour['userid'].map(lambda x: user2ind.get(x,0))
-# raw_behaviour.head()
-
-
-# Execute a query for news
-cur.execute("SELECT * FROM news")
-# Fetch all the rows for news
-rows = cur.fetchall()
-column_names = [desc[0] for desc in cur.description] # Get the column names 
-news = pd.DataFrame(rows, columns=column_names) # Create a DataFrame from the rows, with the column names
-# print(f"The news data consist in total of {len(news)} number of news.")
-
-# Build index of items
-ind2item = {idx +1: itemid for idx, itemid in enumerate(news['id'].values)}
-item2ind = {itemid : idx for idx, itemid in ind2item.items()}
-
-# news.head()
-
-
-# Indexize click history field
-def process_click_history(s):
-    list_of_strings = str(s).split(" ")
-    return [item2ind.get(l, 0) for l in list_of_strings]
-        
-raw_behaviour['click_history_idx'] = raw_behaviour.click_history.map(lambda s:  process_click_history(s))
-# raw_behaviour.head()
-
-
-def process_impression(s):
-    list_of_strings = s.split(" ")
-    itemid_rel_tuple = [l.split("-") for l in list_of_strings]
-    noclicks = []
-    click = None  # Initialize click
-    for entry in itemid_rel_tuple:
-        if entry[1] =='0':
-            noclicks.append(entry[0])
-        if entry[1] =='1':
-            click = entry[0]
-    return noclicks, click
-
-raw_behaviour['noclicks'], raw_behaviour['click'] = zip(*raw_behaviour['impressions'].map(process_impression))
-# We can then indexize these two new columns:
-raw_behaviour['noclicks'] = raw_behaviour['noclicks'].map(lambda list_of_strings: [item2ind.get(l, 0) for l in list_of_strings])
-raw_behaviour['click'] = raw_behaviour['click'].map(lambda x: item2ind.get(x,0))
-
-# raw_behaviour.head()
-
-
-# convert timestamp value to hours since epoch
-raw_behaviour['epochhrs'] = pd.to_datetime(raw_behaviour['timestamp']).values.astype(np.int64)/(1e6)/1000/3600
-raw_behaviour['epochhrs'] = raw_behaviour['epochhrs'].round()
-
-## find first publish date
-#raw_behaviour[['click','epochhrs']].groupby("click").min("epochhrs").reset_index()
-
-
-## Select the columns that we now want to use for further analysis
-behaviour = raw_behaviour[['epochhrs','userIdx','click_history_idx','noclicks','click']]
-# behaviour.head()
-
-
-behaviour.loc[:,'noclick'] = behaviour['noclicks'].map(lambda x : x[0] if len(x) > 0 else 0)
-# behaviour.head()
-
-
-# Let us use the last 10pct of the data as our validation data:
-test_time_th = behaviour['epochhrs'].quantile(0.9)
-train = behaviour[behaviour['epochhrs']< test_time_th]
-valid =  behaviour[behaviour['epochhrs']>= test_time_th]
-full = behaviour[behaviour['epochhrs'] == behaviour['epochhrs'].max()]
-
-
-class MindDataset(Dataset):
-    # A fairly simple torch dataset module that can take a pandas dataframe (as above), 
-    # and convert the relevant fields into a dictionary of arrays that can be used in a dataloader
-    def __init__(self, df):
-        # Create a dictionary of tensors out of the dataframe
-        self.data = {
-            'userIdx' : torch.tensor(df.userIdx.values),
-            'click' : torch.tensor(df.click.values),
-            'noclick' : torch.tensor(df.noclick.values)
-        }
-    def __len__(self):
-        return len(self.data['userIdx'])
-    def __getitem__(self, idx):
-        return {key: val[idx] for key, val in self.data.items()}
-
-
-# Build datasets and dataloaders of train and validation dataframes:
-bs = 1024
-ds_train = MindDataset(df=train)
-train_loader = DataLoader(ds_train, batch_size=bs, shuffle=True)
-ds_valid = MindDataset(df=valid)
-valid_loader = DataLoader(ds_valid, batch_size=bs, shuffle=False)
-
-batch = next(iter(train_loader))
-
-
-# Build a matrix factorization model
+ # Build a matrix factorization model
 class NewsMF(pl.LightningModule):
     def __init__(self, num_users, num_items, dim = 10):
         super().__init__()
@@ -333,44 +368,36 @@ class NewsMF(pl.LightningModule):
 
     def configure_optimizers(self):
         optimizer = torch.optim.Adam(self.parameters(), lr=1e-3)
-        return optimizer
+        return optimizer  
 
+# ===== MODELS ===== #
 
-mf_model = NewsMF(num_users=len(ind2user)+1, num_items = len(ind2item)+1, dim=15)
+#==========================================
 
-trainer = pl.Trainer(max_epochs=50, accelerator="gpu")
-trainer.fit(model=mf_model, train_dataloaders=train_loader, val_dataloaders=valid_loader)
+# Load environment variables from .env file
+load_dotenv()
 
-# Save the model
-trainer.save_checkpoint("model_user1.ckpt")
+# Establish a connection to the PostgreSQL database
+conn = psycopg2.connect(
+    dbname=os.getenv("DB_NAME"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    host=os.getenv("DB_HOST"),
+    port=os.getenv("DB_PORT")
+)
 
-# Load the trained model
-mf_model = NewsMF.load_from_checkpoint(checkpoint_path="model_user1.ckpt", num_users=len(ind2user)+1, num_items = len(ind2item)+1, dim=15) 
+# Create a cursor object
+cur = conn.cursor()
 
+train_models()
 
-valid_batch = next(iter(valid_loader))
-predictions = mf_model.predict(valid_batch["userIdx"])
-true_values = [item.item() for item in valid_batch["click"]]
+# ===== RE-TRAINING MODEL (EVERY 4AM) ===== #
+scheduler = BackgroundScheduler()
+scheduler.add_job(train_models, 'cron', hour=4)
+scheduler.start()
+# ===== RE-TRAINING MODEL (EVERY 4AM) ===== #
 
-
-def accuracy_at_k(predictions: List[List], true_values: List):
-    hits = 0
-    for preds, true in zip(predictions, true_values):
-        if true in preds:
-            hits += 1
-    return hits / len(true_values)
-
-accuracy_at_k(predictions, true_values)
-
-
-## Add more information to the article data 
-# The item index
-news["ind"] = news["id"].map(item2ind)
-# print(news["ind"])
-# Number of clicks in training data per article, investigate the cold start issue
-news["n_click_training"] = news["ind"].map(dict(Counter(raw_behaviour.click))).fillna(0)
-# 5 most clicked articles
-# news.sort_values("n_click_training",ascending=False).head()
+# ===== API REQUESTS ===== #
 
 @api_view(['GET'])
 def getRecommendedNews(request, id):
@@ -393,11 +420,25 @@ def getTrendingNews(request):
 
 @api_view(['GET'])
 def getUserRecommendedNews(request, id):
-    # print(id)
-    user_idx = raw_behaviour[raw_behaviour["userid"] == id].userIdx.values[0]
-    items = torch.arange(0, len(ind2item))
-    user = torch.zeros_like(items) + user_idx
-    recommendations = mf_model.predict_single_user(user)
-    userRecommendations = news[news.id.isin([(ind2item[item + 1])  for item in recommendations])]
+    if id in raw_behaviour['userid'].values:
+        user_idx = raw_behaviour[raw_behaviour["userid"] == id].userIdx.values[0]
+        items = torch.arange(0, len(ind2item))
+        user = torch.zeros_like(items) + user_idx
+        recommendations = mf_model.predict_single_user(user)
+        userRecommendations = news[news.id.isin([(ind2item[item + 1])  for item in recommendations])]
+        return Response(userRecommendations['id'].head(150))
+    else:
+        response = requests.get('http://localhost:5000/api/v1/news/N1')
 
-    return Response(userRecommendations['id'].head(150))
+        # If the request was successful, `status_code` will be 200
+        print('Status Code:', response.status_code)
+
+        # The `json` method returns the JSON response as a Python dictionary
+        data = response.json()
+
+        # Access the 'news' key inside the 'data' key
+        news_data = data['data']['news']['id']
+
+        return Response([news_data])
+
+# ===== API REQUESTS ===== #
