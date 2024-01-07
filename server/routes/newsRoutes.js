@@ -31,6 +31,31 @@ router.get("/api/v1/news", async (req, res) => {
   }
 });
 
+// DISPLAY WIDE INTEREST NEWS
+router.get("/api/v1/fetch/wideNews", async (req, res) => {
+  try {
+    const response = await db.query(
+      "SELECT * FROM news WHERE date IS NOT NULL ORDER BY RANDOM() LIMIT 100"
+    );
+
+    res.status(200).json({
+      status: "success",
+      results: 1,
+      data: {
+        news: response.rows,
+      },
+      message: "Wide News data fetched successfuly.",
+    });
+  } catch (error) {
+    console.error(error.message);
+
+    res.status(500).json({
+      status: "error",
+      message: "An error occurred while fetching wide news data.",
+    });
+  }
+});
+
 // DISPLAY ALL NEWS
 router.get("/api/v1/fetchNews", async (req, res) => {
   try {

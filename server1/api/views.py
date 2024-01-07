@@ -393,7 +393,7 @@ train_models()
 
 # ===== RE-TRAINING MODEL (EVERY 4AM) ===== #
 scheduler = BackgroundScheduler()
-scheduler.add_job(train_models, 'cron', hour=4)
+scheduler.add_job(train_models, 'interval', hours=1)
 scheduler.start()
 # ===== RE-TRAINING MODEL (EVERY 4AM) ===== #
 
@@ -428,17 +428,13 @@ def getUserRecommendedNews(request, id):
         userRecommendations = news[news.id.isin([(ind2item[item + 1])  for item in recommendations])]
         return Response(userRecommendations['id'].head(150))
     else:
-        response = requests.get('http://localhost:5000/api/v1/news/N1')
+        # Execute a query for behaviours
+        cur.execute("SELECT * FROM news WHERE date IS NOT NULL ORDER BY date DESC") 
+        # Fetch all the rows for news
+        rows = cur.fetchall()
+        column_names = [desc[0] for desc in cur.description] # Get the column names 
+        coldStartUserRecommendations = pd.DataFrame(rows, columns=column_names) # Create a DataFrame from the rows, with the column names
 
-        # If the request was successful, `status_code` will be 200
-        print('Status Code:', response.status_code)
-
-        # The `json` method returns the JSON response as a Python dictionary
-        data = response.json()
-
-        # Access the 'news' key inside the 'data' key
-        news_data = data['data']['news']['id']
-
-        return Response([news_data])
+        return Response(coldStartUserRecommendations['id'].head(150))
 
 # ===== API REQUESTS ===== #

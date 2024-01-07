@@ -28,12 +28,27 @@
   text-justify: auto;
 }
 
+.news-list-container-main {
+  margin-top: 2.5rem;
+}
+
 .news-list-container {
   padding: 0 2rem;
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   justify-content: center;
+}
+
+.news-list-container-user {
+  padding: 0 2rem;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, 400px);
+}
+
+.user-trending-recommendations-banner {
+  padding: 0 2rem;
 }
 
 .news-list-card {
@@ -54,4 +69,8 @@
 
 .news-clicks {
   text-align: end;
+}
+
+.outside-recommendations-banner {
+  padding: 2rem 1rem 2rem 2rem;
 }

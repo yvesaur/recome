@@ -13,7 +13,9 @@ const NewsList = ({ title, description, isRecommended, isTrending, isLatest, sea
     const [interestAreas, setInterestAreas] = useState([]);
     const [wideInterest, setWideInterest] = useState(true);
     const [topicExclusions, setTopicExclusions] = useState([]);
-    const [isTrendingNews, setIsTrendingNews] = useState("");
+    const [isTrendingNews, setIsTrendingNews] = useState("not important");
+    const [wideInterestNews, setWideInterestNews] = useState([]);
+    const [userTrendingNews, setUserTrendingNews] = useState([]);
 
     async function getUserInfo() {
         try {
@@ -27,6 +29,12 @@ const NewsList = ({ title, description, isRecommended, isTrending, isLatest, sea
             setWideInterest(response.data.data.wide_interest)
             setTopicExclusions(response.data.data.topic_exclusions)
             setIsTrendingNews(response.data.data.trending_news)
+
+            if (wideInterest) {
+                const response1 = await Fetch.get("/fetch/wideNews")
+                setWideInterestNews(response1.data.data.news)
+            }
+
         } catch (error) {
             console.error(error.message)
         }
@@ -35,6 +43,20 @@ const NewsList = ({ title, description, isRecommended, isTrending, isLatest, sea
     useEffect(() => {
         getUserInfo();
     }, [])
+
+
+    useEffect(() => {
+        const filterUserTrendingNews = async () => {
+            if (isTrendingNews.toLowerCase() === "important") {
+                const ids = trendingNews.map(news => news.id);
+                const userRecommendedNewsIds = userRecommendedNews.map(news => news.id);
+                const filteredIds = ids.filter(id => userRecommendedNewsIds.includes(id));
+                const filteredUserRecommendedNews = userRecommendedNews.filter(news => filteredIds.includes(news.id));
+                setUserTrendingNews(filteredUserRecommendedNews)
+            }
+        }
+        filterUserTrendingNews()
+    }, [isTrendingNews, trendingNews, userRecommendedNews])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -88,7 +110,37 @@ const NewsList = ({ title, description, isRecommended, isTrending, isLatest, sea
                     </p>
                 </div>
             </div>
-            <div className='news-list-container'>
+
+            {isRecommended & isTrendingNews.toLowerCase() === "important" ? (
+                userTrendingNews.length > 0 ? (
+                    <>
+                        <h2 className='user-trending-recommendations-banner'>Current Trending News in your recommendation</h2>
+
+                        <div className='news-list-container-user'>
+                            {userTrendingNews.map((news) => {
+                                return (
+                                    <div className="news-list-card" key={news.id} onClick={() => {
+                                        getUserClick(news.id);
+                                        handleNewsSelect(news.id);
+                                    }}>
+                                        <img className='recommendedNews-img' src={news.img_url} alt="NEWS THUMBNAIL" />
+                                        <p className='news-list-info news-category'>{news.category}</p>
+                                        <p className='news-list-info news-title'>{news.title}</p>
+                                        <div>
+                                            <p className='news-author'>{news.author}</p>
+                                            <p className='news-date'>{formatDate(news.date)}</p>
+                                        </div>
+                                    </div>
+                                )
+                            })}
+
+                        </div>
+                    </>
+                ) : (
+                    <Loader />
+                )
+            ) : null}
+            <div className='news-list-container news-list-container-main'>
                 {isLatest ? (
                     filteredLatestNews.length > 0 ? (
                         filteredLatestNews.map((news) => {
@@ -157,7 +209,38 @@ const NewsList = ({ title, description, isRecommended, isTrending, isLatest, sea
                     )
                 ) : null}
             </div>
-        </div>
+            {wideInterest ? (
+                wideInterestNews.length > 0 ? (
+                    <>
+                        <h2 className='outside-recommendations-banner'>Here are other news that is outside your recommendations...</h2>
+
+                        <div className='news-list-container'>
+                            {wideInterestNews.map((news) => {
+                                return (
+                                    <div className="news-list-card" key={news.id} onClick={() => {
+                                        getUserClick(news.id);
+                                        handleNewsSelect(news.id);
+                                    }}>
+                                        <img className='recommendedNews-img' src={news.img_url} alt="NEWS THUMBNAIL" />
+                                        <p className='news-list-info news-category'>{news.category}</p>
+                                        <p className='news-list-info news-title'>{news.title}</p>
+                                        <div>
+                                            <p className='news-author'>{news.author}</p>
+                                            <p className='news-date'>{formatDate(news.date)}</p>
+                                        </div>
+                                    </div>
+                                )
+                            })}
+
+                        </div>
+                    </>
+                ) : (
+                    <Loader />
+                )
+            ) :
+                <h2 className='outside-recommendations-banner'>Looks like you have reached the end of your recommendations. </h2>
+            }
+        </div >
     )
 }
 

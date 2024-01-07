@@ -52,12 +52,28 @@ const Register = () => {
 
     const onChangeInputsArray = async (e, isActive) => {
         if (!isActive) {
-            setInputs({ ...inputs, interest_areas: [...inputs.interest_areas, e.target.value] })
+            if (e.target.value === "ALL TOPIC") {
+                setInputs({
+                    ...inputs,
+                    interest_areas: [...inputs.interest_areas,
+                        "news", "tvshowbiz", "sport", "femail",
+                        "money", "health", "sciencetech", "travel",
+                        "debate", "shopping-uk", "home", "yourmoney",
+                        "property", "shopping-us", "tv", "wellness-us",
+                        "galleries", "video"]
+                });
+            } else {
+                setInputs({ ...inputs, interest_areas: [...inputs.interest_areas, e.target.value] })
+            }
         } else if (isActive) {
-            setInputs({
-                ...inputs,
-                interest_areas: inputs.interest_areas.filter(item => item !== e.target.value)
-            });
+            if (e.target.value === "ALL TOPIC") {
+                setInputs({ ...inputs, interest_areas: [] })
+            } else {
+                setInputs({
+                    ...inputs,
+                    interest_areas: inputs.interest_areas.filter(item => item !== e.target.value)
+                });
+            }
         }
     }
 
@@ -167,7 +183,27 @@ const Register = () => {
                         <img src={require("../assets/img/recome-light.png")} alt="Recome Logo Icon" />
                         <h1>What are your primary areas of interest?</h1>
                         <form className='register-account-form interest-options'>
-                            <input type="button" className={areAllCategoriesActive ? 'active' : ''} value="ALL TOPIC" onClick={toggleAllCategories} />
+                            <input type="button" className={areAllCategoriesActive ? 'active' : ''} value="ALL TOPIC" onClick={(e) => {
+                                onChangeInputsArray(e, isNewsActive)
+                                onChangeInputsArray(e, isTvShowbizActive)
+                                onChangeInputsArray(e, isSportsActive)
+                                onChangeInputsArray(e, isFemailActive)
+                                onChangeInputsArray(e, isMoneyActive)
+                                onChangeInputsArray(e, isHealthActive)
+                                onChangeInputsArray(e, isScienceTechActive)
+                                onChangeInputsArray(e, isTravelActive)
+                                onChangeInputsArray(e, isDebateActive)
+                                onChangeInputsArray(e, isShoppingUkActive)
+                                onChangeInputsArray(e, isHomeActive)
+                                onChangeInputsArray(e, isYourMoneyActive)
+                                onChangeInputsArray(e, isPropertyActive)
+                                onChangeInputsArray(e, isShoppingUsActive)
+                                onChangeInputsArray(e, isTvActive)
+                                onChangeInputsArray(e, isWellnessUsActive)
+                                onChangeInputsArray(e, isGalleriesActive)
+                                onChangeInputsArray(e, isVideoActive)
+                                toggleAllCategories()
+                            }} />
                             <input type="button" className={isNewsActive ? 'active' : ''} value="news" name='interest_areas' onClick={(e) => {
                                 setIsNewsActive(!isNewsActive)
                                 onChangeInputsArray(e, isNewsActive);

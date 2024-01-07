@@ -7,9 +7,10 @@ const pool = new Pool({
   database: process.env.PGDATABASE,
   password: process.env.PGPASSWORD,
   port: process.env.PGPORT,
+  ssl: {
+    ca: fs.readFileSync("DigiCertGlobalRootCA.crt.pem").toString(),
+  },
 });
-
-console.log("PGUSER: ", process.env.PGUSER);
 
 module.exports = {
   query: (text, params) => pool.query(text, params),
