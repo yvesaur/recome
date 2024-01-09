@@ -194,14 +194,14 @@ def train_models():
 
     mf_model = NewsMF(num_users=len(ind2user)+1, num_items = len(ind2item)+1, dim=15)
 
-    trainer = pl.Trainer(max_epochs=50, accelerator="gpu")
+    trainer = pl.Trainer(max_epochs=50, accelerator="cpu")
     trainer.fit(model=mf_model, train_dataloaders=train_loader, val_dataloaders=valid_loader)
 
     # Save the model
-    trainer.save_checkpoint("model_user1.ckpt")
+    # trainer.save_checkpoint("model_user1.ckpt")
 
     # Load the trained model
-    mf_model = NewsMF.load_from_checkpoint(checkpoint_path="model_user1.ckpt", num_users=len(ind2user)+1, num_items = len(ind2item)+1, dim=15) 
+    # mf_model = NewsMF.load_from_checkpoint(checkpoint_path="model_user1.ckpt", num_users=len(ind2user)+1, num_items = len(ind2item)+1, dim=15) 
 
 
     valid_batch = next(iter(valid_loader))
@@ -209,7 +209,7 @@ def train_models():
     true_values = [item.item() for item in valid_batch["click"]]
 
 
-    print("MODEL ACCURACY: ", accuracy_at_k(predictions, true_values))
+    # print("MODEL ACCURACY: ", accuracy_at_k(predictions, true_values))
 
     ## Add more information to the article data 
     # The item index
