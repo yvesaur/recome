@@ -151,7 +151,7 @@ dist
 
 
 # SSL
-DigiCertGlobalRootCA.crt.pem
+# DigiCertGlobalRootCA.crt.pem
 
 # and uncomment the following lines
 # .pnp.*
