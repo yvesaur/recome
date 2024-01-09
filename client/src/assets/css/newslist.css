@@ -45,6 +45,8 @@
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(auto-fit, 400px);
+  border-bottom: 1px solid var(--outline_clr1);
+  padding-bottom: 1rem;
 }
 
 .user-trending-recommendations-banner {

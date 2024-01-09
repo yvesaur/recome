@@ -137,7 +137,7 @@ const NewsList = ({ title, description, isRecommended, isTrending, isLatest, sea
                         </div>
                     </>
                 ) : (
-                    <Loader />
+                    null
                 )
             ) : null}
             <div className='news-list-container news-list-container-main'>
@@ -235,7 +235,7 @@ const NewsList = ({ title, description, isRecommended, isTrending, isLatest, sea
                         </div>
                     </>
                 ) : (
-                    <Loader />
+                    null
                 )
             ) :
                 <h2 className='outside-recommendations-banner'>Looks like you have reached the end of your recommendations. </h2>

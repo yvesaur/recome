@@ -6,10 +6,6 @@ from dotenv import load_dotenv
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-import subprocess
-import signal
-import time
-
 import pandas as pd
 import numpy as np
 from nltk.corpus import stopwords
@@ -22,9 +18,9 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 # Below libraries are for similarity matrices using sklearn
 from sklearn.metrics import pairwise_distances
 import nltk
-# ltk.download('stopwords')
-# nltk.download('punkt')
-# nltk.download('wordnet')
+nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('wordnet')
 
 import torch.nn as nn
 import pytorch_lightning as pl
@@ -37,6 +33,11 @@ from collections import Counter
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime
 
+import newspaper
+import psycopg2
+from newspaper import ArticleException
+nltk.download('punkt')
+
 # Define global variables
 global cur, data, df2, lemmatizer, data4, headline_vectorizer, recome_headline_vectorizer
 global raw_behaviour, unique_userIds, ind2user, user2ind, news, ind2item, item2ind
@@ -48,6 +49,11 @@ def train_models():
     global raw_behaviour, unique_userIds, ind2user, user2ind, news, ind2item, item2ind
     global behaviour, test_time_th, train, valid, full, bs, ds_train, train_loader
     global ds_valid, valid_loader, batch, mf_model, trainer, valid_batch, predictions, true_values
+
+
+    # Start the process of scraping news first
+    scrape_news()
+
     print("TRAINING MODEL: Job executed at", datetime.now())
     # Execute a query for behaviours
     cur.execute("SELECT * FROM news")
@@ -215,6 +221,69 @@ def train_models():
     # news.sort_values("n_click_training",ascending=False).head()
 
 # ===== FUNCTIONS ===== #
+
+# SCRAPE NEWS IN DAILYMAIL
+def scrape_news():
+    # Fetch news articles from DailyMail
+    print("\nFetching news articles from DailyMail...\n")
+    newspaper_list = newspaper.build('https://www.dailymail.co.uk/')
+    count = 0
+
+    for article in newspaper_list.articles:
+        count = count + 1
+        # print(article.url)
+
+    print("\nFETCHED NEWSPAPER ARTICLES: " + str(count) + " news") 
+
+    # Insert all the fetched articles into the database
+    print("\nInserting fetched articles into the database...")
+    for article in newspaper_list.articles:
+        # Skip the article if the URL contains "#comments" or "#video"
+        if "#comments" in article.url or "#video" in article.url:
+            # print("Irrelevant Article")
+            continue
+
+        try:
+            article.download()
+            article.parse()
+            article.nlp()
+        except ArticleException:
+            print(f"Failed to download or parse article: {article.url}")
+            continue
+        
+        # Split the URL into parts
+        parts = article.url.split('/')
+        # The category is usually the part after the base URL
+        category = parts[3]  # Adjust this index based on the URL structure
+
+        cur.execute("SELECT COUNT(*) FROM news")
+        newsID =  "N" + str(cur.fetchone()[0] + 1)
+
+        # Define the SELECT query
+        select_query = "SELECT * FROM news WHERE title = %s"
+
+        # Execute the SELECT query
+        cur.execute(select_query, (article.title,))
+
+        # Fetch the result
+        result = cur.fetchone()
+
+        # If the result is None, then the title does not exist in the table
+        if result is None and len(category) <= 20:
+            # Define the INSERT query
+            query = "INSERT INTO news (id, category, title, img_url, abstract, url, author, date) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)"
+
+            # Define the values
+            values = (newsID, category, article.title, article.top_image, article.summary, article.url, article.authors[0] if article.authors else None, article.publish_date)
+
+            # Execute the INSERT query
+            cur.execute(query,values)
+
+            # Commit the changes
+            conn.commit()
+
+    print("\nNEWSPAPER SCRAPING DONE") 
+
 # This function is to remove stopwords from a particular column and to tokenize it
 def rem_stopwords_tokenize(data, name):
 
@@ -277,27 +346,6 @@ def process_impression(s):
             click = entry[0]
     return noclicks, click
 
-class MindDataset(Dataset):
-    # A fairly simple torch dataset module that can take a pandas dataframe (as above), 
-    # and convert the relevant fields into a dictionary of arrays that can be used in a dataloader
-    def __init__(self, df):
-        # Create a dictionary of tensors out of the dataframe
-        self.data = {
-            'userIdx' : torch.tensor(df.userIdx.values),
-            'click' : torch.tensor(df.click.values),
-            'noclick' : torch.tensor(df.noclick.values)
-        }
-    def __len__(self):
-        return len(self.data['userIdx'])
-    def __getitem__(self, idx):
-        return {key: val[idx] for key, val in self.data.items()}
-
-def accuracy_at_k(predictions: List[List], true_values: List):
-    hits = 0
-    for preds, true in zip(predictions, true_values):
-        if true in preds:
-            hits += 1
-    return hits / len(true_values)
 # ===== FUNCTIONS ===== #
 
 # ===== MODELS ===== #
@@ -322,7 +370,7 @@ def recomeModel(row_index, num_similar_items):
     except IndexError:
         return pd.DataFrame(df2[df2['Category'] == cate])  # return an empty DataFrame in case of an IndexError
 
- # Build a matrix factorization model
+# Build a matrix factorization model
 class NewsMF(pl.LightningModule):
     def __init__(self, num_users, num_items, dim = 10):
         super().__init__()
@@ -369,7 +417,28 @@ class NewsMF(pl.LightningModule):
     def configure_optimizers(self):
         optimizer = torch.optim.Adam(self.parameters(), lr=1e-3)
         return optimizer  
+    
+class MindDataset(Dataset):
+    # A fairly simple torch dataset module that can take a pandas dataframe (as above), 
+    # and convert the relevant fields into a dictionary of arrays that can be used in a dataloader
+    def __init__(self, df):
+        # Create a dictionary of tensors out of the dataframe
+        self.data = {
+            'userIdx' : torch.tensor(df.userIdx.values),
+            'click' : torch.tensor(df.click.values),
+            'noclick' : torch.tensor(df.noclick.values)
+        }
+    def __len__(self):
+        return len(self.data['userIdx'])
+    def __getitem__(self, idx):
+        return {key: val[idx] for key, val in self.data.items()}
 
+def accuracy_at_k(predictions: List[List], true_values: List):
+    hits = 0
+    for preds, true in zip(predictions, true_values):
+        if true in preds:
+            hits += 1
+    return hits / len(true_values)
 # ===== MODELS ===== #
 
 #==========================================
@@ -389,7 +458,9 @@ conn = psycopg2.connect(
 # Create a cursor object
 cur = conn.cursor()
 
+# Fetch News and Train Model first when server first start
 train_models()
+
 
 # ===== RE-TRAINING MODEL (EVERY 4AM) ===== #
 scheduler = BackgroundScheduler()
@@ -397,8 +468,8 @@ scheduler.add_job(train_models, 'interval', hours=1)
 scheduler.start()
 # ===== RE-TRAINING MODEL (EVERY 4AM) ===== #
 
-# ===== API REQUESTS ===== #
 
+# ===== API REQUESTS ===== #
 @api_view(['GET'])
 def getRecommendedNews(request, id):
     if id in df2['News ID'].values:
@@ -436,5 +507,4 @@ def getUserRecommendedNews(request, id):
         coldStartUserRecommendations = pd.DataFrame(rows, columns=column_names) # Create a DataFrame from the rows, with the column names
 
         return Response(coldStartUserRecommendations['id'].head(150))
-
 # ===== API REQUESTS ===== #
