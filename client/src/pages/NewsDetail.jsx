@@ -81,7 +81,7 @@ const NewsDetail = () => {
                 )
                 }
             </div>
-            {selectedNews && <div className='selected-news-link'><a href={selectedNews.url}>Read more...</a> </div>}
+            {/*selectedNews && <div className='selected-news-link'><a href={selectedNews.url}>Read more...</a> </div>*/}
             <h1>Related  News you might like</h1>
             <div className='related-news-container'>
                 {relatedNews ? (

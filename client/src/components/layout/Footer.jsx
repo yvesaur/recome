@@ -25,9 +25,8 @@ const Footer = () => {
             </div>
             <div className="info-page">
                 <p onClick={() => navigate('/about')}>About</p>
-                <p onClick={() => navigate('/archive')}>Archive</p>
                 <p onClick={() => navigate('/termsandconditions')}>Terms & Conditions</p>
-                <p onClick={() => navigate('/cookiepolicy')}>Cookie Policy</p>
+                <p onClick={() => navigate('/archive')}>Archives</p>
             </div>
             <p>
                 © RecoMe News

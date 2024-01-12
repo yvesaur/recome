@@ -9,6 +9,10 @@
   gap: 1rem;
 }
 
+#footer > img {
+  margin-top: 1rem;
+}
+
 .social-link {
   display: flex;
   gap: 0.5rem;
