@@ -36,8 +36,7 @@
   padding: 0 2rem;
   display: grid;
   gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  justify-content: center;
+  grid-template-columns: repeat(auto-fit, 431px);
 }
 
 .news-list-container-user {

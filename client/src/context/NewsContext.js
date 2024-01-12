@@ -11,6 +11,7 @@ export const NewsContextProvider = (props) => {
   const [trendingNewsClicks, setTrendingNewsClicks] = useState([]);
   const [currentUserID, setCurrentUserID] = useState(null);
   const [userClickedNews, setUserClickedNews] = useState([]);
+  const [searchOutsideArchive, setSearchOutsideArchive] = useState("");
 
   function formatDate(dateString) {
     const date = new Date(dateString);
@@ -149,6 +150,8 @@ export const NewsContextProvider = (props) => {
         setCurrentUserID,
         formatDate,
         userClickedNews,
+        searchOutsideArchive,
+        setSearchOutsideArchive,
       }}
     >
       {props.children}

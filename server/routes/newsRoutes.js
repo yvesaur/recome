@@ -60,7 +60,7 @@ router.get("/api/v1/fetch/wideNews", async (req, res) => {
 router.get("/api/v1/fetchNews", async (req, res) => {
   try {
     const response = await db.query(
-      "SELECT * FROM news WHERE date IS NOT NULL ORDER BY date DESC"
+      "SELECT * FROM news WHERE date IS NOT NULL ORDER BY date DESC LIMIT 3000"
     );
 
     res.status(200).json({
@@ -161,7 +161,7 @@ router.get("/api/v1/news/relatedusernews/:id", async (req, res) => {
     const parameters = userRecommendedNewsID.data;
 
     const response = await db.query(
-      `SELECT * FROM news WHERE id IN (${placeholders})`,
+      `SELECT * FROM news WHERE id IN (${placeholders}) ORDER BY RANDOM()`,
       parameters
     );
 

@@ -103,7 +103,7 @@ const Register = () => {
                 localStorage.setItem("token", response.data.data.token);
                 setAuth(true);
                 notifySuccess(response.data.message);
-                // window.location.reload();
+                window.location.reload();
             } else {
                 notifyError("An error occurred while registering your account.");
             }

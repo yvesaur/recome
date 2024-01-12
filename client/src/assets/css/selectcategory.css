@@ -1,6 +1,7 @@
 #select-category {
-  padding: 3rem 2rem 0 2rem;
+  padding: 2rem 2rem 0 2rem;
   font-size: 1.1rem;
+  background: var(--bg_clr);
 }
 
 #select-category ul {
@@ -8,7 +9,7 @@
   justify-content: center;
   align-items: center;
   list-style-type: none;
-  border-bottom: 1px solid var(--outline_clr1);
+  border-bottom: 2px solid var(--outline_clr1);
 }
 
 .category-ul {

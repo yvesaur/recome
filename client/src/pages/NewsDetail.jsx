@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Fetch from '../api/Fetch'
 import "../assets/css/pages/newsdetail.css"
-import SelectCategory from '../components/SelectCategory'
 import Loader from '../components/animation/Loader'
 import Footer from '../components/layout/Footer'
 import Header from '../components/layout/Header'
@@ -63,7 +62,6 @@ const NewsDetail = () => {
     return (
         <div id='news-detail-page'>
             <Header isDisabled={true} />
-            <SelectCategory />
             <div className='selected-news-container'>
                 {selectedNews ? (
                     <div className='news-card news-detail-card' key={selectedNews.id} onClick={() => {

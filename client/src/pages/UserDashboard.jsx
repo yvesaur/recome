@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Fetch from '../api/Fetch';
 import '../assets/css/pages/userdashboard.css';
-import SelectCategory from '../components/SelectCategory';
 import Loader from '../components/animation/Loader';
 import Footer from '../components/layout/Footer';
 import Header from '../components/layout/Header';
@@ -82,7 +81,6 @@ const UserDashboard = () => {
         isAuthenticated ? (
             <div id='user-dashboard'>
                 <Header isAuthenticated={isAuthenticated} />
-                <SelectCategory />
                 <div id='user-information'>
                     <div>
                         <i class="fa-regular fa-user user-pfp"></i>

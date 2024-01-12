@@ -1,3 +1,8 @@
+#sticky-header {
+  position: sticky;
+  top: 0;
+}
+
 #header {
   display: flex;
   background-color: var(--header_clr);
@@ -10,9 +15,11 @@
 }
 
 .search-disable {
+  /*
   pointer-events: none;
   background-color: #ddd;
   color: #aaa;
+  */
 }
 
 img {

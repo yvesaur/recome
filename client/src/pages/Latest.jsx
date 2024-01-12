@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react'
 
 import { useLocation } from 'react-router-dom'
 import NewsList from '../components/NewsList'
-import SelectCategory from '../components/SelectCategory'
 import Footer from '../components/layout/Footer'
 import Header from '../components/layout/Header'
 import { NewsContext } from '../context/NewsContext'
@@ -25,7 +24,6 @@ const Latest = () => {
     return (
         <div id='latest-page'>
             <Header setSearch={setSearch} isAuthenticated={isAuthenticated} />
-            <SelectCategory />
             <NewsList title="Latest" description={description} isLatest={true} search={search} />
             <Footer />
         </div>

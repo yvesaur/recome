@@ -500,11 +500,10 @@ def getUserRecommendedNews(request, id):
         return Response(userRecommendations['id'].head(150))
     else:
         # Execute a query for behaviours
-        cur.execute("SELECT * FROM news WHERE date IS NOT NULL ORDER BY date DESC") 
+        cur.execute("SELECT * FROM news WHERE date IS NOT NULL ORDER BY date DESC LIMIT 150") 
         # Fetch all the rows for news
         rows = cur.fetchall()
         column_names = [desc[0] for desc in cur.description] # Get the column names 
         coldStartUserRecommendations = pd.DataFrame(rows, columns=column_names) # Create a DataFrame from the rows, with the column names
-
-        return Response(coldStartUserRecommendations['id'].head(150))
+        return Response(coldStartUserRecommendations['id'])
 # ===== API REQUESTS ===== #

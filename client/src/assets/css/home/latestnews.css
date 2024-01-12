@@ -23,9 +23,7 @@
   display: grid;
   justify-content: center;
   grid-template: repeat(2, minmax(350px, 1fr)) / repeat(3, 1fr);
-  grid-template-areas:
-    "latest-news-0 latest-news-2 latest-news-3"
-    "latest-news-1 latest-news-2 latest-news-4";
+  gap: 0.5rem;
 }
 
 .latest-news {
@@ -40,37 +38,14 @@
   border-radius: 1rem;
 }
 
-.latest-news-0 {
-  padding: 1rem;
-  grid-area: latest-news-0;
-}
-
-.latest-news-1 {
-  padding: 1rem;
-  grid-area: latest-news-1;
-}
-
-.latest-news-2 {
-  padding: 1rem;
-  grid-area: latest-news-2;
-}
-
-.latest-news-3 {
-  padding: 1rem;
-  grid-area: latest-news-3;
-}
-
-.latest-news-4 {
-  padding: 1rem;
-  grid-area: latest-news-4;
-}
-
 .latest-news-0,
 .latest-news-1,
 .latest-news-2,
 .latest-news-3,
-.latest-news-4 {
+.latest-news-4,
+.latest-news-5 {
   border-radius: 1rem;
+  padding: 1rem;
 }
 
 .news-category {

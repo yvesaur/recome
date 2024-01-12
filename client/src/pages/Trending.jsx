@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react'
 
 import { useLocation } from 'react-router-dom'
 import NewsList from '../components/NewsList'
-import SelectCategory from '../components/SelectCategory'
 import Footer from '../components/layout/Footer'
 import Header from '../components/layout/Header'
 import { NewsContext } from '../context/NewsContext'
@@ -27,7 +26,6 @@ const Trending = () => {
 
         <div id='trending-page'>
             <Header setSearch={setSearch} isAuthenticated={isAuthenticated} />
-            <SelectCategory />
             <NewsList title="Trending" description={description} isTrending={true} search={search} />
             <Footer />
         </div>

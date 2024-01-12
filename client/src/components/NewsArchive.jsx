@@ -59,7 +59,7 @@ const NewsArchive = ({ search }) => {
                         )
                     })
                 ) : (search.length > 0) ? (
-                    <h1 className='no-search-found'>No Search Found</h1>
+                    <Loader />
                 ) : (
                     <Loader />
                 )}

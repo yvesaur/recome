@@ -36,7 +36,7 @@ const LatestNews = () => {
             <h2>Latest</h2>
             <div className='latest-news-container'>
                 {latestNews.length > 0 ? (
-                    latestNews.slice(0, 5).map((news, index) => {
+                    latestNews.slice(0, 6).map((news, index) => {
                         return (
                             <div className={`news-card latest-news-${index}`} key={news.id} onClick={() => {
                                 getUserClick(news.id);

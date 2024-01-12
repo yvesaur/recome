@@ -4,10 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import Fetch from '../../api/Fetch';
 import "../../assets/css/layout/header.css";
 import { NewsContext } from '../../context/NewsContext';
-import SelectNewsCategory from '../SelectNewsCategory';
+import SelectCategory from '../SelectCategory';
 
 const Header = ({ setSearch, isDisabled }) => {
-    const { isAuthenticated, setAuth, notifySuccess, currentUserID, setCurrentUserID } = useContext(NewsContext);
+    const { isAuthenticated, setAuth, notifySuccess, currentUserID, setCurrentUserID, setSearchOutsideArchive } = useContext(NewsContext);
     const navigate = useNavigate();
     const [name, setName] = useState("");
 
@@ -61,7 +61,13 @@ const Header = ({ setSearch, isDisabled }) => {
 
     const debouncedSearch = useCallback(
         debounce((search) => {
-            setSearch(search);
+            if (isDisabled) {
+                setSearchOutsideArchive(search)
+                navigate("/archive");
+
+            } else {
+                setSearch(search);
+            }
         }, 500),
         []
     );
@@ -71,7 +77,7 @@ const Header = ({ setSearch, isDisabled }) => {
     };
 
     return (
-        <>
+        <div id='sticky-header'>
 
             <div id='header'>
 
@@ -81,7 +87,9 @@ const Header = ({ setSearch, isDisabled }) => {
                     name="searchNews"
                     id="searchNews"
                     placeholder='search'
-                    onChange={(e) => handleSearch(e)}
+                    onChange={(e) => {
+                        handleSearch(e)
+                    }}
                 />
                 <img onClick={() => navigate("/")} src={require("../../assets/img/recome-light.png")} alt="Recome Logo Icon" />
                 {isAuthenticated ? (
@@ -99,9 +107,11 @@ const Header = ({ setSearch, isDisabled }) => {
                         <button onClick={() => navigate("/register")}>Sign Up</button>
                     </div>
                 )}
+
             </div>
             {/* <SelectNewsCategory></SelectNewsCategory> */}
-        </>
+            <SelectCategory />
+        </div>
     )
 }
 

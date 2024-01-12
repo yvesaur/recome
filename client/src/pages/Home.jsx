@@ -1,6 +1,6 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
-import SelectCategory from '../components/SelectCategory'
+import { useLocation } from 'react-router-dom'
 import LatestNews from '../components/home/LatestNews'
 import RecommendedNews from '../components/home/RecommendedNews'
 import TrendingNews from '../components/home/TrendingNews'
@@ -10,6 +10,10 @@ import { NewsContext } from '../context/NewsContext'
 
 const Home = () => {
     const { isAuth, isAuthenticated } = useContext(NewsContext);
+    const { pathname } = useLocation();
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname])
 
     useEffect(() => {
         isAuth();
@@ -19,7 +23,6 @@ const Home = () => {
     return (
         <div id='home-page'>
             <Header isAuthenticated={isAuthenticated} isDisabled={true} />
-            <SelectCategory />
             <LatestNews />
             <TrendingNews />
             {isAuthenticated &&
