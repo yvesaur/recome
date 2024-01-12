@@ -411,6 +411,24 @@
     height: max-content;
   }
   /* NewsDetail.jsx */
+
+  /* About.jsx */
+  #about-page > .about-page-description {
+    width: 80vw;
+    margin: auto;
+    font-size: 0.8rem;
+    padding: 1rem 0;
+  }
+  /* About.jsx */
+
+  /* TermsAndConditions.jsx */
+  #terms-page > .terms-page-description {
+    width: 80vw;
+    margin: auto;
+    font-size: 0.8rem;
+    padding: 1rem 0;
+  }
+  /* TermsAndConditions.jsx */
 }
 
 @media screen and (min-width: 600px) {
