@@ -6,7 +6,7 @@ import "../../assets/css/layout/header.css";
 import { NewsContext } from '../../context/NewsContext';
 import SelectCategory from '../SelectCategory';
 
-const Header = ({ setSearch, isDisabled }) => {
+const Header = ({ search, setSearch, isDisabled }) => {
     const { isAuthenticated, setAuth, notifySuccess, currentUserID, setCurrentUserID, setSearchOutsideArchive } = useContext(NewsContext);
     const navigate = useNavigate();
     const [name, setName] = useState("");
@@ -64,7 +64,6 @@ const Header = ({ setSearch, isDisabled }) => {
             if (isDisabled) {
                 setSearchOutsideArchive(search)
                 navigate("/archive");
-
             } else {
                 setSearch(search);
             }
@@ -90,6 +89,7 @@ const Header = ({ setSearch, isDisabled }) => {
                     onChange={(e) => {
                         handleSearch(e)
                     }}
+                    value={search}
                 />
                 <img onClick={() => navigate("/")} src={require("../../assets/img/recome-light.png")} alt="Recome Logo Icon" />
                 {isAuthenticated ? (

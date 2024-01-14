@@ -294,7 +294,7 @@ const Register = () => {
                 <>
                     <div className="wideInterest-container">
                         <img src={require("../assets/img/recome-light.png")} alt="Recome Logo Icon" />
-                        <h1>Would you like to recieve recommendations on a wide range of topics or prefer to focus on a few specific areas of wide interest</h1>
+                        <h1>Would you like to receive recommendations on a wide range of topics or prefer to focus on a few specific areas of wide interest</h1>
                         <form className='register-account-form' onSubmit={(e) => {
                             // onSubmitForm(e);
                             // navigate("/")
@@ -392,7 +392,7 @@ const Register = () => {
                 <>
                     <div className='trendingImportant-container'>
                         <img src={require("../assets/img/recome-light.png")} alt="Recome Logo Icon" />
-                        <h1>How Important is it for you to recieve news on trending or current events?</h1>
+                        <h1>How Important is it for you to receive news on trending or current events?</h1>
                         <form className='register-account-form' onSubmit={(e) => {
                             // onSubmitForm(e);
                             // navigate("/")

@@ -19,3 +19,32 @@
   width: 100%;
   border-radius: 1rem;
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.pagination-button {
+  background-color: #f8f9fa;
+  border: 1px solid var(--outline_clr1);
+  color: var(--header_clr);
+  padding: 5px 12px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 0 2px;
+  cursor: pointer;
+  border-radius: 0.5rem;
+}
+
+.pagination-button:hover {
+  background-color: var(--header_clr);
+  color: white;
+}
+
+.pagination-button.active {
+  background-color: var(--header_clr);
+  color: white;
+}

@@ -179,6 +179,10 @@
   #news-archive > .all-news-container p {
     font-size: 0.8rem;
   }
+
+  #news-archive > .pagination {
+    font-size: 0.8rem;
+  }
   /* NewsArchive.jsx */
 
   /* Login.jsx */
