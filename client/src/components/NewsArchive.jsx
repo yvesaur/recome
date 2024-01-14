@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Fetch from '../api/Fetch';
 import "../assets/css/newsarchive.css";
 import { NewsContext } from '../context/NewsContext';
@@ -9,12 +9,12 @@ const NewsArchive = ({ search }) => {
     const { getUserClick, formatDate } = useContext(NewsContext);
     const [allNews, setAllNews] = useState([]);
     const navigate = useNavigate();
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await Fetch.get("/fetchNews")
-                console.log("ALL NEWS: ", response.data.data)
                 setAllNews(response.data.data.news)
             } catch (error) {
                 console.error(error.message)
@@ -42,7 +42,6 @@ const NewsArchive = ({ search }) => {
         setCurrentPage(1);
     }, [filteredNews]);
 
-    const [currentPage, setCurrentPage] = useState(1);
     const newsPerPage = 20;
     const pageNumbersToShow = 5;
 
@@ -67,8 +66,6 @@ const NewsArchive = ({ search }) => {
     if (!currentPages.includes(1)) {
         currentPages = [1, ...currentPages];
     }
-
-
 
     return (
         <div id='news-archive'>
@@ -99,22 +96,37 @@ const NewsArchive = ({ search }) => {
                 )}
             </div>
             <div className="pagination">
-                <button className="pagination-button" onClick={() => paginate(currentPage > 1 ? currentPage - 1 : 1)}>
-                    <i class="fa-solid fa-angle-left"></i>
+                <button
+                    className="pagination-button"
+                    onClick={() => {
+                        paginate(currentPage > 1 ? currentPage - 1 : 1);
+                        window.scrollTo(0, 0);
+                    }}
+                >
+                    <i className="fa-solid fa-angle-left"></i>
                 </button>
 
                 {currentPages.map(number => (
                     <button
                         key={number}
                         className={`pagination-button ${number === currentPage ? 'active' : ''}`}
-                        onClick={() => paginate(number)}
+                        onClick={() => {
+                            paginate(number);
+                            window.scrollTo(0, 0);
+                        }}
                     >
                         {number}
                     </button>
                 ))}
 
-                <button className="pagination-button" onClick={() => paginate(currentPage < pageNumbers.length ? currentPage + 1 : pageNumbers.length)}>
-                    <i class="fa-solid fa-angle-right"></i>
+                <button
+                    className="pagination-button"
+                    onClick={() => {
+                        paginate(currentPage < pageNumbers.length ? currentPage + 1 : pageNumbers.length);
+                        window.scrollTo(0, 0);
+                    }}
+                >
+                    <i className="fa-solid fa-angle-right"></i>
                 </button>
             </div>
         </div>
