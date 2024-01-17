@@ -10,7 +10,7 @@ const getRandomDate = require("../utils/getDate");
 router.get("/api/v1/news", async (req, res) => {
   try {
     const response = await db.query(
-      "SELECT * FROM news WHERE DATE(date) <= DATE('2023-12-26') ORDER BY date DESC LIMIT 50"
+      "SELECT * FROM news ORDER BY date DESC LIMIT 50"
     );
 
     res.status(200).json({
@@ -60,7 +60,7 @@ router.get("/api/v1/fetch/wideNews", async (req, res) => {
 router.get("/api/v1/fetchNews", async (req, res) => {
   try {
     const response = await db.query(
-      "SELECT * FROM news WHERE DATE(date) <= DATE('2023-12-26') ORDER BY date DESC LIMIT 3000"
+      "SELECT * FROM news ORDER BY date DESC LIMIT 5000"
     );
 
     res.status(200).json({
