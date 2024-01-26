@@ -10,6 +10,7 @@ import { NewsContextProvider } from "./context/NewsContext";
 import About from "./pages/About";
 import Archive from "./pages/Archive";
 import CookiePolicy from "./pages/CookiePolicy";
+import DataPrivacy from "./pages/DataPrivacy";
 import Home from "./pages/Home";
 import Latest from "./pages/Latest";
 import Login from "./pages/Login";
@@ -46,6 +47,7 @@ function App() {
               path="/termsandconditions"
               element={<TermsAndConditions />}
             ></Route>
+            <Route exact path="/dataprivacy" element={<DataPrivacy />}></Route>
             <Route
               exact
               path="/cookiepolicy"

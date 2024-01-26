@@ -433,6 +433,15 @@
     padding: 1rem 0;
   }
   /* TermsAndConditions.jsx */
+
+  /* DataPrivacy.jsx */
+  #data-privacy-page > .dataprivacy-page-description {
+    width: 80vw;
+    margin: auto;
+    font-size: 0.8rem;
+    padding: 1rem 0;
+  }
+  /* DataPrivacy.jsx */
 }
 
 @media screen and (min-width: 600px) {

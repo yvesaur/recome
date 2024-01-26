@@ -4,3 +4,9 @@
   font-size: 1.5rem;
   padding: 1rem 0;
 }
+
+.privacy-policy-link {
+  text-decoration: underline;
+  color: blue;
+  cursor: pointer;
+}

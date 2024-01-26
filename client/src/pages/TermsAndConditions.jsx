@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import "../assets/css/pages/termsandconditions.css";
 import Footer from '../components/layout/Footer';
 import Header from '../components/layout/Header';
 
 const TermsAndConditions = () => {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -81,7 +82,7 @@ const TermsAndConditions = () => {
           <h3>7. Privacy Policy:</h3>
           <p>
             Our Privacy Policy governs the collection, use, and disclosure of your personal
-            information. By using our services, you agree to our Privacy Policy.
+            information. By using our services, you agree to our Privacy Policy. <span className='privacy-policy-link' onClick={() => { navigate("/dataprivacy") }}>Click Here</span> to learn more about our privacy policy.
           </p>
         </section>
         <br />

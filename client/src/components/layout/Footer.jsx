@@ -26,6 +26,7 @@ const Footer = () => {
             <div className="info-page">
                 <p onClick={() => navigate('/about')}>About</p>
                 <p onClick={() => navigate('/termsandconditions')}>Terms & Conditions</p>
+                <p onClick={() => navigate('/dataprivacy')}>Data Privacy Policy</p>
                 <p onClick={() => navigate('/archive')}>Archives</p>
             </div>
             <p>
