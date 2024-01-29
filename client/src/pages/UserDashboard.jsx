@@ -8,7 +8,7 @@ import Header from '../components/layout/Header';
 import UserPreferenceModal from '../components/modal/UserPreferenceModal';
 import { NewsContext } from '../context/NewsContext';
 
-const UserDashboard = () => {
+const UserDashboard = ({ appSelectedModel, setAppSelectedModel, modelLogo, modelLogoDark }) => {
     const { isAuthenticated, isAuth, getUserClick, formatDate } = useContext(NewsContext);
     const navigate = useNavigate();
     const [name, setName] = useState("");
@@ -80,7 +80,7 @@ const UserDashboard = () => {
     return (
         isAuthenticated ? (
             <div id='user-dashboard'>
-                <Header isAuthenticated={isAuthenticated} />
+                <Header isAuthenticated={isAuthenticated} modelLogo={modelLogo} />
                 <div id='user-information'>
                     <div>
                         <i class="fa-regular fa-user user-pfp"></i>
@@ -136,8 +136,10 @@ const UserDashboard = () => {
                     setIsTrendingNews={setIsTrendingNews}
                     setInterestAreas={setInterestAreas}
                     setTopicExclusions={setTopicExclusions}
+                    appSelectedModel={appSelectedModel}
+                    setAppSelectedModel={setAppSelectedModel}
                 />
-                <Footer />
+                <Footer modelLogoDark={modelLogoDark} />
             </div>
         ) : (
             navigate("/")

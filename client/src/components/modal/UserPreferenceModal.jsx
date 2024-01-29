@@ -16,7 +16,9 @@ const UserPreferenceModal = ({
     topicExclusions,
     setTopicExclusions,
     isTrendingNews,
-    setIsTrendingNews
+    setIsTrendingNews,
+    appSelectedModel,
+    setAppSelectedModel
 }) => {
     const { notifyError, notifySuccess } = useContext(NewsContext);
 
@@ -42,6 +44,8 @@ const UserPreferenceModal = ({
         { value: 'video', label: 'Video' },
         { value: 'bestbuys', label: 'Best buys' },
     ];
+
+    const [pickedRecommendationModel, setPickedRecommendationModel] = useState("recome")
 
     const handleChange = (e) => {
         setIsTrendingNews(e.target.value);
@@ -82,6 +86,7 @@ const UserPreferenceModal = ({
 
     const updateUserPreference = async () => {
         try {
+            setAppSelectedModel(pickedRecommendationModel);
             const body = { interest_areas: interestAreas, wide_interest: wideInterest, topic_exclusions: topicExclusions, trending_news: isTrendingNews };
 
             const response = await Fetch.patch(`/user/editpreference/${currentUserID}`, body, {
@@ -203,6 +208,16 @@ const UserPreferenceModal = ({
                     <select className='trending-news-select' value={isTrendingNews} onChange={(e) => handleChange(e)}>
                         <option value="Important">Important</option>
                         <option value="Not Important">Not Important</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label >Select a Recommendation Model </label>
+                    <select className='recommendation-news-select' value={pickedRecommendationModel} onChange={(e) => setPickedRecommendationModel(e.target.value)}>
+                        <option value="recome">RECOME</option>
+                        <option value="lstur">LSTUR</option>
+                        <option value="naml">NAML</option>
+                        <option value="dkn">DKN</option>
                     </select>
                 </div>
                 <button

@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../assets/css/layout/footer.css';
 
-const Footer = () => {
+const Footer = ({ modelLogoDark }) => {
     let navigate = useNavigate();
 
     const iconColor = {
@@ -11,7 +11,7 @@ const Footer = () => {
 
     return (
         <div id='footer'>
-            <img src={require("../../assets/img/recome-black.png")} alt="" />
+            <img src={modelLogoDark} alt="" />
             <div className="social-link">
                 <a href="https://twitter.com/RecoMe0113">
                     <i className="fa-brands fa-x-twitter" style={iconColor}></i>

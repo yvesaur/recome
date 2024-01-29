@@ -4,7 +4,7 @@ import '../assets/css/pages/about.css'
 import Footer from '../components/layout/Footer'
 import Header from '../components/layout/Header'
 
-const About = () => {
+const About = ({ modelLogo, modelLogoDark }) => {
     const { pathname } = useLocation();
 
     useEffect(() => {
@@ -12,7 +12,7 @@ const About = () => {
     }, [pathname]);
     return (
         <div id='about-page'>
-            <Header></Header>
+            <Header modelLogo={modelLogo}></Header>
             <div className='about-page-description'>
                 <p>
                     Welcome to <b>RecoMe</b>, where the intersection of curiosity and innovation fuels our passion for news recommendation models. Our mission is to delve into the realm of cutting-edge technology, specifically focusing on news recommendation systems, with the ultimate goal of advancing and refining their capabilities.
@@ -40,7 +40,7 @@ const About = () => {
                 </p>
 
             </div>
-            <Footer></Footer>
+            <Footer modelLogoDark={modelLogoDark}></Footer>
         </div>
     )
 }

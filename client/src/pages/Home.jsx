@@ -8,7 +8,7 @@ import Footer from '../components/layout/Footer'
 import Header from '../components/layout/Header'
 import { NewsContext } from '../context/NewsContext'
 
-const Home = () => {
+const Home = ({ modelLogo, modelLogoDark }) => {
     const { isAuth, isAuthenticated } = useContext(NewsContext);
     const { pathname } = useLocation();
     useEffect(() => {
@@ -22,13 +22,13 @@ const Home = () => {
 
     return (
         <div id='home-page'>
-            <Header isAuthenticated={isAuthenticated} isDisabled={true} />
+            <Header isAuthenticated={isAuthenticated} isDisabled={true} modelLogo={modelLogo} />
             <LatestNews />
             <TrendingNews />
             {isAuthenticated &&
                 <RecommendedNews />
             }
-            <Footer />
+            <Footer modelLogoDark={modelLogoDark} />
         </div>
     )
 }

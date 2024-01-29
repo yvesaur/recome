@@ -6,7 +6,7 @@ import Footer from '../components/layout/Footer'
 import Header from '../components/layout/Header'
 import { NewsContext } from '../context/NewsContext'
 
-const Recommended = () => {
+const Recommended = ({ modelLogo, modelLogoDark }) => {
     const description = `Curated selection of articles, news stories, and content tailored specifically to your interests and  preferences.
                         It serves as a hub where you can discover new and relevant information that aligns with your specific areas of interest.`
     const [search, setSearch] = useState("")
@@ -23,9 +23,9 @@ const Recommended = () => {
 
     return (
         <div id='recommended-page'>
-            <Header setSearch={setSearch} isAuthenticated={isAuthenticated} />
+            <Header setSearch={setSearch} isAuthenticated={isAuthenticated} modelLogo={modelLogo} />
             <NewsList title="Recommended" description={description} isRecommended={true} search={search} />
-            <Footer />
+            <Footer modelLogoDark={modelLogoDark} />
         </div>
     )
 }

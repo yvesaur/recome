@@ -6,7 +6,7 @@ import Footer from '../components/layout/Footer'
 import Header from '../components/layout/Header'
 import { NewsContext } from '../context/NewsContext'
 
-const Trending = () => {
+const Trending = ({ modelLogo, modelLogoDark }) => {
     const description = `Explore our Trending Page for the hottest topics, viral stories, and must-know trends captivating the online sphere. 
                         Stay in the loop with the latest conversations, popular articles, and social media sensations that are making waves across the digital landscape. 
                      Your go-to destination for staying ahead of the curve and being part of the trending discussions.`
@@ -25,9 +25,9 @@ const Trending = () => {
     return (
 
         <div id='trending-page'>
-            <Header setSearch={setSearch} isAuthenticated={isAuthenticated} />
+            <Header setSearch={setSearch} isAuthenticated={isAuthenticated} modelLogo={modelLogo} />
             <NewsList title="Trending" description={description} isTrending={true} search={search} />
-            <Footer />
+            <Footer modelLogoDark={modelLogoDark} />
         </div>
     )
 }

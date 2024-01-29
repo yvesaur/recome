@@ -6,7 +6,7 @@ import "../../assets/css/layout/header.css";
 import { NewsContext } from '../../context/NewsContext';
 import SelectCategory from '../SelectCategory';
 
-const Header = ({ search, setSearch, isDisabled }) => {
+const Header = ({ search, setSearch, isDisabled, modelLogo }) => {
     const { isAuthenticated, setAuth, notifySuccess, currentUserID, setCurrentUserID, setSearchOutsideArchive } = useContext(NewsContext);
     const navigate = useNavigate();
     const [name, setName] = useState("");
@@ -91,7 +91,7 @@ const Header = ({ search, setSearch, isDisabled }) => {
                     }}
                     value={search}
                 />
-                <img onClick={() => navigate("/")} src={require("../../assets/img/recome-light.png")} alt="Recome Logo Icon" />
+                <img onClick={() => navigate("/")} src={modelLogo} alt="Model Logo Icon" />
                 {isAuthenticated ? (
                     <div className='logged-user'>
                         {/* Your logged user content */}

@@ -6,7 +6,7 @@ import Footer from '../components/layout/Footer'
 import Header from '../components/layout/Header'
 import { NewsContext } from '../context/NewsContext'
 
-const Archive = () => {
+const Archive = ({ modelLogo, modelLogoDark }) => {
     const { isAuthenticated, isAuth, searchOutsideArchive } = useContext(NewsContext);
     const [search, setSearch] = useState(searchOutsideArchive || "")
 
@@ -22,10 +22,10 @@ const Archive = () => {
 
     return (
         <div id='archive-page'>
-            <Header isAuthenticated={isAuthenticated} setSearch={setSearch} />
+            <Header isAuthenticated={isAuthenticated} setSearch={setSearch} modelLogo={modelLogo} />
             <h1>News Archive</h1>
             <NewsArchive search={search} />
-            <Footer />
+            <Footer modelLogoDark={modelLogoDark} />
         </div>
     )
 }

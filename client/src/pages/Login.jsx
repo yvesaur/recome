@@ -4,7 +4,7 @@ import Fetch from '../api/Fetch';
 import "../assets/css/pages/login.css";
 import { NewsContext } from '../context/NewsContext';
 
-const Login = () => {
+const Login = ({ modelLogo, modelLogoDark }) => {
     const { setAuth, notifySuccess, notifyError, isAuthenticated, getCurrentUserID } = useContext(NewsContext);
     const navigate = useNavigate();
 

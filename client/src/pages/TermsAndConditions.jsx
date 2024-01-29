@@ -4,7 +4,7 @@ import "../assets/css/pages/termsandconditions.css";
 import Footer from '../components/layout/Footer';
 import Header from '../components/layout/Header';
 
-const TermsAndConditions = () => {
+const TermsAndConditions = ({ modelLogo, modelLogoDark }) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
@@ -13,7 +13,7 @@ const TermsAndConditions = () => {
   }, [pathname]);
   return (
     <div id='terms-page'>
-      <Header></Header>
+      <Header modelLogo={modelLogo}></Header>
       <div className='terms-page-description'>
         <h2><b>Terms and Conditions for RecoMe:</b></h2>
 
@@ -120,7 +120,7 @@ const TermsAndConditions = () => {
         </p>
 
       </div>
-      <Footer></Footer>
+      <Footer modelLogoDark={modelLogoDark}></Footer>
     </div>
   )
 }

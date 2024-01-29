@@ -7,7 +7,7 @@ import Footer from '../components/layout/Footer'
 import Header from '../components/layout/Header'
 import { NewsContext } from '../context/NewsContext'
 
-const NewsDetail = () => {
+const NewsDetail = ({ modelLogo, modelLogoDark }) => {
     const { getUserClick, getUserImpression, isAuth, formatDate } = useContext(NewsContext);
     const [selectedNews, setSelectedNews] = useState();
     const [relatedNews, setRelatedNews] = useState([]);
@@ -61,7 +61,7 @@ const NewsDetail = () => {
 
     return (
         <div id='news-detail-page'>
-            <Header isDisabled={true} />
+            <Header isDisabled={true} modelLogo={modelLogo} />
             <div className='selected-news-container'>
                 {selectedNews ? (
                     <div className='news-card news-detail-card' key={selectedNews.id} onClick={() => {
@@ -108,7 +108,7 @@ const NewsDetail = () => {
                 )
                 }
             </div>
-            <Footer />
+            <Footer modelLogoDark={modelLogoDark} />
         </div>
     )
 }

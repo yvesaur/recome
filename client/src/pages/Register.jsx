@@ -4,7 +4,7 @@ import Fetch from '../api/Fetch';
 import "../assets/css/pages/register.css";
 import { NewsContext } from '../context/NewsContext';
 
-const Register = () => {
+const Register = ({ model }) => {
     const { setAuth, notifySuccess, notifyError } = useContext(NewsContext);
     const navigate = useNavigate();
     const [inputs, setInputs] = useState({

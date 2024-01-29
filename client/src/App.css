@@ -1,4 +1,9 @@
 :root {
+  --font_fallback: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+.App-recome {
   --bg_clr: #f6f4f0;
   --modalbg_clr: #7f7f7f;
 
@@ -12,11 +17,60 @@
   --font-clr1: #030303;
   --font-clr2: #c81010;
 
-  --font_fallback: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: "Montserrat", var(--font_fallback);
+}
+
+.App-lstur {
+  --bg_clr: #f4eddb;
+  --modalbg_clr: #7f7f7f;
+
+  --header_clr: #af1132;
+  --footer_clr: #ce897a;
+  --btn_clr: #efe50a;
+  --outline_clr: #030303;
+  --outline_clr1: #d0c7b9;
+
+  --font-clr: #fefffe;
+  --font-clr1: #030303;
+  --font-clr2: #ce897a;
+
+  font-family: "Ubuntu", var(--font_fallback);
+}
+
+.App-naml {
+  --bg_clr: #f2f2f2;
+  --modalbg_clr: #7f7f7f;
+
+  --header_clr: #8c8c8c;
+  --footer_clr: #d9ca9c;
+  --btn_clr: #f2dbc4;
+  --outline_clr: #030303;
+  --outline_clr1: #030303;
+
+  --font-clr: #262626;
+  --font-clr1: #030303;
+  --font-clr2: #b3a884;
+
+  font-family: "Newsreader", var(--font_fallback);
+}
+
+.App-dkn {
+  --bg_clr: #f2f2f2;
+  --modalbg_clr: #7f7f7f;
+
+  --header_clr: #8c5c03;
+  --footer_clr: #d9cdb8;
+  --btn_clr: #f2dbc4;
+  --outline_clr: #030303;
+  --outline_clr1: #030303;
+
+  --font-clr: white;
+  --font-clr1: white;
+  --font-clr2: #d9564a;
+
+  font-family: "Oswald", var(--font_fallback);
 }
 
 body {
   background-color: #f6f4f0;
-  font-family: "Montserrat", var(--font_fallback);
 }

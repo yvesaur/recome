@@ -4,7 +4,7 @@ import "../assets/css/pages/dataprivacy.css"
 import Footer from '../components/layout/Footer'
 import Header from '../components/layout/Header'
 
-const DataPrivacy = () => {
+const DataPrivacy = ({ modelLogo, modelLogoDark }) => {
     const { pathname } = useLocation();
 
     useEffect(() => {
@@ -12,7 +12,7 @@ const DataPrivacy = () => {
     }, [pathname]);
     return (
         <div id='data-privacy-page'>
-            <Header />
+            <Header modelLogo={modelLogo} />
             <div className='dataprivacy-page-description'>
                 <h2><b>Data Privacy Policy for RecoMe:</b></h2>
 
@@ -88,7 +88,7 @@ const DataPrivacy = () => {
                 </p>
 
             </div>
-            <Footer />
+            <Footer modelLogoDark={modelLogoDark} />
         </div>
     )
 }
