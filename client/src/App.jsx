@@ -83,7 +83,7 @@ function App() {
               path="/cookiepolicy"
               element={<CookiePolicy modelLogo={modelLogo} modelLogoDark={modelLogoDark} />}
             ></Route>
-            <Route exact path="/news/:id" element={<NewsDetail modelLogo={modelLogo} modelLogoDark={modelLogoDark} />}></Route>
+            <Route exact path="/news/:id" element={<NewsDetail modelLogo={modelLogo} modelLogoDark={modelLogoDark} appSelectedModel={appSelectedModel} />}></Route>
           </Routes>
 
           <ToastContainer

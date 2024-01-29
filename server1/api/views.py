@@ -257,7 +257,7 @@ def scrape_news():
         category = parts[3]  # Adjust this index based on the URL structure
 
         cur.execute("SELECT COUNT(*) FROM news")
-        newsID =  "N" + str(cur.fetchone()[0] + 34)
+        newsID =  "N" + str(cur.fetchone()[0] + 37)
 
         # Define the SELECT query
         select_query = "SELECT * FROM news WHERE title = %s"
@@ -475,9 +475,10 @@ def getRecommendedNews(request, id):
     if id in df2['News ID'].values:
         ind = df2[df2['News ID'] == id].index[0]
         # print(ind)
-        dd = recomeModel(ind, 10)
-        dd.head(10)
-        return Response(dd['NewsID'].head(10))
+        dd = recomeModel(ind, 17)
+        dd.head(17)
+        # print(dd)
+        return Response(dd['NewsID'].head(17))
     else:
         print("News ID does not exist")
         ind = None

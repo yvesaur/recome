@@ -7,7 +7,7 @@ import Footer from '../components/layout/Footer'
 import Header from '../components/layout/Header'
 import { NewsContext } from '../context/NewsContext'
 
-const NewsDetail = ({ modelLogo, modelLogoDark }) => {
+const NewsDetail = ({ modelLogo, modelLogoDark, appSelectedModel }) => {
     const { getUserClick, getUserImpression, isAuth, formatDate } = useContext(NewsContext);
     const [selectedNews, setSelectedNews] = useState();
     const [relatedNews, setRelatedNews] = useState([]);
@@ -59,6 +59,23 @@ const NewsDetail = ({ modelLogo, modelLogoDark }) => {
         }
     }
 
+    const MODEL_START_INDICES = {
+        "recome": 0,
+        "lstur": 4,
+        "naml": 8,
+        "dkn": 12
+    };
+
+    const MODEL_END_INDICES = {
+        "recome": 4,
+        "lstur": 8,
+        "naml": 12,
+        "dkn": 17
+    };
+
+    const startIndex = MODEL_START_INDICES[appSelectedModel] || 0; // default to 0 if appSelectedModel is not in the object
+    const endIndex = MODEL_END_INDICES[appSelectedModel] || 4; // default to 4 if appSelectedModel is not in the object
+
     return (
         <div id='news-detail-page'>
             <Header isDisabled={true} modelLogo={modelLogo} />
@@ -85,7 +102,7 @@ const NewsDetail = ({ modelLogo, modelLogoDark }) => {
             <h1>Related  News you might like</h1>
             <div className='related-news-container'>
                 {relatedNews ? (
-                    relatedNews.slice(0, 4).map((news) => {
+                    relatedNews.slice(startIndex, endIndex).map((news) => {
                         return (
                             news.id !== id && (
                                 <div className={`news-card related-news`} key={news.id} onClick={() => {

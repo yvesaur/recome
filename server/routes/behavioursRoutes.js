@@ -13,7 +13,7 @@ router.post("/api/v1/addBehaviour/:id", async (req, res) => {
     const { click_history, impressions } = req.body;
 
     const id = await db.query("SELECT COUNT(id) from behaviours");
-    const parseid = parseInt(id.rows[0].count) + 1;
+    const parseid = parseInt(id.rows[0].count) + 3;
 
     const addBehaviour = await db.query(
       `INSERT INTO 
