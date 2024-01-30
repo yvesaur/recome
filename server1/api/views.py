@@ -501,7 +501,7 @@ def getUserRecommendedNews(request, id):
         return Response(userRecommendations['id'].head(150))
     else:
         # Execute a query for behaviours
-        cur.execute("SELECT * FROM news WHERE date IS NOT NULL ORDER BY date DESC LIMIT 150") 
+        cur.execute("SELECT * FROM news WHERE DATE(date) <= DATE('2024-01-26') ORDER BY date DESC LIMIT 150") 
         # Fetch all the rows for news
         rows = cur.fetchall()
         column_names = [desc[0] for desc in cur.description] # Get the column names 
