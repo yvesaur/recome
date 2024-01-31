@@ -257,7 +257,7 @@ def scrape_news():
         category = parts[3]  # Adjust this index based on the URL structure
 
         cur.execute("SELECT COUNT(*) FROM news")
-        newsID =  "N" + str(cur.fetchone()[0] + 37)
+        newsID =  "N" + str(cur.fetchone()[0] + 41)
 
         # Define the SELECT query
         select_query = "SELECT * FROM news WHERE title = %s"
